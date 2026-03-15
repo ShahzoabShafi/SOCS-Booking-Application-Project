@@ -1,0 +1,15 @@
+# IDX environment
+.idx/
+
+# Node.js
+node_modules/
+.env
+.env.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build output
+/dist
+/build
