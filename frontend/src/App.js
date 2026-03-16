@@ -1,24 +1,27 @@
-import logo from './logo.svg';
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <nav>
+        <span>McBooking</span>
+        <a><button>Sign in</button></a>
+      </nav>
+
+      <main>
+        <section className="hero">
+          <p className="pill">McGill University Booking System</p>
+          <h1>Booking meetings effortlessly</h1>
+          <p className="sub">A simple way for McGill professors and students to manage their scheduling</p>
+          <button className="cta">Get Started</button>
+        </section>
+      </main>
+
+      <footer>
+        <span>McBooking – McGill University</span>
+        <span>Built for COMP 307</span>
+      </footer>
+    </>
   );
 }
 
