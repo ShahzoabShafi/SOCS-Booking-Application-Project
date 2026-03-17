@@ -1,4 +1,4 @@
-import '../App.css';
+import React from 'react';
 
 function Login() {
   return (
@@ -10,8 +10,23 @@ function Login() {
         <button type="submit">Sign in</button>
         <p>Don't have an account? <a href="/signup">Sign up</a></p>
       </form>
+
+      <style>{`
+        main {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 100vh;
+        }
+      `}</style>
     </main>
   );
 }
 
 export default Login;
+
+
+
+
+
+
