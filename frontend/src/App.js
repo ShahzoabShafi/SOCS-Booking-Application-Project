@@ -26,7 +26,7 @@ function Landing() {
 
       <footer>
         <span>McBooking – McGill University</span>
-        <span>Built for COMP 307</span>
+        <span> A project by students for students</span>
       </footer>
     </>
   );
