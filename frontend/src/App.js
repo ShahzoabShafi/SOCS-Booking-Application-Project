@@ -2,6 +2,9 @@ import './App.css';
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import Footer from './component/Footer';
+import Dashboard from './pages/Dashboard';
+
 
 // Front end: Miguel Angel Vargas Valencia
 
@@ -11,8 +14,12 @@ function Landing() {
   return (
     <>
       <nav>
-        <span>McBooking</span>
-        <button onClick={() => navigate('/login')}>Sign in</button>
+        <img src="/mcbooking.png" alt="McBooking Logo" style={{height: "100px"}} />
+        <div>
+          <button style={{"marginRight": "10px"}} onClick={() => navigate('/dashboard')}>Dashboard Perso(temporary button)</button>
+          <button style={{"marginRight": "10px"}} onClick={() => navigate('/dashboard')}>Dashboard Admin(temporary button)</button>
+          <button onClick={() => navigate('/login')}>Sign in</button>
+        </div>
       </nav>
 
       <main>
@@ -24,10 +31,6 @@ function Landing() {
         </section>
       </main>
 
-      <footer>
-        <span>McBooking – McGill University</span>
-        <span> A project by students for students</span>
-      </footer>
     </>
   );
 }
@@ -39,7 +42,9 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
+      <Footer />
     </BrowserRouter>
   );
 }

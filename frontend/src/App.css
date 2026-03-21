@@ -75,16 +75,6 @@ button.cta:hover {
   background-color: #1a3a6b;
 }
 
-footer {
-  background-color: white;
-  margin-top: auto;
-  display: flex;
-  justify-content: space-between;
-  padding: 24px 32px;
-  font-size: 13px;
-  color: grey;
-  border-top: 1px solid #b0b8cc;
-}
 #root {
    display: flex;
    flex-direction: column;

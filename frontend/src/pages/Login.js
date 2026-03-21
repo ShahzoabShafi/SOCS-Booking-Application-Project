@@ -1,6 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
+// Front end: Miguel Angel Vargas Valencia
+
+
 function Login() {
   const navigate = useNavigate();
 
@@ -9,6 +12,7 @@ function Login() {
   };
 
   return (
+
     <main>
       <nav>
         <span>McBooking</span>
@@ -28,11 +32,19 @@ function Login() {
         main {
           display: flex;
           flex-direction: column;
-          justify-content: center;
+          justify-content: flex-start;
           align-items: center;
           min-height: 100vh;
+          padding-top: 2rem;
           gap: 2rem;
         }
+          nav{
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+          max-width: 400px;
+          }
         .login-form {
           background: white;
           padding: 2rem;
