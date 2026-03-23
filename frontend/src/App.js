@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Footer from './component/Footer';
 import Dashboard from './pages/Dashboard';
+import BookNew from './pages/CreateNew';
 
 
 // Front end: Miguel Angel Vargas Valencia
@@ -43,6 +44,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/book-new" element={<BookNew />} />
       </Routes>
       <Footer />
     </BrowserRouter>
