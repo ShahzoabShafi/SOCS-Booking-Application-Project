@@ -82,9 +82,8 @@ function Dashboard() {
                     font-size: 2vw;
                 }
                 .navBar a:hover {
-                    background-color: white;
+                    background-color: #1a3a6b;
                     padding: 15px 30px;
-                    color: black;
                     text-decoration: none;
                     display: inline-block;
                     margin: 2rem;
@@ -123,6 +122,9 @@ function Dashboard() {
                 .card:hover {
                     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
                 }
+                #create {
+                    display: none;
+                }
             `}
             </style>
             <div class="navBar" id="navBar">
@@ -131,7 +133,7 @@ function Dashboard() {
                 </div>
                 <div class="menu">
                     <a href="/" id="booking" > Book New </a>
-                    <a href="/" id="create" style="display: none;"> Create New </a>
+                    <a href="/" id="create"> Create New </a>
                     <a href="/" id="exit"> Log Out </a>
                 </div>
             </div>
