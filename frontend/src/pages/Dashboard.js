@@ -50,9 +50,10 @@ function Dashboard() {
             <style> {`
                 body {
                     margin: 0px;
+                    background: #e4eaf5;
                 }
                 .navBar {
-                    background-color: rgb(18, 64, 148);
+                    background-color: rgb(255, 255, 255);
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
@@ -96,7 +97,8 @@ function Dashboard() {
                     align-items: center;
                 }
                 .card {
-                    background-color: #F04242;
+                    background-color: #63B0CD;
+                    border: 1px solid black;
                     transition: box-shadow 0.2s ease;
                     padding: 15px 30px;
                     width: 80%;
@@ -116,6 +118,7 @@ function Dashboard() {
                 .card svg {
                     height: 30px;
                     width: 30px;
+                    fill: #0A2342; 
                 }
                 .card:hover {
                     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
@@ -128,6 +131,7 @@ function Dashboard() {
                 </div>
                 <div class="menu">
                     <a href="/" id="booking" > Book New </a>
+                    <a href="/" id="create" style="display: none;"> Create New </a>
                     <a href="/" id="exit"> Log Out </a>
                 </div>
             </div>

@@ -4,8 +4,8 @@ import React  from "react";
 function CreateNew() {
     return (
         <main>
-            <h1> Book New </h1>
-            <form name="Book" action="A3.php" method="post" autocomplete="on">
+            <h1> Create New </h1>
+            <form name="Create" action="A3.php" method="post" autocomplete="on">
                 <input type="text" name="firstName" placeholder="*First Name" required/>
                 <input type="text" name="lastName" placeholder="*Last Name" required/>
                 <input type="email" name="email" placeholder="*Email" required/>            
@@ -19,4 +19,4 @@ function CreateNew() {
         </main>
     )
 }
-export default BookNew;
+export default CreateNew;
