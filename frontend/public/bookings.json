@@ -1,0 +1,8 @@
+[
+    { "id": 1, "title": "Meeting", "date": "Aug 21", "startTime": "12pm", "endTime": "1pm", "booker": "Ta mère" },
+    { "id": 2 ,"title": "Secret rendez-vous", "date": "Mar 41", "startTime": "12pm", "endTime": "1pm", "booker": "Your mother" },
+    { "id": 3,"title": "Partay", "date": "Mar 41", "startTime": "12pm", "endTime": "1pm",
+      "booker": "Tu madre" },
+    { "id": 4,"title": "Partay", "date": "Mar 41", "startTime": "12pm", "endTime": "1pm",
+      "booker": "Tu madre" }
+  ]
