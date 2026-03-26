@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
+import './Dashboard.css';
 
-
-//Front end: Marie Lefevre
-
+//author: Marie Lefevre
 
 function Dashboard() {
     const [bookings, setBookings] = useState([]);
@@ -24,9 +23,11 @@ function Dashboard() {
             method: 'DELETE'
         });
         //change slot/booking status to "open/free"
+        
         //email owner of booking with mailto:
         sendEmail(id);
     }
+
     function sendEmail(bookingID) {
         //send email to owner of booking
         const receiver= "marielefevre2035@gmailcom";
@@ -34,94 +35,13 @@ function Dashboard() {
         const body= "The user has cancelled this appointment.";
         window.location.href = "mailto:" + receiver + "?subject=" + subject + "&body=" + body;
     }
+
+    function checkAdminStatus(){
+        //check if user is owner; display owner features if so. 
+        
+    }
     return (
         <main>
-            <style> {`
-                body {
-                    margin: 0px;
-                    background: #e4eaf5;
-                }
-                .navBar {
-                    background-color: rgb(255, 255, 255);
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    width: 100%;
-                    height: 7rem;
-                }
-                .navBar .menu {
-                    display: flex;
-                    gap: 10px;
-                }
-                .navBar img {
-                    height: 7rem;
-                    margin: 2rem;
-                }
-                h1 {
-                    text-align: center;
-                    margin: 2rem;
-                }
-                .navBar a {
-                    background-color: #81ACFC;
-                    padding: 10px 15px;
-                    color: white;
-                    text-decoration: none;
-                    border-radius: 5px;
-                    display: inline-block;
-                    margin: 2rem;
-                    font-size: 20px;
-                }
-                .navBar a:hover {
-                    background-color: #1a3a6b;
-                    padding: 10px 15px;
-                    text-decoration: none;
-                    display: inline-block;
-                    margin: 2rem;
-                }
-                #bookingList {
-                    grid-template-columns: 1fr 1fr 1fr;
-                    display: grid;
-                    gap: 1.5vw;
-                    margin: 2rem;
-                    align-items: center;
-                }
-                .card {
-                    background-color:white;
-                    border: 1px solid black;
-                    padding: 15px 30px;
-                    color: black;
-                    border-radius: 5px;
-                }
-                .header-line {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                }
-                .line {
-                    display: flex;
-                    gap: 2vw;
-                    align-items: center;
-                }
-                .card svg {
-                    height: 30px;
-                    width: 30px;
-                    fill: #0A2342; 
-                }
-                #create, #url {
-                    display: none;
-                }
-                @media (max-width: 1050px) {
-                    #bookingList {
-                        grid-template-columns: 1fr 1fr;
-                    }
-                }
-                @media (max-width: 768px) {
-                    #bookingList {
-                        grid-template-columns: 1fr;
-                    }
-                }
-            `}
-            </style>
             <div className="navBar" id="navBar">
                 <div>
                     <img src="mcbooking.png" alt="mcbooking logo"></img>
