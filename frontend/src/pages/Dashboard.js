@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import './Dashboard.css';
+import '../Dashboard.css';
 
 //author: Marie Lefevre
 
@@ -77,8 +77,7 @@ function Dashboard() {
                 Authorization: `Bearer ${localStorage.getItem("token")}`
             }
         });
-            await loadRequests();
-            await loadBookings();
+        await Promise.all([loadRequests(), loadBookings()]);
     }
 
     async function handleDecline(id) {
@@ -112,7 +111,7 @@ function Dashboard() {
                     <a href="/" id="request" > Request a meeting </a>
                     <a href="/" id="exit"> Log Out </a>
                     
-                    //check if user is owner; display owner features if yes. 
+                    {/*check if user is owner; display owner features if yes. */}
                     {user?.role === "owner" && (
                         <>
                             <a href="/" id="create"> Create New </a> 
@@ -189,4 +188,3 @@ function Dashboard() {
     
 }
 export default Dashboard;
-
