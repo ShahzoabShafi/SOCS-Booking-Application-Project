@@ -3,15 +3,18 @@ const cors = require('cors');
 require('dotenv').config();
 
 const authRoutes = require('./routes/authRoutes');
+const bookings = require('./routes/bookings');
 
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({extended:true})); // extended:true should allow more complex data like arrays to pass thru.
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/bookings', bookings);
 
 // Base route to test server is running
 app.get('/', (req, res) => {
