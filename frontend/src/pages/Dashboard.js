@@ -8,7 +8,7 @@ function Dashboard() {
     const [bookings, setBookings] = useState([]);
     const [requests, setRequests] = useState([]);
     const [user, setUser] = useState(null);
-    
+    const navigate = useNavigate();
 
     async function loadUser() {
         try {
@@ -101,7 +101,6 @@ function Dashboard() {
             method: 'DELETE'
         });
     }
-    const navigate = useNavigate();
 
     return (
 
@@ -111,14 +110,14 @@ function Dashboard() {
                     <img src="mcbooking.png" alt="mcbooking logo"></img>
                 </div>
                 <div className="menu">
-                    <button id="booking" onClick={() => navigate('/login')} > Book New </button>
-                    <button id="request" onClick={() => navigate('/RequestNew')} > Request a meeting </button>
-                    <button id="exit" onClick={() => navigate('/App')}> Log Out </button>
+                    <a href="/login" id="booking" > Book New </a>
+                    <a href="/request" id="request" > Request a meeting </a>
+                    <button id="exit" onClick={() => navigate('/')}> Log Out </button>
                     
                     {/*check if user is owner; display owner features if yes. */}
                     {user?.role === "owner" && (
                         <>
-                            <button id="create" onClick={() => navigate('/CreateNew')}> Create New </button> 
+                            <a href="/create" id="create" > Create New </a> 
                             <button id="url"> Generate URL </button>
                         </>
                     )}
