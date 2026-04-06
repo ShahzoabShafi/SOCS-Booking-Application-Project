@@ -1,24 +1,53 @@
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import Footer from './component/Footer';
+import Dashboard from './pages/Dashboard';
+import BookNew from './pages/CreateNew';
+
+
+// Front end: Miguel Angel Vargas Valencia
+
+function Landing() {
+  const navigate = useNavigate();
+
+  return (
+    <>
+      <nav>
+        <img src="/mcbooking.png" alt="McBooking Logo" style={{height: "100px"}} />
+        <div>
+          <button style={{"marginRight": "10px"}} onClick={() => navigate('/dashboard')}>Dashboard Perso(temporary button)</button>
+          <button style={{"marginRight": "10px"}} onClick={() => navigate('/dashboard')}>Dashboard Admin(temporary button)</button>
+          <button onClick={() => navigate('/login')}>Sign in</button>
+        </div>
+      </nav>
+
+      <main>
+        <section className="hero">
+          <p className="pill">McGill University Booking System</p>
+          <h1>Booking meetings effortlessly</h1>
+          <p className="sub">A simple way for McGill professors and students to manage their scheduling</p>
+          <button className="cta" onClick={() => navigate('/signup')}>Get Started</button>
+        </section>
+      </main>
+
+    </>
+  );
+}
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/book-new" element={<BookNew />} />
+      </Routes>
+      <Footer />
+    </BrowserRouter>
   );
 }
 
