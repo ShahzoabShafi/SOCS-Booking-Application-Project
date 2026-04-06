@@ -14,3 +14,7 @@ Thumbs.db
 # Build output
 /dist
 /build
+
+# database privacy
+database/*
+backend/.env
