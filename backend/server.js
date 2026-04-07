@@ -3,7 +3,8 @@ const cors = require('cors');
 require('dotenv').config();
 
 const authRoutes = require('./routes/authRoutes');
-const bookings = require('./routes/bookings');
+const bookings = require('./routes/bookingRequestRoutes');
+const slots = require('./routes/slotRoutes');
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(express.urlencoded({extended:true})); // extended:true should allow more
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/bookings', bookings);
+app.use('/api/slots', slots);
 
 // Base route to test server is running
 app.get('/', (req, res) => {
