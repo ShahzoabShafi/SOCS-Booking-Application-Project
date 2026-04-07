@@ -4,16 +4,21 @@ require('dotenv').config();
 
 const authRoutes = require('./routes/authRoutes');
 const dashboardRoutes = require('./routes/dashboard');
+const bookings = require('./routes/bookingRequestRoutes');
+const slots = require('./routes/slotRoutes');
 
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({extended:true})); // extended:true should allow more complex data like arrays to pass thru.
 
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/bookings', bookings);
+app.use('/api/slots', slots);
 
 // Base route to test server is running
 app.get('/', (req, res) => {
