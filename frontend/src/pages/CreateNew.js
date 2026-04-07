@@ -15,9 +15,9 @@ function CreateNew() {
                 </div>
             </div>
             <div class="form-container">
-                <form name="Create" action="A3.php" method="post" autocomplete="on">
+                <form name="Create">
                     <h1> Create New </h1>
-                    Mode: <input type="radio" name="mode" value="u">Recurring</input>
+                    Mode: <input type="radio" name="mode" value="rec">Recurring</input>
                     <input type="radio" name="mode" value="once">One-time</input><br />
 
                     <input type="text" name="topic" placeholder="*Topic" required/> <br />
