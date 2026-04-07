@@ -107,14 +107,14 @@ function Dashboard() {
                     <img src="mcbooking.png" alt="mcbooking logo"></img>
                 </div>
                 <div className="menu">
-                    <a href="/" id="booking" > Book New </a>
-                    <a href="/" id="request" > Request a meeting </a>
-                    <a href="/" id="exit"> Log Out </a>
+                <a href="/login" id="booking" > Book New </a>
+                    <a href="/request" id="request" > Request a meeting </a>
+                    <button id="exit" onClick={() => navigate('/')}> Log Out </button>
                     
                     {/*check if user is owner; display owner features if yes. */}
                     {user?.role === "owner" && (
                         <>
-                            <a href="/" id="create"> Create New </a> 
+                            <a href="/create" id="create"> Create New </a> 
                             <a href="/" id="url"> Generate URL </a>
                         </>
                     )}

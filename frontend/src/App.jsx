@@ -18,8 +18,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/create-new" element={<CreateNew />} />
-        <Route path="/request-new" element={<RequestNew />} />
+        <Route path="/create" element={<CreateNew />} />
+        <Route path="/request" element={<RequestNew />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
     </BrowserRouter>

@@ -22,13 +22,10 @@ function CreateNew() {
 
                     <input type="text" name="topic" placeholder="*Topic" required/> <br />
                     <label for="Date">Start Date: </label>
-                    <input type="date" name="date" id="Date" required/> <br />
+                    <input type="datetime" name="date" id="start_time" required/> <br />
                     <label for="date2">End Date: </label>
-                    <input type="date" name="date" id="date2" required/> <br />
-                    <label for="start">Start Time: </label>
-                    <input type="time" name="startTime" id="start" required/> <br />
-                    <label for="end">End Time: </label>
-                    <input type="time" name="endTime" id="end" required/> <br />
+                    <input type="datetime" name="date" id="end_time" required/> <br />
+                
 
                     <input type="submit" value="Submit"/>
                 </form>
