@@ -80,13 +80,24 @@ function Login() {
           padding-top: 2rem;
           gap: 2rem;
         }
-          nav{
+        nav{
           display: flex;
           justify-content: space-between;
           align-items: center;
           width: 100%;
           max-width: 400px;
-          }
+        }
+        nav button {
+            padding: 9px 22px;
+            cursor: pointer;
+            background-color: transparent;
+            border-radius: 10px;
+            border: 1px solid #d1d5db;
+            color: #333;
+        }
+        nav button:hover {
+            background-color: #f3f4f6;
+        }
         .login-form {
           background: white;
           padding: 2rem;

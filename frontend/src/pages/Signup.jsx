@@ -19,18 +19,27 @@ function Signup() {
 
   const handleSignup = async (e) => {
     e.preventDefault();
+    setError('');
+
+    // Validate for a McGill Email on the frontend for better UX
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@(mcgill\.ca|mail\.mcgill\.ca)$/;
+    if (!emailRegex.test(email)) {
+      setError('A valid McGill email address (@mcgill.ca or @mail.mcgill.ca) is required.');
+      return;
+    }
+
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
     }
-    setError('');
+
     try {
       const response = await fetch('http://localhost:5000/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name: fullName, email, password }),
+        body: JSON.stringify({ name: fullName, email, password }), 
       });
       const data = await response.json();
       if (!response.ok) {
@@ -100,6 +109,17 @@ function Signup() {
           align-items: center;
           width: 100%;
           max-width: 400px;
+        }
+        nav button {
+            padding: 9px 22px;
+            cursor: pointer;
+            background-color: transparent;
+            border-radius: 10px;
+            border: 1px solid #d1d5db;
+            color: #333;
+        }
+        nav button:hover {
+            background-color: #f3f4f6;
         }
         .login-form {
             background: white;
