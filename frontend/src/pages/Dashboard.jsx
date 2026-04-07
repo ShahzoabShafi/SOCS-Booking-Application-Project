@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import '../Dashboard.css';
-import { useNavigate } from 'react-router-dom';
 
 //author: Marie Lefevre
 
@@ -8,7 +7,6 @@ function Dashboard() {
     const [bookings, setBookings] = useState([]);
     const [requests, setRequests] = useState([]);
     const [user, setUser] = useState(null);
-    const navigate = useNavigate();
 
     async function loadUser() {
         try {
@@ -103,22 +101,21 @@ function Dashboard() {
     }
 
     return (
-
         <main>
             <div className="navBar" id="navBar">
                 <div>
                     <img src="mcbooking.png" alt="mcbooking logo"></img>
                 </div>
                 <div className="menu">
-                    <a href="/login" id="booking" > Book New </a>
-                    <a href="/request" id="request" > Request a meeting </a>
-                    <button id="exit" onClick={() => navigate('/')}> Log Out </button>
+                    <a href="/" id="booking" > Book New </a>
+                    <a href="/" id="request" > Request a meeting </a>
+                    <a href="/" id="exit"> Log Out </a>
                     
                     {/*check if user is owner; display owner features if yes. */}
                     {user?.role === "owner" && (
                         <>
-                            <a href="/create" id="create" > Create New </a> 
-                            <button id="url"> Generate URL </button>
+                            <a href="/" id="create"> Create New </a> 
+                            <a href="/" id="url"> Generate URL </a>
                         </>
                     )}
                 </div>
