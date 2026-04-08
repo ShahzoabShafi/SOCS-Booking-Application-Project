@@ -25,7 +25,7 @@ const getDashboardData = async (req, res) => {
     };
 
     // Get user info
-    const user = await dbGet('SELECT id, name, email, role FROM users WHERE id = ?', [req.user.id]);
+    const user = await dbGet('SELECT user_id, name, email, role FROM users WHERE user_id = ?', [req.user.id]);
 
     if (!user) {
       return res.status(404).json({ msg: 'User not found' });
