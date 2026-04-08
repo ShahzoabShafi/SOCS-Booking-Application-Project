@@ -2,6 +2,24 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 
+// connect to db
+const path = require('path');
+const sqlite3 = require('sqlite3').verbose();
+const dbPath = path.resolve(__dirname, '..', 'database', 'socs_booking.db');
+// test connection AAAAAAAAAAAAH
+const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, (err) =>{
+        if (err) {
+                console.error('Failed to connectto db');
+                console.error('Error details: ', err.message);
+        } else {
+                console.log('Connected successfully!');
+        }
+});
+
+
+
+
+// routes
 const authRoutes = require('./routes/authRoutes');
 const dashboardRoutes = require('./routes/dashboard');
 const bookings = require('./routes/bookingRequestRoutes');

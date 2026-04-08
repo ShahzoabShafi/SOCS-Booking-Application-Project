@@ -36,8 +36,6 @@ const get_requests = async (req, res) =>{
     return res.status(200).json({ pending_requests: meeting_requests});
 };
 
-module.exports = {get_requests};
-
 
 
 
@@ -73,4 +71,4 @@ const update_request = async (req, res) =>{
     return res.status(200).json({ message: "Request updated successfully." });
 };
 
-module.exports = {update_request};
+module.exports = {get_requests, update_request};

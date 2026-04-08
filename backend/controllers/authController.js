@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const pool = require('../config/db');
+const db = require('../config/db');
 
 const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -15,7 +15,7 @@ const register = async (req, res) => {
 
   try {
     // Check if user already exists
-    const [existingUsers] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
+    const existingUsers = await db.all('SELECT * FROM users WHERE email = ?', [email]);
     if (existingUsers.length > 0) {
       return res.status(400).json({ message: 'User with this email already exists' });
     }
@@ -25,7 +25,7 @@ const register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // Insert the new user into the database
-    await pool.query('INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)', [name, email, hashedPassword, role]);
+    await db.run('INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)', [name, email, hashedPassword, role]);
 
     res.status(201).json({ message: 'User registered successfully' });
   } catch (error) {
@@ -34,12 +34,24 @@ const register = async (req, res) => {
   }
 };
 
+
+
 const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Find user by email
-    const [users] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
+    // 1. Wrap the callback-based sqlite3 query in a Promise
+    const users = await new Promise((resolve, reject) => {
+      db.all('SELECT * FROM users WHERE email = ?', [email], (err, rows) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(rows);
+        }
+      });
+    });
+
+    // Now 'users' is guaranteed to be an actual array of rows
     if (users.length === 0) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
@@ -69,7 +81,7 @@ const login = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error(error);
+    console.error('Login error:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };
