@@ -1,37 +1,60 @@
-const pool = require('../config/db');
+const db = require('../config/db');
 
 // @desc    Get dashboard data
 // @route   GET /api/dashboard
 // @access  Private
 const getDashboardData = async (req, res) => {
   try {
-    const client = await pool.connect();
+    // Promisify db.get and db.all
+    const dbGet = (query, params) => {
+      return new Promise((resolve, reject) => {
+        db.get(query, params, (err, row) => {
+          if (err) reject(err);
+          resolve(row);
+        });
+      });
+    };
+
+    const dbAll = (query, params) => {
+      return new Promise((resolve, reject) => {
+        db.all(query, params, (err, rows) => {
+          if (err) reject(err);
+          resolve(rows);
+        });
+      });
+    };
 
     // Get user info
-    const userResult = await client.all('SELECT id, name, email, role FROM users WHERE id = $1', [req.user.id]);
-    const user = userResult.rows[0];
+    const user = await dbGet('SELECT id, name, email, role FROM users WHERE id = ?', [req.user.id]);
+
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
 
     // Get user bookings
-    const bookingsResult = await client.all('SELECT * FROM bookings WHERE user_id = $1', [req.user.id]);
-    const bookings = bookingsResult.rows;
+    const bookings = await dbAll('SELECT * FROM bookings WHERE user_id = ?', [req.user.id]);
 
     // Get user owned slots if the user is an owner
     let ownedSlots = [];
     if (user.role === 'owner') {
-      const ownedSlotsResult = await client.all('SELECT * FROM slots WHERE owner_id = $1', [req.user.id]);
-      ownedSlots = ownedSlotsResult.rows;
+      ownedSlots = await dbAll('SELECT * FROM slots WHERE owner_id = ?', [req.user.id]);
     }
 
-    client.release();
+    // Get user managed slots if the user is a manager
+    let managedSlots = [];
+    if (user.role === 'manager') {
+      managedSlots = await dbAll('SELECT * FROM slots WHERE manager_id = ?', [req.user.id]);
+    }
 
     res.json({
       user,
       bookings,
       ownedSlots,
+      managedSlots,
     });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server error' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
   }
 };
 
