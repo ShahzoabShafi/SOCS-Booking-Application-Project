@@ -3,7 +3,7 @@ const db = require('../config/db');
 
 
 
-
+// link for this function will be (get) /api/bookings/requests
 // first function allows owner-type-users to view all booking requests aimed at them.
 const get_requests = async (req, res) =>{
 
@@ -38,7 +38,7 @@ const get_requests = async (req, res) =>{
 
 
 
-
+// link for this function will be (put) /api/bookings/requests/:id
 // second function allows owner-type-user to handle a request (ie accept or decline).
 const update_request = async (req, res) =>{
 

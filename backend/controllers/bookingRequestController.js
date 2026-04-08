@@ -1,3 +1,5 @@
+// the path to this api will be (post) /api/bookings/request
+
 // 1. connect to db and recieve request
 const db = require('../config/db');
 

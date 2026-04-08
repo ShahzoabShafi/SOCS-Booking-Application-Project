@@ -4,6 +4,7 @@ const db = require('../config/db');
 
 
 // first function allows owner to create a new slot.
+// link for this is (put) /api/slots/create
 const create_slot = async (req, res) =>{
 
     // 1. input data
@@ -50,6 +51,7 @@ const create_slot = async (req, res) =>{
 
 
 // second function aims to activate a slot to make it public
+// link for this is (put) /api/slots/:id/activate
 const activate_slot = async (req, res) =>{
 
     // 1. Get data
@@ -83,6 +85,7 @@ const activate_slot = async (req, res) =>{
 
 
 // third function deletes a slot.
+// link for this is (delete) /api/slots/:id/delete
 const delete_slot = async (req, res) =>{
 
     // 1. Get data
@@ -112,6 +115,7 @@ const delete_slot = async (req, res) =>{
 
 
 // fourth function will get all active public slots, eg for users to browse
+// link for this is (get) /api/slots
 const active_slots = async (req, res) =>{
 
     // there is no data to get from user or validate
