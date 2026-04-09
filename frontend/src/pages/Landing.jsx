@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 
 // Front end: Miguel Angel Vargas Valencia
 
+//Here I have the landing page for the app
+// The styles tagg contains all 
+
 function Landing() {
   const navigate = useNavigate();
 
