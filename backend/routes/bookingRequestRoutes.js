@@ -3,11 +3,11 @@ const express = require("express");
 const router = express.Router();
 const {request_booking} = require('../controllers/bookingRequestController');
 const {get_requests, update_request} = require('../controllers/ownerRequestControlCenter');
-const { protect } = require("../middleware/authMiddleware");
+const { protect } = require("../middleware/authMiddleware"); // JWT business.
 
 // forward the request to the correct controller function
-router.post("/request", request_booking);
-router.get("/requests", get_requests);
+router.post("/request", protect, request_booking);
+router.get("/requests", protect, get_requests);
 router.put("/requests/:id", update_request);
 
 // export the router so that server.js can access it thru app.use('/api/bookings', bookings); 
