@@ -1,9 +1,12 @@
+
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import '../Dashboard.css';
 
 //author: Marie Lefevre
 
 function Dashboard() {
+    const navigate = useNavigate();
     const [bookings, setBookings] = useState([]);
     const [requests, setRequests] = useState([]);
     const [user, setUser] = useState(null);
@@ -23,18 +26,13 @@ function Dashboard() {
             console.error("Error loading user:", err);
         }
     }
-    
     useEffect(() => {
         loadUser();
     }, []);
 
     async function loadBookings() {
         try {
-            const response = await fetch('/api/bookings', {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`
-                }
-            });
+            const response = await fetch('/bookings.json');
     
             const data = await response.json();
             setBookings(data);
@@ -104,17 +102,17 @@ function Dashboard() {
         <main>
             <div className="navBar" id="navBar">
                 <div>
-                    <img src="mcbooking.png" alt="mcbooking logo"></img>
+                    <img src="/mcbooking.png" alt="mcbooking logo"></img>
                 </div>
                 <div className="menu">
-                <a href="/login" id="booking" > Book New </a>
-                    <a href="/request" id="request" > Request a meeting </a>
+                    <a href="/create-new" id="booking" > Book New </a>
+                    <a href="/request-new" id="request" > Request a meeting </a>
                     <button id="exit" onClick={() => navigate('/')}> Log Out </button>
                     
                     {/*check if user is owner; display owner features if yes. */}
                     {user?.role === "owner" && (
                         <>
-                            <a href="/create" id="create"> Create New </a> 
+                            <a href="/create-new" id="create"> Create New </a> 
                             <a href="/" id="url"> Generate URL </a>
                         </>
                     )}
@@ -179,10 +177,11 @@ function Dashboard() {
                             </svg>
                             <p>Time: {booking.startTime} - {booking.endTime} </p>
                         </div>
-                        <p>Attendee(s): {booking.name}</p>
+                        <p>Attendee(s): {booking.booker}</p>
                     </div>
                 ))}
             </div>
+            <button id="bookNew" onClick={() => navigate('/create-new')}> Book New </button>
         </main>
     )
     

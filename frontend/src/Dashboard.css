@@ -22,7 +22,7 @@ h1 {
     text-align: center;
     margin: 2rem;
 }
-.navBar a {
+.navBar a, .navBar button {
     background-color: #81ACFC;
     padding: 10px 15px;
     color: white;
@@ -31,8 +31,9 @@ h1 {
     display: inline-block;
     margin: 2rem;
     font-size: 20px;
+    border: none;
 }
-.navBar a :hover {
+.navBar a :hover, .navBar button:hover {
     background-color: #1a3a6b;
     padding: 10px 15px;
     text-decoration: none;

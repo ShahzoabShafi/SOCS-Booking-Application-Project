@@ -4,12 +4,13 @@ import { useNavigate } from 'react-router-dom';
 // Front end: Miguel Angel Vargas Valencia
 //This is the login page.
 function Login() {
+    // Hook for programmatic navigation
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-
+    // Function to navigate to the previous page in the browser history
   const goBack = () => {
     navigate(-1);
   };
