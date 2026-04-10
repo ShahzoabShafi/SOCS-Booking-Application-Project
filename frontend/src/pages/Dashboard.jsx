@@ -126,7 +126,7 @@ return (
         </div>
         {user?.role === "owner" && (
         <>
-        <div id="requests">
+        <div id="requestList">
             <h1> Requested Appointments </h1>
             {requests.map((req, index) => (
             <div className="card" key={index}>
