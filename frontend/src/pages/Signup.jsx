@@ -101,6 +101,7 @@ function Signup() {
           Already have an account? <a href="/login">Sign in</a>
         </p>
       </form>
+        {/* Style for the above page*/}
       <style>{`
         main {
             display: flex;

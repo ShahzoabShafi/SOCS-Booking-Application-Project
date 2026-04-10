@@ -3,14 +3,15 @@ import { useNavigate } from 'react-router-dom';
 
 // Front end: Miguel Angel Vargas Valencia
 
-//Here I have the landing page for the app
-// The styles tagg contains all 
+//Here we have the main landing page for the application
+// It includes the styles compoent
 
 function Landing() {
   const navigate = useNavigate();
 
   return (
     <>
+          {/* Landing-specific styles */}
       <style>
         {`
           nav {
@@ -86,20 +87,24 @@ function Landing() {
           }
         `}
       </style>
+            {/* Navigation bar */}
       <nav>
         <img src="/mcbooking.png" alt="McBooking Logo" style={{height: "100px"}} />
         <div>
           <button style={{"marginRight": "10px"}} onClick={() => navigate('/dashboard')}>Dashboard Perso(temporary button)</button>
           <button style={{"marginRight": "10px"}} onClick={() => navigate('/owner-dashboard')}>Dashboard Admin(temporary button)</button>
+          {/* Sign-in button */}
           <button className="nav-signin-btn" onClick={() => navigate('/login')}>Sign in</button>
         </div>
       </nav>
-
+        {/* Main content area */}
       <main>
+                {/* Hero section with the main heading and call to action */}
         <section className="hero">
           <p className="pill">McGill University Booking System</p>
           <h1>Booking meetings effortlessly</h1>
           <p className="sub">A simple way for McGill professors and students to manage their scheduling</p>
+                  {/* Call-to-action button to navigate to the signup page */}
           <button className="cta" onClick={() => navigate('/signup')}>Get Started</button>
         </section>
       </main>
@@ -107,5 +112,5 @@ function Landing() {
     </>
   );
 }
-
+// Export the Landing component for use in other parts of the app
 export default Landing;
