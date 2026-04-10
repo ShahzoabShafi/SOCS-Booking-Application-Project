@@ -111,7 +111,7 @@ return (
                 <img src="mcbooking.png" alt="mcbooking logo"></img>
             </div>
             <div className="menu">
-                <a href="/login" id="booking" > Book New </a>
+                <a href="/browse-owners" id="booking" > Book New </a>
                 <a href="/request" id="request" > Request a meeting </a>
                 <button id="exit" onClick={() => navigate('/')}> Log Out </button>
 
