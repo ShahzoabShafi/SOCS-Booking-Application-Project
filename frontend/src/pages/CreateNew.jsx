@@ -1,43 +1,97 @@
-import React from "react";
-import '../Dashboard.css'; // Corrected CSS import
-//Marie Lefevre
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import '../Forms.css';
+import '../Dashboard.css';
 
-//Miguel: made some modifs
+//Marie Lefevre, Miguel Angel Vargas Valencia
 
 function CreateNew() {
+    const [owner, setOwner] = useState('');
+    const [title, setTitle] = useState('');
+    const [start_time, setStart] = useState('');
+    const [end_time, setEnd] = useState('');
+    const [message, setMessage] = useState('');
+
+    const navigate = useNavigate();
+
+    const handleRequest = async (e) => {
+        e.preventDefault();
+        try {
+            const body = {
+                owner_id: owner,
+                title: title,
+                start_time: start_time,
+                end_time: end_time,
+                message: message
+            };
+
+            const response = await fetch('http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/bookings/request', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`
+                },
+                body: JSON.stringify(body),
+            });
+
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to create meeting request');
+            }
+            window.alert("Meeting request sent.");
+            navigate('/dashboard');
+        } catch (err) {
+            console.error("Error requesting a meeting:", err);
+            window.alert(`Error: ${err.message}`);
+        }
+    };
+
     return (
         <main>
-            <div className="navBar"> {/* Corrected className */}
+            <div className="navBar">
                 <div>
-                    <img src="/mcbooking.png" alt="McBooking Logo" /> {/* Corrected image path */}
+                    <img src="/mcbooking.png" alt=""></img>
                 </div>
                 <div className="menu">
-                    <button id="back"> Back </button>
-                    <button id="exit"> Log Out </button>
+                    <a href="/dashboard" id="back"> Back </a>
+                    <a href="/" id="exit"> Log Out </a>
                 </div>
             </div>
             <div className="form-container">
-                <form name="Create">
-                    <h1> Create New </h1>
-                    <label>Mode:</label>
-                    <label>
-                        <input type="radio" name="mode" value="recurring" /> Recurring
-                    </label>
-                    <label>
-                        <input type="radio" name="mode" value="one-time" /> One-time
-                    </label>
-                    <br />
+                <form name="Request" onSubmit={handleRequest}>
+                    <h1> Request a Meeting </h1>
+                    <input type="email" name="owner" placeholder="With: enter their mcgill.ca email address" 
+                           value={owner}
+                           onChange={(e) => setOwner(e.target.value)}
+                           required /> <br />
 
-                    <input type="text" name="topic" placeholder="*Topic" required /> <br />
-                    <label htmlFor="start_time">Start Date: </label>
-                    <input type="datetime-local" name="start_date" id="start_time" required /> <br />
-                    <label htmlFor="end_time">End Date: </label>
-                    <input type="datetime-local" name="end_date" id="end_time" required /> <br />
+                    <input type="text" name="title" placeholder="*Topic" 
+                           value={title}
+                           onChange={(e) => setTitle(e.target.value)}
+                           required /> <br />
+
+                    <label htmlFor="Date">Start Date: </label>
+                    <input type="datetime-local" name="start_time" id="Date" 
+                           value={start_time}
+                           onChange={(e) => setStart(e.target.value)}
+                           required /> <br />
+                    
+                    <label htmlFor="date2">End Date: </label>
+                    <input type="datetime-local" name="end_time" id="date2" 
+                           value={end_time}
+                           onChange={(e) => setEnd(e.target.value)}
+                           required /> <br />
+                    
+                    <textarea name="message" placeholder="Message" rows="4" cols="40" 
+                              value={message}
+                              onChange={(e) => setMessage(e.target.value)}
+                              required /> <br />
                 
                     <input type="submit" value="Submit" />
                 </form>
             </div>
         </main>
-    )
+    );
 }
+
 export default CreateNew;
