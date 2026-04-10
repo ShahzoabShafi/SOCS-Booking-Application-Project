@@ -4,7 +4,6 @@ import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
-import OwnerDashboard from './pages/OwnerDashboard';
 import CreateNew from './pages/CreateNew';
 import RequestNew from './pages/RequestNew';
 import ErrorPage from './pages/ErrorPage';
@@ -26,7 +25,6 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/owner-dashboard" element={<OwnerDashboard />} />
             <Route path="/create" element={<CreateNew />} />
             <Route path="/request" element={<RequestNew />} />
             <Route path="/browse-owners" element={<BrowseOwners />} />
