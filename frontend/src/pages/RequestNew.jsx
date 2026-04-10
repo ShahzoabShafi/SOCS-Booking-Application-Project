@@ -17,12 +17,12 @@ function RequestNew() {
     const handleRequest = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:5000/api/', {
+            const response = await fetch('http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/bookings/request', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ owner, title, start_time, end_time, message }),
+                body: JSON.stringify({ owner_id, start_time, end_time, title, message }),
             });
             const data = await response.json();
             if (!response.ok) {
