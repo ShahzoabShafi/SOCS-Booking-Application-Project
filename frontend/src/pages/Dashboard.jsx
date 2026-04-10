@@ -51,7 +51,7 @@ loadBookings();
 
 async function loadRequests() {
     try {
-    const response = await fetch('/api/requests', {
+    const response = await fetch('/api/bookings/requests', {
     headers: {
     Authorization: `Bearer ${localStorage.getItem("token")}`
 }
@@ -100,7 +100,7 @@ function handleDelete(id) {
     method: 'DELETE'
     });
 }
-
+    const navigate = useNavigate();
 return (
     <main>
         <div className="navBar" id="navBar">
