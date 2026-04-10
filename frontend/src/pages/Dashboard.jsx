@@ -12,6 +12,7 @@ const [user, setUser] = useState(null);
 async function loadUser() {
     try {
         const response = await fetch('/api/me', {
+            method: 'GET',
         headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`
     }
@@ -32,9 +33,10 @@ loadUser();
 async function loadBookings() {
 try {
 const response = await fetch('/api/bookings', {
-headers: {
-Authorization: `Bearer ${localStorage.getItem("token")}`
-}
+    method: 'GET',
+    headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
 });
 
 const data = await response.json();
@@ -51,10 +53,11 @@ loadBookings();
 
 async function loadRequests() {
     try {
-    const response = await fetch('/api/bookings/requests', {
-    headers: {
-    Authorization: `Bearer ${localStorage.getItem("token")}`
-}
+        const response = await fetch('http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/bookings/requests', {
+            method: 'GET',
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
 });
     const requestData = await response.json();
     setRequests(requestData);

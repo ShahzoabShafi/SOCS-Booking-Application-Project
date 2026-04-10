@@ -27,8 +27,8 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/owner-dashboard" element={<OwnerDashboard />} />
-            <Route path="/create-new" element={<CreateNew />} />
-            <Route path="/request-new" element={<RequestNew />} />
+            <Route path="/create" element={<CreateNew />} />
+            <Route path="/request" element={<RequestNew />} />
             <Route path="/browse-owners" element={<BrowseOwners />} />
             <Route path="/booking/:ownerId" element={<BookingPage />} />
             <Route path="*" element={<ErrorPage />} />
