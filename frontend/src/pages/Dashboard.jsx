@@ -82,8 +82,12 @@ function Dashboard() {
                 },
                 body: JSON.stringify({id, status}),
             });
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to update request');
+            }
         } catch(err) {
-            console.error("Error loading accepting request", err);
+            console.error("Error updating request", err);
         }
         
         await Promise.all([loadRequests(), loadBookings()]);
