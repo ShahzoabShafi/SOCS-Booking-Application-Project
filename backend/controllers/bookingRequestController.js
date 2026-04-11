@@ -8,7 +8,7 @@ const request_booking = async (req, res) =>{
 
     // 2. collect data
     const user_id = req.user.id; // uses JWT to get user_id
-    const owner_id = req.body.owner_id;
+    const owner_email = req.body.owner_email; // to replace previous erroneous owner_id that users can't provide.
     const start_time = req.body.start_time;
     const end_time = req.body.end_time;
     const title = req.body.title;
@@ -17,7 +17,7 @@ const request_booking = async (req, res) =>{
     // 3. input validation
     
     // !... in js checks for falsy, ie either false, 0, underfined, null, etc.
-    if (!owner_id || !start_time || !end_time || !title || !message){
+    if (!owner_email || !start_time || !end_time || !title || !message){
         // return bad request error
         return res.status(400).json({ message: "Required field(s) missing."});
     }
@@ -31,8 +31,8 @@ const request_booking = async (req, res) =>{
     
     // validate owner
     const owner = await db.get(
-        "SELECT user_id, role FROM users where id = ?",
-        [owner_id]);
+        "SELECT email, role, user_id FROM users where email = ?",
+        [owner_email]);
     
     if (!owner) {
         return res.status(404).json({ message: "Provided user to meet with was not found."});
@@ -48,7 +48,7 @@ const request_booking = async (req, res) =>{
         `INSERT INTO meeting_requests 
         (user_id, owner_id, start_time, end_time, title, message, request_status, created_at)
         VALUES (?, ?, ?, ?, ?, ?, 'pending', CURRENT_TIMESTAMP)`,
-        [user_id, owner_id, start_time, end_time, title, message]);
+        [user_id, owner.user_id, start_time, end_time, title, message]);
 
     
     // 5. communicate success of insert
