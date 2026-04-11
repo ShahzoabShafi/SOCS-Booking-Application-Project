@@ -33,7 +33,7 @@ function Dashboard() {
 
     async function loadBookings() {
         try {
-        const response = await fetch('http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/bookings', {
+        const response = await fetch('http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/confirmedBookings', {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`

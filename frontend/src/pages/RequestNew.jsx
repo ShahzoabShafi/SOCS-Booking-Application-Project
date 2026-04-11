@@ -22,7 +22,7 @@ function RequestNew() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ owner_id, start_time, end_time, title, message }),
+                body: JSON.stringify({ owner, start_time, end_time, title, message }),
             });
             const data = await response.json();
             if (!response.ok) {
