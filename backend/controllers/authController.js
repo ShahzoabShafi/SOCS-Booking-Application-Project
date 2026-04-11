@@ -1,8 +1,12 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const db = rep.app.locals.db; 
+const dbPromise = require('../config/db');
 
 const register = async (req, res) => {
+  
+  // new db config requires this approach
+  const db = await dbPromise;
+
   const { name, email, password } = req.body;
 
   // Validate email domain
@@ -37,19 +41,29 @@ const register = async (req, res) => {
 
 
 const login = async (req, res) => {
+
+  // new db config requires this approach
+  const db = await dbPromise;
+
+
   const { email, password } = req.body;
 
   try {
     // 1. Wrap the callback-based sqlite3 query in a Promise
-    const users = await new Promise((resolve, reject) => {
-      db.all('SELECT * FROM users WHERE email = ?', [email], (err, rows) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(rows);
-        }
-      });
-    });
+
+    // ryan's change: db is set up to not need this.
+    //const users = await new Promise((resolve, reject) => {
+    //  db.all('SELECT * FROM users WHERE email = ?', [email], (err, rows) => {
+    //    if (err) {
+    //      reject(err);
+    //    } else {
+    //      resolve(rows);
+    //    }
+    //  });
+    //});
+
+    // instead, we use
+    const users = await db.all('SELECT * FROM users WHERE email = ?', [email]);
 
     // Now 'users' is guaranteed to be an actual array of rows
     if (users.length === 0) {
@@ -66,7 +80,7 @@ const login = async (req, res) => {
 
     // Generate JWT
     const payload = {
-      id: user.id,
+      id: user.user_id, // ryan's change to user_id 
       role: user.role,
     };
 

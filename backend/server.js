@@ -21,9 +21,9 @@ require('dotenv').config();
 
 
 // connect to db
-const {connectdb} = require('./config/db');
-await connectDB();
-app.locals.db = db;
+// const {connectdb} = require('./config/db');
+// await connectDB();
+// app.locals.db = db;
 
 // routes
 const authRoutes = require('./routes/authRoutes');

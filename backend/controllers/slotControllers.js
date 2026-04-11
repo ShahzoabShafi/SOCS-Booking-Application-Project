@@ -1,10 +1,14 @@
 // Connect to db and recieve request, which is recieved and parsed (JSON or urlencoded) by server.js
-const db = rep.app.locals.db; 
-
+const dbPromise = require('../config/db');
 
 // first function allows owner to create a new slot.
 // link for this is (put) /api/slots/create
 const create_slot = async (req, res) => {
+
+    // new version of db setup makes this necessary
+    const db = await dbPromise;
+
+
 
     // 1. input data
     const user_id = req.user.id; // uses JWT
@@ -52,6 +56,11 @@ const create_slot = async (req, res) => {
 // second function aims to activate a slot to make it public
 // link for this is (put) /api/slots/:id/activate
 const activate_slot = async (req, res) => {
+     
+    // new version of db setup makes this necessary
+    const db = await dbPromise;
+
+
 
     // 1. Get data
     const slot_id = req.body.slot_id;
@@ -87,6 +96,11 @@ const activate_slot = async (req, res) => {
 // link for this is (delete) /api/slots/:id/delete
 const delete_slot = async (req, res) => {
 
+    // new version of db setup makes this necessary
+    const db = await dbPromise;
+
+
+
     // 1. Get data
     const slot_id = req.body.slot_id;
     const user_id = req.user.id;
@@ -116,6 +130,11 @@ const delete_slot = async (req, res) => {
 // fourth function will get all active public slots, eg for users to browse
 // link for this is (get) /api/slots
 const active_slots = async (req, res) => {
+    
+    // new version of db setup makes this necessary
+    const db = await dbPromise;
+
+
 
     // there is no data to get from user or validate
 
@@ -129,6 +148,11 @@ const active_slots = async (req, res) => {
 
 
 const createRecurringSlots = async (req, res) => {
+
+    // new version of db setup makes this necessary
+    const db = await dbPromise;
+
+
     const { title, dayOfWeek, startTime, endTime, startingDate, weeks } = req.body;
 
     if (!title || !dayOfWeek || !startTime || !endTime || !startingDate || !weeks) {

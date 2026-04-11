@@ -1,11 +1,13 @@
 // connect to db and recieve request
-const db = rep.app.locals.db; 
-
+const dbPromise = require('../config/db');
 
 
 // link for this function will be (get) /api/bookings/requests
 // first function allows owner-type-users to view all booking requests aimed at them.
 const get_requests = async (req, res) =>{
+
+    // new db config requires this approach
+    const db = await dbPromise;
 
     // 1. collect data
     // all we need is the user_id of the owner, which is given 
@@ -44,6 +46,11 @@ const get_requests = async (req, res) =>{
 // link for this function will be (put) /api/bookings/requests/:id
 // second function allows owner-type-user to handle a request (ie accept or decline).
 const update_request = async (req, res) =>{
+
+    // new db config requires this approach
+    const db = await dbPromise;
+
+
 
     // 1. collect data
     const request_id = req.body.request_id;

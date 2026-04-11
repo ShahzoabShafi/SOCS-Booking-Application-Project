@@ -1,10 +1,13 @@
 // the path to this api will be (post) /api/bookings/request
 
 // 1. connect to db and recieve request
-const db = rep.app.locals.db; 
+const dbPromise = require('../config/db');
 
 // server.js will parse the request body, which could be either JSON or URL-encoded.
 const request_booking = async (req, res) =>{ 
+
+    // new db config requires this approach
+    const db = await dbPromise;
 
     // 2. collect data
     const user_id = req.user.id; // uses JWT to get user_id

@@ -1,9 +1,16 @@
-const db = rep.app.locals.db; 
+const dbPromise = require('../config/db');
+
 
 // @desc    Get dashboard data
 // @route   GET /api/dashboard
 // @access  Private
 const getDashboardData = async (req, res) => {
+
+  // new version of db setup
+  const db = await dbPromise;
+
+
+
   try {
     // Promisify db.get and db.all
     const dbGet = (query, params) => {
