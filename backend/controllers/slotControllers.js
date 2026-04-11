@@ -1,6 +1,5 @@
 // Connect to db and recieve request, which is recieved and parsed (JSON or urlencoded) by server.js
-const db = require('../config/db');
-
+const db = rep.app.locals.db; 
 
 
 // first function allows owner to create a new slot.

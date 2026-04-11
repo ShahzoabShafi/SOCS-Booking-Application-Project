@@ -1,7 +1,7 @@
 // the path to this api will be (post) /api/bookings/request
 
 // 1. connect to db and recieve request
-const db = require('../config/db');
+const db = rep.app.locals.db; 
 
 // server.js will parse the request body, which could be either JSON or URL-encoded.
 const request_booking = async (req, res) =>{ 

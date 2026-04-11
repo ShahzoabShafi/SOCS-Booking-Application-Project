@@ -1,4 +1,4 @@
-const db = require('../config/db');
+const db = rep.app.locals.db; 
 
 // @desc    Get dashboard data
 // @route   GET /api/dashboard

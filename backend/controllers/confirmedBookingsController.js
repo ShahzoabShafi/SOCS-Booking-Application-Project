@@ -1,5 +1,5 @@
 // connect to db and recieve request
-const db = require('../config/db');
+const db = rep.app.locals.db; 
 
 // link for this function will be (get) /api/confirmedBookings
 // this function allows any user to view all booking requests aimed at them.

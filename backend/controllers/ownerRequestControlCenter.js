@@ -1,5 +1,5 @@
 // connect to db and recieve request
-const db = require('../config/db');
+const db = rep.app.locals.db; 
 
 
 
