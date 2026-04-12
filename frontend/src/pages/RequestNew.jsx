@@ -33,6 +33,7 @@ function RequestNew() {
             navigate('/dashboard');
         } catch (err) {
             console.error("Error requesting a meeting:", err);
+            window.alert(`Error requesting a meeting: ${err.message}`);
         }
     };
 
