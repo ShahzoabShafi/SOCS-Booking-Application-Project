@@ -29,7 +29,10 @@ function Dashboard() {
         setUser(null);
     }
 
-    loadUser();
+    useEffect(() => {
+        loadUser();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     async function loadBookings() {
         try {
@@ -40,7 +43,7 @@ function Dashboard() {
             }
         });
             const data = await response.json();
-            setBookings(data);
+            setBookings(Array.isArray(data) ? data : []);
         } catch (err) {
             console.error("Error loading bookings:", err);
         }
@@ -59,7 +62,7 @@ function Dashboard() {
         }
     });
         const requestData = await response.json();
-        setRequests(requestData);
+        setRequests(Array.isArray(requestData) ? requestData : []);
 
         } catch (err) {
             console.error("Error loading requested meetings:", err);
@@ -74,7 +77,7 @@ function Dashboard() {
 
     async function handleUpdate(id, status) {
         try {
-            const reponse= await fetch(`/api/bookings/requests/${id}`, {
+            const response = await fetch(`/api/bookings/requests/${id}`, {
                 method: "PUT",
                 headers: {
                 "Content-Type": "application/json",
@@ -190,4 +193,4 @@ function Dashboard() {
         </main>
     )
     }
-    export default Dashboard; 
+    export default Dashboard;
