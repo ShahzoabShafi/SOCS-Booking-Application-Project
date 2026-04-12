@@ -78,7 +78,43 @@ const update_request = async (req, res) =>{
         WHERE request_id = ?`,
         [status, request_id]);
 
-    return res.status(200).json({ message: "Request updated successfully." });
+    // 4. Add this confirmed bookings to the bookings table in the db
+    if (status == "accepted"){
+        
+        // before we create a booking we must create a slot - this hasn't been done yet
+        const insert_slot = await db.run( // note db.run returns object with the last id inserted.
+            `INSERT INTO slots
+            (user_id, slot_title, start_time, end_time, number_weeks_recurrence, status, slot_type, created_at)
+            VALUES (?, ?, ?, ?, 1, 'private', 'request_meeting', CURRENT_TIMESTAMP)`,
+            [owner_id, request.title, request.start_time, request.end_time]); // added as private since should not be visible to students.
+       
+        const slot_id = insert_slot.lastID;
+
+        // first insert it with the owner id
+        await db.run(
+            `INSERT INTO bookings (slot_id, user_id, created_at)
+            VALUES (?, ?, CURRENT_TIMESTAMP)`,
+            [slot_id, owner_id] 
+        );
+
+        // then insert it with the user id
+        await db.run(
+            `INSERT INTO bookings (slot_id, user_id, created_at)
+            VALUES (?, ?, CURRENT_TIMESTAMP)`,
+            [slot_id, request.user_id]
+        );
+    }
+
+
+    // 5. return to user
+    // note we need to return the user's email too
+    const user_email = await db.get(
+        `SELECT email FROM users WHERE user_id == ?`,
+        [request.user_id]
+    );
+    
+    return res.status(200).json({ email: user_email,
+        message: "Request updated successfully." });
 };
 
 module.exports = {get_requests, update_request};
