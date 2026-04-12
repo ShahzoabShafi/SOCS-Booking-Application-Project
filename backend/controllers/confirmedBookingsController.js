@@ -16,7 +16,7 @@ const confirmed_bookings = async (req, res) =>{
 
     // 3. Obtain the confirmed bookings associated to this owner thru the db
     const bookings = await db.all(
-        `SELECT b.created_at_date AS booking_created_at, s.slot_title, s.start_time, s.end_time, s.slot_type
+        `SELECT b.created_at AS booking_created_at, s.slot_title, s.start_time, s.end_time, s.slot_type
         FROM bookings b
         JOIN slots s ON b.slot_id = s.slot_id
         WHERE b.user_id = ? 
