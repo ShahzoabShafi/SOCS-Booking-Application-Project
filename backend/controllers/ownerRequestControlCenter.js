@@ -29,7 +29,7 @@ const get_requests = async (req, res) =>{
 
     // 3. Obtain the meeting requests associated to this owner thru the db
     const meeting_requests = await db.all(
-        `SELECT mr.start_time, mr.end_time, mr.title, mr.message, mr.request_status, mr.created_at AS request_created_at, u.name, u.email
+        `SELECT mr.request_id, mr.start_time, mr.end_time, mr.title, mr.message, mr.request_status, mr.created_at AS request_created_at, u.name, u.email
         FROM meeting_requests mr
         JOIN users u ON mr.user_id = u.user_id
         WHERE mr.owner_id = ? AND mr.request_status = 'pending' ORDER BY request_created_at ASC;`, // getting some useful info from users too.
