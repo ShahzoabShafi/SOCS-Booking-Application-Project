@@ -8,7 +8,7 @@ const { protect } = require("../middleware/authMiddleware"); // JWT business.
 // forward the request to the correct controller function
 router.post("/request", protect, request_booking);
 router.get("/requests", protect, get_requests);
-router.put("/requests/:id", update_request);
+router.put("/requests/:id", protect, update_request);
 
 // export the router so that server.js can access it thru app.use('/api/bookings', bookings); 
 module.exports = router;
