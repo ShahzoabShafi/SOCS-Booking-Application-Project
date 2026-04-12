@@ -51,10 +51,10 @@ const update_request = async (req, res) =>{
     const db = await dbPromise;
 
 
-
     // 1. collect data
     const request_id = req.body.request_id;
     const status = req.body.status;
+    const owner_id = req.user.id;
 
     // 2. validation
     const request = await db.get(
