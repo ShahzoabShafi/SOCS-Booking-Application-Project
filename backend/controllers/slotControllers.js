@@ -1,6 +1,8 @@
 // Connect to db and recieve request, which is recieved and parsed (JSON or urlencoded) by server.js
 const dbPromise = require('../config/db');
 
+
+
 // first function allows owner to create a new slot.
 // link for this is (put) /api/slots/create
 const create_slot = async (req, res) => {
@@ -196,5 +198,37 @@ const createRecurringSlots = async (req, res) => {
 
 
 
+// sixth function will get all slots - public and private, associated to an owner 
+// only owners can call this 
+// link for this is (get) /api/slots/all
+
+const all_my_slots = async (req, res) => {
+    
+    const db = await dbPromise;
+
+    // 1. validate owner
+    const owner_id = req.user.id;
+
+    const user_from_db = await db.get(
+        `SELECT * FROM users u WHERE u.user_id = ?`,
+        [owner_id]
+    );
+
+    if (user_from_db.role != "owner"){
+        return res.status(403).json({ message: 'Only owners can retrieve all their slots' });
+    }
+
+    // 2. obtain all slots
+    const all_slots = await db.all(
+        `SELECT * FROM slots s WHERE s.user_id = ?`,
+        [owner_id]
+    );
+
+    // 3. return the data
+    return res.status(200).json({ my_slots: all_slots });
+};
+
+
+
 // export them so functions can be used
-module.exports = { create_slot, activate_slot, delete_slot, active_slots, createRecurringSlots };
+module.exports = { create_slot, activate_slot, delete_slot, active_slots, createRecurringSlots, all_my_slots};
