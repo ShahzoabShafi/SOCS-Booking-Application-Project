@@ -25,7 +25,8 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/create" element={<CreateNew />} />
+            <Route path="/createOH" element={<CreateOfficeHours />} />
+            <Route path="/createGroup" element={<CreateGroup />} />
             <Route path="/request" element={<RequestNew />} />
             <Route path="/browse-owners" element={<BrowseOwners />} />
             <Route path="/booking/:ownerId" element={<BookingPage />} />
