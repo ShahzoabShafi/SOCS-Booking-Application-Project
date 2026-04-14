@@ -69,9 +69,6 @@ h1 {
     width: 30px;
     fill: #0A2342; 
 }
-#create, #url {
-    display: none;
-}
 @media (max-width: 1050px) {
     #bookingList {
         grid-template-columns: 1fr 1fr;
