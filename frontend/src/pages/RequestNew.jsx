@@ -18,10 +18,12 @@ function RequestNew() {
     const handleRequest = async (e) => {
         e.preventDefault();
         try {
+            const token = localStorage.getItem('token');
             const response = await fetch('http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/bookings/request', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify({ owner, start_time, end_time, title, message }),
             });

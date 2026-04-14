@@ -8,6 +8,7 @@ function Dashboard() {
     const [bookings, setBookings] = useState([]);
     const [requests, setRequests] = useState([]);
     const [user, setUser] = useState(null);
+    console.log("USER:", user);
 
     async function loadUser() {
         try {
@@ -15,7 +16,7 @@ function Dashboard() {
             if (userJson) {
                 setUser(JSON.parse(userJson));
             } else {
-                handleLogout();
+                // handleLogout(); // This was causing the redirect
             }
         } catch (err) {
             console.error("Error loading user:", err);
@@ -31,7 +32,6 @@ function Dashboard() {
 
     useEffect(() => {
         loadUser();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     async function loadBookings() {
@@ -104,6 +104,9 @@ function Dashboard() {
         method: 'DELETE'
         });
     }
+    function handleEmail(booking) {
+        
+    }
     
     const navigate = useNavigate();
 
@@ -116,8 +119,7 @@ function Dashboard() {
                 <div className="menu">
                     <a href="/browse-owners" id="booking" > Book New </a>
                     <a href="/request" id="request" > Request a meeting </a>
-                    <button id="exit" onClick={() => navigate('/')}> Log Out </button>
-
+                    <button id="exit" onClick={() => handleLogout()}> Log Out </button>
                     {/*check if user is owner; display owner features if yes. */}
                     {user?.role === "owner" && (
                     <>
@@ -170,9 +172,13 @@ function Dashboard() {
                 <div className="header-line">
                     <h3>{booking.slot_title}</h3>
                     <button onClick={() => handleDelete(booking.id)}><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
-                    <path d="M262.2 48C248.9 48 236.9 56.3 232.2 68.8L216 112L120 112C106.7 112 96 122.7 96 136C96 149.3 106.7 160 120 160L520 160C533.3 160 544 149.3 544 136C544 122.7 533.3 112 520 112L424 112L407.8 68.8C403.1 56.3 391.2 48 377.8 48L262.2 48zM128 208L128 512C128 547.3 156.7 576 192 576L448 576C483.3 576 512 547.3 512 512L512 208L464 208L464 512C464 520.8 456.8 528 448 528L192 528C183.2 528 176 520.8 176 512L176 208L128 208zM288 280C288 266.7 277.3 256 264 256C250.7 256 240 266.7 240 280L240 456C240 469.3 250.7 480 264 480C277.3 480 288 469.3 288 456L288 280zM400 280C400 266.7 389.3 256 376 256C362.7 256 352 266.7 352 280L352 456C352 469.3 362.7 480 376 480C389.3 480 400 469.3 400 456L400 280z" />
+                    <path fill= "red" d="M262.2 48C248.9 48 236.9 56.3 232.2 68.8L216 112L120 112C106.7 112 96 122.7 96 136C96 149.3 106.7 160 120 160L520 160C533.3 160 544 149.3 544 136C544 122.7 533.3 112 520 112L424 112L407.8 68.8C403.1 56.3 391.2 48 377.8 48L262.2 48zM128 208L128 512C128 547.3 156.7 576 192 576L448 576C483.3 576 512 547.3 512 512L512 208L464 208L464 512C464 520.8 456.8 528 448 528L192 528C183.2 528 176 520.8 176 512L176 208L128 208zM288 280C288 266.7 277.3 256 264 256C250.7 256 240 266.7 240 280L240 456C240 469.3 250.7 480 264 480C277.3 480 288 469.3 288 456L288 280zM400 280C400 266.7 389.3 256 376 256C362.7 256 352 266.7 352 280L352 456C352 469.3 362.7 480 376 480C389.3 480 400 469.3 400 456L400 280z" />
                 </svg>
                     </button>
+                    <button onClick={() => handleEmail(booking)}><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                    <path fill= "blue" d="M125.4 128C91.5 128 64 155.5 64 189.4C64 190.3 64 191.1 64.1 192L64 192L64 448C64 483.3 92.7 512 128 512L512 512C547.3 512 576 483.3 576 448L576 192L575.9 192C575.9 191.1 576 190.3 576 189.4C576 155.5 548.5 128 514.6 128L125.4 128zM528 256.3L528 448C528 456.8 520.8 464 512 464L128 464C119.2 464 112 456.8 112 448L112 256.3L266.8 373.7C298.2 397.6 341.7 397.6 373.2 373.7L528 256.3zM112 189.4C112 182 118 176 125.4 176L514.6 176C522 176 528 182 528 189.4C528 193.6 526 197.6 522.7 200.1L344.2 335.5C329.9 346.3 310.1 346.3 295.8 335.5L117.3 200.1C114 197.6 112 193.6 112 189.4z"/>
+                    </svg>
+                        </button>
                 </div>
                 <div className="line">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
