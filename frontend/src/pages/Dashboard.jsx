@@ -107,6 +107,10 @@ function Dashboard() {
     function handleEmail(booking) {
         
     }
+
+    function handleGenerate() {
+
+    }
     
     const navigate = useNavigate();
 
@@ -119,18 +123,23 @@ function Dashboard() {
                 <div className="menu">
                     <a href="/browse-owners" id="booking" > Book New </a>
                     <a href="/request" id="request" > Request a meeting </a>
-                    <button id="exit" onClick={() => handleLogout()}> Log Out </button>
                     {/*check if user is owner; display owner features if yes. */}
                     {user?.role === "owner" && (
                     <>
-                    <a href="/create" id="create"> Create New </a>
-                    <a href="/" id="url"> Generate URL </a>
+                    
+                    <button id="url" onClick={() => handleGenerate()}> Generate URL </button>
                 </>
                 )}
-            </div>
+                    <button id="exit" onClick={() => handleLogout()}> Log Out </button>
+                </div>
             </div>
             {user?.role === "owner" && (
             <>
+            <div className="slots-menu">
+                <h1> My Slots </h1>
+                <a href="/create" id="create"> Create a slot </a>
+                <a href="/edit" id="edit"> View my slots </a>
+            </div>
             <div id="requestList">
                 <h1> Requested Appointments </h1>
                 {requests.map((req, index) => (
