@@ -77,13 +77,13 @@ function Dashboard() {
 
     async function handleUpdate(id, status) {
         try {
-            const response = await fetch(`http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/bookings/requests/:${id}`, {
+            const response = await fetch(`http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/bookings/requests/${id}`, {
                 method: "PUT",
                 headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${localStorage.getItem("token")}`
                 },
-                body: JSON.stringify({id, status}),
+                body: JSON.stringify({"request_id": id, "status": status}),
             });
             const data = await response.json();
             if (!response.ok) {
