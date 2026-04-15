@@ -65,6 +65,12 @@ function Slots() {
             console.error("Error activating slot", err);
         }
     }
+    function handleLogout() {
+        navigate('/')
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        setUser(null);
+    }
 
     return (
         <main>
