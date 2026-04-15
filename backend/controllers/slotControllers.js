@@ -265,7 +265,7 @@ const reserveSlot = async (req, res) => {
         if (existingBooking) {
             return res.status(400).json({ message: 'Slot is already booked' });
         }
-
+         
         await db.run('INSERT INTO bookings (slot_id, user_id) VALUES (?, ?)', [slot_id, user_id]);
 
         res.status(201).json({ message: 'Slot reserved successfully' });
