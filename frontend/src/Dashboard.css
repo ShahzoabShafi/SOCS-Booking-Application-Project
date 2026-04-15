@@ -47,6 +47,31 @@ h1 {
     margin: 2rem;
     align-items: center;
 }
+
+.owner-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 2rem;
+}
+
+.owner-buttons a {
+    background-color: #81ACFC;
+    padding: 10px 15px;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 20px;
+}
+
+.owner-buttons a:hover {
+    background-color: #1a3a6b;
+}
+
+#requestList h1 {
+    text-align: center;
+}
+
 .card {
     background-color:white;
     border: 1px solid black;
