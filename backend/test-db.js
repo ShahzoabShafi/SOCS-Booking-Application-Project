@@ -1,6 +1,13 @@
-// delete after server db connection is done
-const pool = require('./config/db');
+const db = require('./config/db');
 
-pool.query('SELECT 1')
-  .then(() => console.log('Database connected successfully!'))
-  .catch(err => console.error('Connection failed:', err.message));
+async function main() {
+    const test_get_users = await db.get("SELECT * FROM users");
+
+    if (!test_get_users) {
+        console.log("doomed (?)");
+    } else {
+        console.log("Should have worked.");
+    }
+}
+
+main();
