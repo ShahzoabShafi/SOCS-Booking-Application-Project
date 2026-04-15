@@ -54,7 +54,7 @@ function RequestNew() {
                 <form name="Request" onSubmit={handleRequest}>
                     <h1> Request a Meeting </h1>
                     <input type="email" name="owner" placeholder="With: enter their mcgill.ca email address" 
-                           value={owner}
+                           value={owner_email}
                            onChange={(e) => setOwner(e.target.value)}
                            required /> <br />
 
