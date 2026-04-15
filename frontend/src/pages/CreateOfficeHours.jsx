@@ -27,7 +27,7 @@ const CreateOfficeHours = () => {
                     "startTime": start_time,
                     "endTime": end_time,
                     "startingDate": start_date,
-                    "weeks": number_weeks_recurrence
+                    "weeks": Number(number_weeks_recurrence)
                 })
             });
             console.log("RESPONSE:", response);
