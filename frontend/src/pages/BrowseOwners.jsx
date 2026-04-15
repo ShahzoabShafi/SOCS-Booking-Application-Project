@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import '../Dashboard.css';
 
 // Miguel Angel Vargas Valenica
-
+//comment
 function BrowseOwners() {
     const navigate = useNavigate();
     const [owners, setOwners] = useState([]);
