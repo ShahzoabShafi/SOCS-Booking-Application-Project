@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import '../Dashboard.css';
 
@@ -27,9 +27,6 @@ function Slots() {
     }, []);
     
     async function handleDelete(id) {
-        setBookings(prev =>
-        prev.filter(booking => booking.id !== id)
-        );
         try {
             const response = await fetch(`http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/slots/:${id}/delete`, {
             method: 'DELETE', 
@@ -65,8 +62,6 @@ function Slots() {
         } catch(err) {
             console.error("Error activating slot", err);
         }
-        
-        await Promise.all([loadRequests(), loadBookings()]);
     }
 
     return (
