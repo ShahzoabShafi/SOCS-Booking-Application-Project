@@ -76,9 +76,10 @@ const cancelBooking = async (req, res) => {
 
         await db.run('DELETE FROM bookings WHERE booking_id = ?', [booking_id]);
 
+        //find slot id from booking id from the database
+        const slot_id = await db.get('SELECT slot_id FROM bookings WHERE booking_id = ?', [booking_id]);
         //if owner set status in slot table to private
-        if (user_role == "owner") {
-            const slot_id = booking.slot_id;
+        if (user_role == "owner" && slot_id) {
             await db.run('UPDATE slots SET status = "private" WHERE slot_id = ?', [slot_id]);
         } else {
             // User cancelled - make slot available again
