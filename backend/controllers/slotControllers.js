@@ -1,4 +1,4 @@
-// Connect to db and recieve request, which is recieved and parsed (JSON or urlencoded) by server.js
+/ Connect to db and recieve request, which is recieved and parsed (JSON or urlencoded) by server.js
 const dbPromise = require('../config/db');
 
 
@@ -136,8 +136,8 @@ const delete_slot = async (req, res) => {
 
 
 // fourth function will get all active public slots associated to ONE owner, for users to browse
-// link for this is (get) /api/slots
-const active_slots = async (req, res) => {
+// link for this is (get) /api/owner_active_slots
+const owner_active_slots = async (req, res) => {
     
     // new version of db setup makes this necessary
     const db = await dbPromise;
@@ -178,7 +178,8 @@ const active_slots = async (req, res) => {
 
 
 // fifth function will get all owners from the users table that own active slots  
-const get_users_and_their_slots = async (req,res) => {
+// link for this will be (get) /api/slots/get_slot_owners
+const get_slot_owners = async (req,res) => {
 
     const db = await dbPromise;
 
@@ -203,8 +204,6 @@ const get_users_and_their_slots = async (req,res) => {
                                      error: err.message });
     }
 }
-
-
 
 
 
@@ -369,4 +368,4 @@ const reserveSlot = async (req, res) => {
 
 
 // export them so functions can be used
-module.exports = { create_slot, activate_slot, delete_slot, active_slots, createRecurringSlots, all_my_slots, getAvailableSlots, reserveSlot};
+module.exports = { create_slot, activate_slot, delete_slot, active_slots, createRecurringSlots, all_my_slots, getAvailableSlots, reserveSlot, owner_active_slots, get_slot_owners };
