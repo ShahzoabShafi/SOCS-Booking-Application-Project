@@ -10,6 +10,7 @@ const CreateGroup = () => {
     const [end_time2, setEnd2] = useState('');
     const [start_time3, setStart3] = useState('');
     const [end_time3, setEnd3] = useState('');
+    const [number_weeks_recurrence, setNumberWeeksRecurrence] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -23,9 +24,9 @@ const CreateGroup = () => {
                     'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify({ slots: [
-                    {slot_title, start_time1, end_time1, number_weeks_recurrence}, 
-                    {slot_title, start_time2, end_time2, number_weeks_recurrence}, 
-                    {slot_title, start_time3, end_time3, number_weeks_recurrence}
+                    {slot_title: title, start_time: start_time1, end_time: end_time1, number_weeks_recurrence: number_weeks_recurrence}, 
+                    {slot_title: title, start_time: start_time2, end_time: end_time2, number_weeks_recurrence: number_weeks_recurrence}, 
+                    {slot_title: title, start_time: start_time3, end_time: end_time3, number_weeks_recurrence: number_weeks_recurrence}
                 ]})
             });
             const data = await response.json();
@@ -50,6 +51,14 @@ const CreateGroup = () => {
                     id="title"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
+                    required
+                />
+                <label htmlFor="number_weeks_recurrence">Weeks of Recurrence</label>
+                <input
+                    type="number"
+                    id="number_weeks_recurrence"
+                    value={number_weeks_recurrence}
+                    onChange={(e) => setNumberWeeksRecurrence(e.target.value)}
                     required
                 />
                 <p>Suggest 3 meeting times for the group.</p>

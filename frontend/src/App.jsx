@@ -4,12 +4,13 @@ import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
-import CreateNew from './pages/CreateNew';
 import RequestNew from './pages/RequestNew';
 import ErrorPage from './pages/ErrorPage';
 import Footer from './component/Footer';
 import BrowseOwners from './pages/BrowseOwners';
 import BookingPage from './pages/BookingPage';
+import CreateOfficeHours from './pages/CreateOfficeHours';
+import CreateGroup from './pages/CreateGroup';
 
 //Miguel Angel Vargas Valencia
 // The main App component that sets up the application's routing
