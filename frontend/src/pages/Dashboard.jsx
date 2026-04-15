@@ -91,6 +91,8 @@ function Dashboard() {
             }
         } catch(err) {
             console.error("Error updating request", err);
+            window.alert(`Error updating request: ${err.message}`);
+
         }
         
         await Promise.all([loadRequests(), loadBookings()]);
