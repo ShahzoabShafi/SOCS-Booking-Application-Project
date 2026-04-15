@@ -2,9 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import "../Dashboard.css";
 
-// Miguel Angel Vargas Valencia
-// For clients to book a meeting or user to book
-
 function BookingPage() {
     const { ownerId } = useParams();
     const navigate = useNavigate();
@@ -22,7 +19,16 @@ function BookingPage() {
                 setError(null);
 
                 const response = await fetch(
-                    `http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/owner_active_slots?owner_id=${ownerId}`
+                    "http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/owner_active_slots",
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            owner_id: Number(ownerId)
+                        })
+                    }
                 );
 
                 const data = await response.json();
@@ -35,7 +41,7 @@ function BookingPage() {
                     setError(data.message || "Failed to fetch slots.");
                 }
             } catch (err) {
-                console.error("Error fetching slots:", err);
+                console.error("Fetch error:", err);
                 setError("Could not connect to the server.");
             } finally {
                 setLoading(false);
@@ -111,7 +117,6 @@ function BookingPage() {
                         <p>
                             Time: {formatTime(slot.start_time)} - {formatTime(slot.end_time)}
                         </p>
-
                         {slot.isBooked ? (
                             <button disabled>Booked</button>
                         ) : (
