@@ -26,12 +26,12 @@ const CreateOfficeHours = () => {
                     "dayOfWeek": day,
                     "startTime": start_time,
                     "endTime": end_time,
+                    "startingDate": start_date,
                     "weeks": number_weeks_recurrence
                 })
             });
             console.log("RESPONSE:", response);
             const data = await response.json();
-            console.log({ title, day, start_time, end_time, start_date, number_weeks_recurrence});
             const text = await response.text();
             console.log("RAW RESPONSE:", text);
             if (!response.ok) {
