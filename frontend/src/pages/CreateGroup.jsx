@@ -23,10 +23,10 @@ const CreateGroup = () => {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
                 },
-                body: JSON.stringify({ slots: [
-                    {slot_title: title, start_time: start_time1, end_time: end_time1, number_weeks_recurrence: number_weeks_recurrence}, 
-                    {slot_title: title, start_time: start_time2, end_time: end_time2, number_weeks_recurrence: number_weeks_recurrence}, 
-                    {slot_title: title, start_time: start_time3, end_time: end_time3, number_weeks_recurrence: number_weeks_recurrence}
+                body: JSON.stringify({ "slots": [
+                    {"slot_title": title, "start_time": start_time1, "end_time": end_time1, "number_weeks_recurrence": number_weeks_recurrence}, 
+                    {"slot_title": title, "start_time": start_time2, "end_time": end_time2, "number_weeks_recurrence": number_weeks_recurrence}, 
+                    {"slot_title": title, "start_time": start_time3, "end_time": end_time3, "number_weeks_recurrence": number_weeks_recurrence}
                 ]})
             });
             const data = await response.json();
@@ -43,17 +43,17 @@ const CreateGroup = () => {
 
     return (
         <div className="form-container">
-            <h2>Create New Group Meeting</h2>
+            <h2>Create New Group Meeting</h2> <br />
             <form onSubmit={handleSubmit}>
-                <label htmlFor="title">Title</label>
+                <label htmlFor="title">Title: </label>
                 <input
                     type="text"
                     id="title"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     required
-                />
-                <label htmlFor="number_weeks_recurrence">Weeks of Recurrence</label>
+                /> <br />
+                <label htmlFor="number_weeks_recurrence">How many weeks should the meeting recur?</label>
                 <input
                     type="number"
                     id="number_weeks_recurrence"
@@ -61,7 +61,7 @@ const CreateGroup = () => {
                     onChange={(e) => setNumberWeeksRecurrence(e.target.value)}
                     required
                 />
-                <p>Suggest 3 meeting times for the group.</p>
+                <h3>Suggest 3 meeting times for the group.</h3>
                 <label htmlFor="Date">Start Date: </label>
                 <input type="datetime-local" name="start_time1" id="Date" 
                         value={start_time1}
@@ -100,7 +100,7 @@ const CreateGroup = () => {
                         onChange={(e) => setEnd3(e.target.value)}
                         required /> <br />
                 
-
+                <br />
                 <button type="submit" className="submit-btn">Create Group</button>
             </form>
         </div>
