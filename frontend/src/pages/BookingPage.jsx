@@ -18,7 +18,7 @@ function BookingPage() {
         async function fetchSlots() {
             try {
                 const response = await fetch(
-                    `http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/owner_active_slots?owner_id=${ownerId}`
+                    `http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/slots/owner_active_slots?owner_id=${ownerId}`
                 );
                 const data = await response.json();
                 if (response.ok) {
