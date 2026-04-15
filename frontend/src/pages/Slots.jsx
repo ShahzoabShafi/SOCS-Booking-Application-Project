@@ -36,7 +36,7 @@ function Slots() {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${localStorage.getItem("token")}`
             },
-            body: JSON.stringify({id})
+            body: JSON.stringify({"slot_id": id})
             });
             const data = await response.json();
             if (!response.ok) {
@@ -45,6 +45,7 @@ function Slots() {
         } catch(err) {
             console.error("Error deleting slot", err);
         }
+        await Promise.all([loadSlots()]);
     }
 
     async function handleActivate(id) {
