@@ -11,18 +11,25 @@ function BrowseOwners() {
     const navigate = useNavigate();
     const [owners, setOwners] = useState([]);
 
-    // Mock data for owners - replace with API call
     useEffect(() => {
-        const mockOwners = [
-            { id: 1, name: "Professor V" },
-            { id: 2, name: "Professor M" },
-            { id: 3, name: "Professor A" }
-        ];
-        setOwners(mockOwners);
+        async function fetchOwners() {
+            try {
+                const response = await fetch('http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/slot-owners');
+                const data = await response.json();
+                if (response.ok && data.slot_owners) {
+                    setOwners(data.slot_owners);
+                } else {
+                    console.error("Failed to fetch owners:", data.message);
+                }
+            } catch (error) {
+                console.error("Error fetching owners:", error);
+            }
+        }
+        fetchOwners();
     }, []);
 
-    const handleOwnerClick = (ownerId) => {
-        navigate(`/booking/${ownerId}`);
+    const handleOwnerClick = (owner) => {
+        navigate(`/booking/${owner.user_id}`, { state: { ownerName: owner.name } });
     };
 
     return (
@@ -39,11 +46,12 @@ function BrowseOwners() {
 
             <h1>Browse Owners</h1>
             <div id="bookingList">
-                {owners.map((owner) => (
-                    <div className="card" key={owner.id} onClick={() => handleOwnerClick(owner.id)} style={{cursor: 'pointer'}}>
+                {owners.length === 0 ? <p style={{textAlign: 'center', marginTop: '2rem'}}>No owners found.</p> : owners.map((owner) => (
+                    <div className="card" key={owner.user_id} onClick={() => handleOwnerClick(owner)} style={{cursor: 'pointer'}}>
                         <div className="header-line">
                             <h3>{owner.name}</h3>
                         </div>
+                        <p>{owner.email}</p>
                         <p>Click to see available slots</p>
                     </div>
                 ))}

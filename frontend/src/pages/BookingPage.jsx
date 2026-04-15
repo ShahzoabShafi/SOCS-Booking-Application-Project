@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import '../Dashboard.css';
 
 // Miguel Angel Vargas Valenica
@@ -9,19 +9,25 @@ import '../Dashboard.css';
 function BookingPage() {
     const { ownerId } = useParams();
     const navigate = useNavigate();
+    const location = useLocation();
     const [slots, setSlots] = useState([]);
-    const [ownerName, setOwnerName] = useState("");
+    const [ownerName, setOwnerName] = useState(location.state?.ownerName || `Professor ${ownerId}`);
 
-    // Mock data for slots and owner name
     useEffect(() => {
-        // In a real app, you would fetch this data based on the ownerId
-        setOwnerName(`Professor ${ownerId}`);
-        const mockSlots = [
-            { id: 1, date: "2024-12-25", startTime: "10:00", endTime: "11:00", isBooked: false },
-            { id: 2, date: "2024-12-25", startTime: "11:00", endTime: "12:00", isBooked: true },
-            { id: 3, date: "2024-12-26", startTime: "14:00", endTime: "15:00", isBooked: false },
-        ];
-        setSlots(mockSlots);
+        async function fetchSlots() {
+            try {
+                const response = await fetch(`http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/slots?owner_id=${ownerId}`);
+                const data = await response.json();
+                if (response.ok) {
+                    setSlots(data.active_requests || []);
+                } else {
+                    console.error("Failed to fetch slots:", data.message);
+                }
+            } catch (error) {
+                console.error("Error fetching slots:", error);
+            }
+        }
+        fetchSlots();
     }, [ownerId]);
 
     const handleBookSlot = (slotId) => {
@@ -30,7 +36,7 @@ function BookingPage() {
         // You might want to update the slot's status and navigate away or show a success message
         // For now, we'll just simulate the booking
         setSlots(prevSlots => prevSlots.map(slot => 
-            slot.id === slotId ? { ...slot, isBooked: true } : slot
+            slot.slot_id === slotId ? { ...slot, isBooked: true } : slot
         ));
     };
 
@@ -48,16 +54,17 @@ function BookingPage() {
 
             <h1>Available Slots for {ownerName}</h1>
             <div id="bookingList">
-                {slots.map((slot) => (
-                    <div className="card" key={slot.id}>
+                {slots.length === 0 ? <p style={{textAlign: 'center', marginTop: '2rem'}}>No active slots currently available.</p> : slots.map((slot) => (
+                    <div className="card" key={slot.slot_id}>
                         <div className="header-line">
-                            <h3>{slot.date}</h3>
+                            <h3>{slot.slot_title || String(slot.start_time).split('T')[0]}</h3>
                         </div>
-                        <p>Time: {slot.startTime} - {slot.endTime}</p>
+                        <p>Date: {String(slot.start_time).split('T')[0]}</p>
+                        <p>Time: {String(slot.start_time).split('T')[1]} - {String(slot.end_time).split('T')[1]}</p>
                         {slot.isBooked ? (
                             <button disabled>Booked</button>
                         ) : (
-                            <button onClick={() => handleBookSlot(slot.id)}>Book Now</button>
+                            <button onClick={() => handleBookSlot(slot.slot_id)}>Book Now</button>
                         )}
                     </div>
                 ))}
