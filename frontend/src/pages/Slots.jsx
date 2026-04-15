@@ -16,6 +16,7 @@ function Slots() {
                     }
                 });
                     const data = await response.json();
+                    console.log("DATA:", data)
                     setSlots(Array.isArray(data.my_slots) ? data.my_slots : []);
                 } catch (err) {
                     console.error("Error loading slots:", err);
@@ -67,8 +68,15 @@ function Slots() {
 
     return (
         <main>
-            <div class="nav">
-
+            <div className="navBar" id="navBar">
+                <div>
+                    <img src="/mcbooking.png" alt="mcbooking logo"></img>
+                </div>
+                <div className="menu">
+                    <a href="/browse-owners" id="booking" > Book New </a>
+                    <button id="exit" onClick={() => handleLogout()}> Log Out </button>
+                </div>
+            </div>
             <h1> My slots </h1>
             <div id="slotList">
                 {slots.map((slot, index) => (
@@ -101,7 +109,6 @@ function Slots() {
                     <p>Number of weeks the slot recurs: {slot.number_weeks_recurrence}</p>
                 </div>
                 ))}
-            </div>
             </div>
         </main> 
     );
