@@ -18,7 +18,7 @@ function Slots() {
                     const data = await response.json();
                     
                     setSlots(Array.isArray(data.all_slots) ? data.all_slots : []);
-                    console.log("SLOTS:", data.all_slots);
+                    console.log("FULL RESPONSE:", data);
                 } catch (err) {
                     console.error("Error loading slots:", err);
                     window.alert(`Error loading slots: ${err.message}`);
