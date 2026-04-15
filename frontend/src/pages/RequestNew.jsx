@@ -7,7 +7,7 @@ import '../Dashboard.css';
 
 
 function RequestNew() {
-    const [owner, setOwner] = useState('');
+    const [owner_email, setOwner] = useState('');
     const [title, setTitle] = useState('');
     const [start_time, setStart] = useState('');
     const [end_time, setEnd] = useState('');
@@ -25,7 +25,7 @@ function RequestNew() {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
                 },
-                body: JSON.stringify({ owner, start_time, end_time, title, message }),
+                body: JSON.stringify({ owner_email, start_time, end_time, title, message }),
             });
             const data = await response.json();
             if (!response.ok) {
