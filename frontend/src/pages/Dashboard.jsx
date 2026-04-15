@@ -117,7 +117,7 @@ function Dashboard() {
         <main>
             <div className="navBar" id="navBar">
                 <div>
-                    <img src="mcbooking.png" alt="mcbooking logo"></img>
+                    <img src="/mcbooking.png" alt="mcbooking logo"></img>
                 </div>
                 <div className="menu">
                     <a href="/browse-owners" id="booking" > Book New </a>
