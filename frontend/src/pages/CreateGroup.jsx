@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../Forms.css';
 
+//Marie Lefevre
+
 const CreateGroup = () => {
     const [title, setTitle] = useState('');
     const [start_time1, setStart1] = useState('');

@@ -4,7 +4,6 @@ import '../Dashboard.css';
 
 //Marie Lefevre
 
-
 function Slots() {
     const [slots, setSlots] = useState([]);
 
