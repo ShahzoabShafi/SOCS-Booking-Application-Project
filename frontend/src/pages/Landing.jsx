@@ -91,8 +91,6 @@ function Landing() {
       <nav>
         <img src="/mcbooking.png" alt="McBooking Logo" style={{height: "100px"}} />
         <div>
-          <button style={{"marginRight": "10px"}} onClick={() => navigate('/dashboard')}>Dashboard Perso(temporary button)</button>
-          <button style={{"marginRight": "10px"}} onClick={() => navigate('/owner-dashboard')}>Dashboard Admin(temporary button)</button>
           {/* Sign-in button */}
           <button className="nav-signin-btn" onClick={() => navigate('/login')}>Sign in</button>
         </div>
