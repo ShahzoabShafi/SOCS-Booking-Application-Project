@@ -243,8 +243,8 @@ const createRecurringSlots = async (req, res) => {
             const day = String(slotDate.getDate()).padStart(2, '0');
             const dateString = `${year}-${month}-${day}`;
 
-            const startDateTime = `${dateString} ${startTime}`;
-            const endDateTime = `${dateString} ${endTime}`;
+            const startDateTime = `${dateString}T${startTime}`;
+            const endDateTime = `${dateString}T${endTime}`;
 
             await db.run(
                 `INSERT INTO slots (user_id, slot_title, start_time, end_time, number_weeks_recurrence, status, slot_type)
