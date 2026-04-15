@@ -51,6 +51,11 @@ const create_slot = async (req, res) => {
     return res.status(201).json({ message: "Slot created." });
 }
 
+
+
+
+
+
 // second function aims to activate a slot to make it public
 // link for this is (put) /api/slots/:id/activate
 const activate_slot = async (req, res) => {
@@ -86,6 +91,12 @@ const activate_slot = async (req, res) => {
     return res.status(200).json({ message: "Status updated successfully." });
 };
 
+
+
+
+
+
+
 // third function deletes a slot.
 // link for this is (delete) /api/slots/:id/delete
 const delete_slot = async (req, res) => {
@@ -117,26 +128,93 @@ const delete_slot = async (req, res) => {
     return res.status(200).json({ message: "Slot deleted successfully." });
 };
 
-// fourth function will get all active public slots, eg for users to browse
+
+
+
+
+
+
+
+// fourth function will get all active public slots associated to ONE owner, for users to browse
 // link for this is (get) /api/slots
 const active_slots = async (req, res) => {
     
     // new version of db setup makes this necessary
     const db = await dbPromise;
 
+    // 1. get data and validate it 
+    const owner_id = req.body.owner_id;
+    
+    const owner = await db.get(
+        `SELECT * FROM users WHERE user_id = ? AND role = 'owner' `,
+        [owner_id]
+    );
+    if (!owner){
+        return res.status(404).json({ message: "No such slot owner." }); 
+    }
 
-
-    // there is no data to get from user or validate
-
-    // 1. obtain all active public slots
-    const slots = await db.all(
-        `SELECT * FROM slots WHERE status = 'active'`);
-
-    // 2. return the data
-    return res.status(200).json({ active_requests: slots });
+    // Get all active public slots from that owner
+    try{
+        const slots = await db.all(
+            `SELECT slot_id, slot_title, start_time, end_time, number_weeks_recurrence, slot_type, created_at 
+            FROM slots WHERE status = 'active' AND user_id = ?`,
+            [owner_id]
+        );
+        
+        // return the data
+        return res.status(200).json({ message: "Active slots retrieved successfully.",
+                                      active_requests: slots });
+    }
+    catch (err){
+        return res.status(500).json({ message: "Failed to retrieve active slots.",
+                                      error: err.message });
+    }
 };
 
-// this finction allow the owner to create recurring slots
+
+
+
+
+
+
+// fifth function will get all owners from the users table that own active slots  
+const get_users_and_their_slots = async (req,res) => {
+
+    const db = await dbPromise;
+
+    // 1. No info to retrieve - any user can call this. No inputs.
+
+    // 2. Get list of profs
+    try{
+        const profs = await db.all(
+            `SELECT DISTINCT u.user_id, u.email, u.name
+            
+            FROM users u
+            JOIN slots s ON s.user_id = u.user_id
+            WHERE s.status = 'active'`
+        );
+
+        return res.status(200).json({ message: "Slot owners retrieved successfully.",
+                                      slot_owners: profs });
+    }
+
+    catch (err){
+       return res.status(500).json({ message: "Slot owner retrieval failed.",
+                                     error: err.message });
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+// this function allow the owner to create recurring slots
 const createRecurringSlots = async (req, res) => {
 
     // new version of db setup makes this necessary
@@ -183,6 +261,12 @@ const createRecurringSlots = async (req, res) => {
         res.status(500).json({ message: 'Server error, ', error });
     }
 };
+
+
+
+
+
+
 
 // sixth function will get all slots - public and private, associated to an owner 
 // only owners can call this 
@@ -235,6 +319,13 @@ const getAvailableSlots = async (req, res) => {
         return res.status(500).json({ message: 'Server error, ', error });
       }
 };
+
+
+
+
+
+
+
 
 // User reserves a specific slot
 const reserveSlot = async (req, res) => {
