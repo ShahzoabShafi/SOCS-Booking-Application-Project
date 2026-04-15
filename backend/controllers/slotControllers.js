@@ -213,6 +213,7 @@ const all_my_slots = async (req, res) => {
     return res.status(200).json({ my_slots: all_slots });
 };
 
+// get all available office hours slots
 const getAvailableSlots = async (req, res) => {
     try {
         const db = await dbPromise;
@@ -235,6 +236,7 @@ const getAvailableSlots = async (req, res) => {
       }
 };
 
+// User reserves a specific slot
 const reserveSlot = async (req, res) => {
     try {
         const db = await dbPromise;

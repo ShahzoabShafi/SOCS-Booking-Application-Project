@@ -56,6 +56,7 @@ const request_booking = async (req, res) =>{
     return res.status(201).json({ message: "Booking request created successfully."});
 }
 
+// Cancel reservation of booking
 const cancelBooking = async (req, res) => {
     try {
         const db = await dbPromise;
@@ -77,7 +78,7 @@ const cancelBooking = async (req, res) => {
         res.status(200).json({ message: 'Booking cancelled successfully' });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Server error' });
+        res.status(500).json({ message: 'Server error: ', error });
     }
 };
 

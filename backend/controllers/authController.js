@@ -18,11 +18,11 @@ const register = async (req, res) => {
   const role = email.endsWith('@mail.mcgill.ca') ? 'user' : 'owner';
 
   try {
-    // Check if user already exists
-    const existingUsers = await db.all('SELECT * FROM users WHERE email = ?', [email]);
-    if (existingUsers.length > 0) {
-      return res.status(400).json({ message: 'User with this email already exists' });
-    }
+  // Check if user already exists
+  const existingUser = await db.get('SELECT user_id FROM users WHERE email = ?', [email]);
+  if (existingUser) {
+    return res.status(400).json({ message: 'User with this email already exists' });
+  }
 
     // Hash the password
     const salt = await bcrypt.genSalt(10);
