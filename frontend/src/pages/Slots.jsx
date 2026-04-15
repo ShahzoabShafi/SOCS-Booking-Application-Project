@@ -16,9 +16,12 @@ function Slots() {
                     }
                 });
                     const data = await response.json();
+                    
                     setSlots(Array.isArray(data.all_slots) ? data.all_slots : []);
+                    console.log("SLOTS:", data.all_slots);
                 } catch (err) {
                     console.error("Error loading slots:", err);
+                    window.alert(`Error loading slots: ${err.message}`);
             }
         }
         
@@ -28,7 +31,7 @@ function Slots() {
     
     async function handleDelete(id) {
         try {
-            const response = await fetch(`http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/slots/:${id}/delete`, {
+            const response = await fetch(`http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/slots/${id}/delete`, {
             method: 'DELETE', 
             headers: {
                 "Content-Type": "application/json",
@@ -47,7 +50,7 @@ function Slots() {
 
     async function handleActivate(id) {
         try {
-            const response = await fetch(`http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/slots/:${id}/activate`, {
+            const response = await fetch(`http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/slots/${id}/activate`, {
                 method: "PUT",
                 headers: {
                 "Content-Type": "application/json",
