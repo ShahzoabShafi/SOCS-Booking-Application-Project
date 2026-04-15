@@ -29,8 +29,11 @@ const CreateOfficeHours = () => {
                     "weeks": number_weeks_recurrence
                 })
             });
-            console.log({ title, day, start_time, end_time, start_date, number_weeks_recurrence});
+            console.log("RESPONSE:", response);
             const data = await response.json();
+            console.log({ title, day, start_time, end_time, start_date, number_weeks_recurrence});
+            const text = await response.text();
+            console.log("RAW RESPONSE:", text);
             if (!response.ok) {
                 throw new Error(data.message || 'Failed to create group');
             }
@@ -44,16 +47,17 @@ const CreateOfficeHours = () => {
 
     return (
         <div className="form-container">
-            <h2>Create Office Hours</h2>
+            <h2>Create Office Hours</h2> 
+            <br />
             <form onSubmit={handleSubmit}>
-                <label htmlFor="title">Title</label>
+                <label htmlFor="title">Title: </label> 
                 <input
                     type="text"
                     id="title"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     required
-                />
+                /> <br />
                 <label htmlFor="day">Day of the week:</label>
                 <input
                     type="text"
@@ -96,7 +100,7 @@ const CreateOfficeHours = () => {
                     onChange={(e) => setNumberWeeksRecurrence(e.target.value)}
                     required
                 />
-                
+                <br />
                 <button type="submit" className="submit-btn">Create Office Hours</button>
             </form>
         </div>
