@@ -192,4 +192,4 @@ const confirmed_bookings = async (req, res) =>{
 
 
 
-module.exports = {confirmed_bookings, delete_booking};
+module.exports = {confirmed_bookings};
