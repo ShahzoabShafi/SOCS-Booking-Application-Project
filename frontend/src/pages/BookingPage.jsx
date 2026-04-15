@@ -11,7 +11,7 @@ function BookingPage() {
     const navigate = useNavigate();
     const location = useLocation();
     const [slots, setSlots] = useState([]);
-    const [ownerName, setOwnerName] = useState(location.state?.ownerName || `Professor ${ownerId}`);
+    const [ownerName] = useState(location.state?.ownerName || `Professor ${ownerId}`);
 
     useEffect(() => {
         async function fetchSlots() {
