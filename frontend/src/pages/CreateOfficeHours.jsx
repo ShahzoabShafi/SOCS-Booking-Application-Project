@@ -30,10 +30,8 @@ const CreateOfficeHours = () => {
                     "weeks": Number(number_weeks_recurrence)
                 })
             });
-            console.log("RESPONSE:", response);
+            
             const data = await response.json();
-            const text = await response.text();
-            console.log("RAW RESPONSE:", text);
             if (!response.ok) {
                 throw new Error(data.message || 'Failed to create group');
             }
