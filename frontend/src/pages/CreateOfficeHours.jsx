@@ -46,9 +46,10 @@ const CreateOfficeHours = () => {
     };
 
     return (
-        <div className="form-container">
+        <main>
             <h2>Create Office Hours</h2> 
             <br />
+        <div className="form-container">
             <form onSubmit={handleSubmit}>
                 <label htmlFor="title">Title: </label> 
                 <input
@@ -104,6 +105,7 @@ const CreateOfficeHours = () => {
                 <button type="submit" className="submit-btn">Create Office Hours</button>
             </form>
         </div>
+        </main>
     );
 };
 
