@@ -15,7 +15,7 @@ const CreateOfficeHours = () => {
         e.preventDefault();
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/slots/group', {
+            const response = await fetch('http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/slots/recurring', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
