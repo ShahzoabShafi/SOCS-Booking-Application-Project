@@ -1,4 +1,4 @@
-/ Connect to db and recieve request, which is recieved and parsed (JSON or urlencoded) by server.js
+// Connect to db and recieve request, which is recieved and parsed (JSON or urlencoded) by server.js
 const dbPromise = require('../config/db');
 
 
@@ -368,4 +368,4 @@ const reserveSlot = async (req, res) => {
 
 
 // export them so functions can be used
-module.exports = { create_slot, activate_slot, delete_slot, active_slots, createRecurringSlots, all_my_slots, getAvailableSlots, reserveSlot, owner_active_slots, get_slot_owners };
+module.exports = { create_slot, activate_slot, delete_slot, createRecurringSlots, all_my_slots, getAvailableSlots, reserveSlot, owner_active_slots, get_slot_owners };
