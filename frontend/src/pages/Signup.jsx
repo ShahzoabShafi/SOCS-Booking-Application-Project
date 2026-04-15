@@ -98,7 +98,7 @@ function Signup() {
         <button type="submit">Register</button>
         {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
         <p>
-          Already have an account? <a href="/login">Sign in</a>
+          Already have an account? <a href="/login">Log in</a>
         </p>
       </form>
         {/* Style for the above page*/}

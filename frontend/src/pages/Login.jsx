@@ -48,7 +48,7 @@ function Login() {
         <button onClick={goBack}>Go back</button>
       </nav>
       <form className="login-form" onSubmit={handleLogin}>
-        <h2>Sign in</h2>
+        <h2>Log in</h2>
         <input type="email"
         placeholder='Email'
          value ={email}
@@ -63,7 +63,7 @@ function Login() {
           onChange={(e) => setPassword(e.target.value)} 
           required 
         />
-        <button type="submit">Sign in</button>
+        <button type="submit">Log in</button>
         {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
 
         <p>

@@ -92,7 +92,7 @@ function Landing() {
         <img src="/mcbooking.png" alt="McBooking Logo" style={{height: "100px"}} />
         <div>
           {/* Sign-in button */}
-          <button className="nav-signin-btn" onClick={() => navigate('/login')}>Sign in</button>
+          <button className="nav-signin-btn" onClick={() => navigate('/login')}>Log in</button>
         </div>
       </nav>
         {/* Main content area */}
