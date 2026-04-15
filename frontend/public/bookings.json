@@ -1,0 +1,8 @@
+[
+    { "id": 1, "title": "Meeting", "date": "Aug 21", "startTime": "12pm", "endTime": "1pm", "booker": "carl.cup@mail.mcgill.ca" },
+    { "id": 2 ,"title": "Secret rendez-vous", "date": "Mar 41", "startTime": "12pm", "endTime": "1pm", "booker": "john.doe@mcgill.ca" },
+    { "id": 3,"title": "Partay", "date": "Mar 41", "startTime": "12pm", "endTime": "1pm",
+      "booker": "john.smith@mcgill.ca" },
+    { "id": 4,"title": "Partay", "date": "Mar 41", "startTime": "12pm", "endTime": "1pm",
+      "booker": "marielef@mail.mcgill.ca" }
+  ]

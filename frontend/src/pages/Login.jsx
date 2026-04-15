@@ -1,15 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Front end: Miguel Angel Vargas Valencia
 
-
 function Login() {
   const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
 
   const goBack = () => {
     navigate(-1);
   };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError('');
+    try{
+      const response = await fetch('http://localhost:5000/api/auth/login',{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({email, password}),
+      });
+      const data = await response.json();
+      if(!response.ok){
+        throw new Error(data.message || 'Failure of login');
+      }
+      //localstorage
+      localStorage.setItem('token', data.token)
+      localStorage.setItem('user', JSON.stringify(data.user));
+
+      navigate('/dashboard');
+    }catch(err){
+      setError(err.message);
+    }
+  }
 
   return (
 
@@ -18,11 +46,25 @@ function Login() {
         <span>McBooking</span>
         <button onClick={goBack}>Go back</button>
       </nav>
-      <form className="login-form">
+      <form className="login-form" onSubmit={handleLogin}>
         <h2>Sign in</h2>
-        <input type="email" placeholder="Email" />
-        <input type="password" placeholder="Password" />
+        <input type="email"
+        placeholder='Email'
+         value ={email}
+         onChange={(e) => setEmail(e.target.value)}
+         required
+         />
+
+          <input 
+          type="password" 
+          placeholder="Password" 
+          value={password} 
+          onChange={(e) => setPassword(e.target.value)} 
+          required 
+        />
         <button type="submit">Sign in</button>
+        {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
+
         <p>
           Don't have an account? <a href="/signup">Sign up</a>
         </p>
@@ -38,13 +80,24 @@ function Login() {
           padding-top: 2rem;
           gap: 2rem;
         }
-          nav{
+        nav{
           display: flex;
           justify-content: space-between;
           align-items: center;
           width: 100%;
           max-width: 400px;
-          }
+        }
+        nav button {
+            padding: 9px 22px;
+            cursor: pointer;
+            background-color: transparent;
+            border-radius: 10px;
+            border: 1px solid #d1d5db;
+            color: #333;
+        }
+        nav button:hover {
+            background-color: #f3f4f6;
+        }
         .login-form {
           background: white;
           padding: 2rem;
