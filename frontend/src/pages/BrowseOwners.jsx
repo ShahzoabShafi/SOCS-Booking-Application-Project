@@ -4,6 +4,8 @@ import '../Dashboard.css';
 
 // Miguel Angel Vargas Valenica
 
+// all should work
+
 function BrowseOwners() {
     const navigate = useNavigate();
     const [owners, setOwners] = useState([]);
