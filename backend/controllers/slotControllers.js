@@ -136,14 +136,17 @@ const delete_slot = async (req, res) => {
 
 
 // fourth function will get all active public slots associated to ONE owner, for users to browse
-// link for this is (get) /api/owner_active_slots
+// link for this is (get) /api/owner_active_slots?owner_id=...
 const owner_active_slots = async (req, res) => {
     
     // new version of db setup makes this necessary
     const db = await dbPromise;
 
     // 1. get data and validate it 
-    const owner_id = req.body.owner_id;
+    const owner_id = req.query.owner_id;
+    if (!owner_id){
+        return res.status(400).json( { message: "owner_id not provided or invalid." } );
+    }
     
     const owner = await db.get(
         `SELECT * FROM users WHERE user_id = ? AND role = 'owner' `,
@@ -163,7 +166,7 @@ const owner_active_slots = async (req, res) => {
         
         // return the data
         return res.status(200).json({ message: "Active slots retrieved successfully.",
-                                      active_requests: slots });
+                                      active_slots: slots });
     }
     catch (err){
         return res.status(500).json({ message: "Failed to retrieve active slots.",
