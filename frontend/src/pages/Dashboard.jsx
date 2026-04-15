@@ -98,13 +98,27 @@ function Dashboard() {
         await Promise.all([loadRequests(), loadBookings()]);
     }
 
-    function handleDelete(id) {
+    async function handleDelete(id) {
         setBookings(prev =>
         prev.filter(booking => booking.id !== id)
         );
-        fetch('/api/bookings/' + id, {
-        method: 'DELETE'
-        });
+        try {
+            const response = await fetch(`http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/bookings/${id}`, {
+                method: 'DELETE',
+                headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+                }
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to delete booking');
+            }
+        } catch(err) {
+            console.error("Error updating request", err);
+            window.alert(`Error deleting booking: ${err.message}`);
+
+        }
     }
 
     function handleGenerate() {
