@@ -8,7 +8,6 @@ function Dashboard() {
     const [bookings, setBookings] = useState([]);
     const [requests, setRequests] = useState([]);
     const [user, setUser] = useState(null);
-    console.log("USER:", user);
 
     async function loadUser() {
         try {

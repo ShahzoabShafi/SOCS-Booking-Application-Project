@@ -6,7 +6,20 @@ import '../Dashboard.css';
 
 function Slots() {
     const [slots, setSlots] = useState([]);
+    const [user, setUser] = useState(null);
 
+    async function loadUser() {
+        try {
+            const userJson= localStorage.getItem('user');
+            if (userJson) {
+                setUser(JSON.parse(userJson));
+            } else {
+                // handleLogout(); // This was causing the redirect
+            }
+        } catch (err) {
+            console.error("Error loading user:", err);
+        }
+    }
     async function loadSlots() {
         try {
                 const response = await fetch('http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/slots/all', {
@@ -72,6 +85,7 @@ function Slots() {
         localStorage.removeItem('user');
         setUser(null);
     }
+    const navigate = useNavigate();
 
     return (
         <main>
