@@ -1,7 +1,7 @@
 // import express and controller functions
 const express = require("express");
 const router = express.Router();
-const {create_slot, activate_slot, delete_slot, active_slots, createRecurringSlots, all_my_slots} = require('../controllers/slotControllers'); // basic slot management apis
+const {create_slot, activate_slot, delete_slot, active_slots, createRecurringSlots, all_my_slots, getAvailableSlots, reserveSlot} = require('../controllers/slotControllers'); // basic slot management apis
 const {propose_slots, invite, vote, view_slot_votes, confirm_slot} = require('../controllers/groupMeetingControllers'); // type 2 (group meeting) apis
 const { protect } = require("../middleware/authMiddleware");
 
@@ -14,8 +14,10 @@ router.post("/create", protect, create_slot);
 router.put("/:id/activate", protect, activate_slot);
 router.delete("/:id/delete", protect, delete_slot);
 router.get("/", active_slots);
-router.post('/recurring', protect, createRecurringSlots);
 router.get('/all', protect, all_my_slots);
+router.post('/recurring', protect, createRecurringSlots);
+router.get("/available", protect, getAvailableSlots);
+router.post("/:id/reserve", protect, reserveSlot);
 
 // group method apis
 router.post("/group", protect, propose_slots);

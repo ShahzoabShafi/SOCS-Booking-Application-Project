@@ -1,6 +1,3 @@
-// the path to this api will be (post) /api/bookings/request
-
-// 1. connect to db and recieve request
 const dbPromise = require('../config/db');
 
 // server.js will parse the request body, which could be either JSON or URL-encoded.
@@ -59,6 +56,29 @@ const request_booking = async (req, res) =>{
     return res.status(201).json({ message: "Booking request created successfully."});
 }
 
+const cancelBooking = async (req, res) => {
+    try {
+        const db = await dbPromise;
+        const booking_id = req.params.id;
+        const user_id = req.user.id;
 
-// 6. Lastly we export the request_booking object, exposing our function so it can be used
-module.exports = {request_booking};
+        const booking = await db.get('SELECT * FROM bookings WHERE booking_id = ?', [booking_id]);
+
+        if (!booking) {
+            return res.status(404).json({ message: 'Booking not found' });
+        }
+
+        if (booking.user_id !== user_id) {
+            return res.status(403).json({ message: 'You can only cancel your own bookings' });
+        }
+
+        await db.run('DELETE FROM bookings WHERE booking_id = ?', [booking_id]);
+
+        res.status(200).json({ message: 'Booking cancelled successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+module.exports = {request_booking, cancelBooking};
