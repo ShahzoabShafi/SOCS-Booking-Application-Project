@@ -99,9 +99,6 @@ function Dashboard() {
     }
 
     async function handleDelete(id) {
-        setBookings(prev =>
-        prev.filter(booking => booking.id !== id)
-        );
         try {
             const response = await fetch(`http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/bookings/${id}`, {
                 method: 'DELETE',
@@ -115,10 +112,11 @@ function Dashboard() {
                 throw new Error(data.message || 'Failed to delete booking');
             }
         } catch(err) {
-            console.error("Error updating request", err);
+            console.error("Error deleting booking", err);
             window.alert(`Error deleting booking: ${err.message}`);
 
         }
+        await Promise.all([loadBookings()]);
     }
 
     function handleGenerate() {
@@ -153,7 +151,7 @@ function Dashboard() {
                 <div className="owner-buttons">
                     <a href="/createOH"> Create office hours </a>
                     <a href="/createGroup"> Create Group Meeting </a>
-                    <a href="/edit"> View my slots </a>
+                    <a href="/slots"> View my slots </a>
                 </div>
             </div>
             <h1> Requested Appointments </h1>

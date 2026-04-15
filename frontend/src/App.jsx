@@ -4,6 +4,7 @@ import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
+import Slots from './pages/Slots';
 import RequestNew from './pages/RequestNew';
 import ErrorPage from './pages/ErrorPage';
 import Footer from './component/Footer';
@@ -28,6 +29,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/createOH" element={<CreateOfficeHours />} />
             <Route path="/createGroup" element={<CreateGroup />} />
+            <Route path="/slots" element={<Slots />} />
             <Route path="/request" element={<RequestNew />} />
             <Route path="/browse-owners" element={<BrowseOwners />} />
             <Route path="/booking/:ownerId" element={<BookingPage />} />
