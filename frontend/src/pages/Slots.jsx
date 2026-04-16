@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import '../Dashboard.css';
 import * as Tabs from "@radix-ui/react-tabs";
-
 //Marie Lefevre
 
 function Slots() {
@@ -100,7 +99,7 @@ function Slots() {
                 </div>
             </div>
             <h1> My slots </h1>
-            <Tabs.Root className="TabsRoot" defaultValue="drafts">
+            <Tabs.Root className="TabsRoot" defaultValue="inactive">
                 <Tabs.List className="TabsList" aria-label="Manage your Slots">
                     <Tabs.Trigger className="TabsTrigger" value="inactive">
                         Inactive Slots
@@ -113,7 +112,7 @@ function Slots() {
                     </Tabs.Trigger>
 		        </Tabs.List>
                 <Tabs.Content className="TabsContent" value="inactive">
-                
+
                 </Tabs.Content>
                 <Tabs.Content className="TabsContent" value="group">
 
