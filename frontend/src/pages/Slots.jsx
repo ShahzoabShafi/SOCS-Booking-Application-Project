@@ -104,13 +104,12 @@ function Slots() {
                 <button onClick={() => setActiveTab("tab2")}>Active Group Meetings</button>
                 <button onClick={() => setActiveTab("tab3")}>Office Hours</button>
 
-
                 <Activity mode={activeTab === "tab1" ? "visible" : "hidden"}>
                     <div>
                         Activate your inactive slots
                         <div id="slotList">
                         {slots
-                            .filter(slot => !slot.is_active)
+                            .filter(slot => slot.status === "inactive ")
                             .map((slot, index) => (
                                 <div className="card" key={index}>
                                     <div className="header-line">
