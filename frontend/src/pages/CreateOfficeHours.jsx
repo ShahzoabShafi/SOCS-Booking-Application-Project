@@ -85,7 +85,7 @@ const CreateOfficeHours = () => {
                         required 
                     /> <br />
 
-                <label htmlFor="Date">Starting Date: </label>
+                <label htmlFor="Date">Choose the date of your first office hours: </label>
                     <input 
                         type="date" name="start_date" id="Date" 
                         value={start_date}
