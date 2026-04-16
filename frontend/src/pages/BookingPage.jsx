@@ -22,7 +22,7 @@ function BookingPage() {
                 );
                 const data = await response.json();
                 if (response.ok) {
-                    setSlots(data.active_requests || []);
+                    setSlots(data.active_slots || []);
                 } else if (response.status === 404) {
                     setError("Owner not found.");
                 } else {
