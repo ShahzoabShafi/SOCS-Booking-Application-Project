@@ -11,7 +11,7 @@ function Slots() {
     const [groupSlots, setGroupSlots] = useState([]);
     const [activeTab, setActiveTab] = useState("tab1");
     const groups = groupByTitle(groupSlots);
-    const officeHours= groupByTitleOH(slots)
+    const officeHours= groupOfficeHours(slots)
 
 
     async function loadSlots() {
@@ -108,6 +108,7 @@ function Slots() {
                     Authorization: `Bearer ${localStorage.getItem("token")}`
                 }
             });
+            const data = await response.json();
             if (!response.ok) {
                 throw new Error(data.message || 'Failed to create meeting request');
             }
