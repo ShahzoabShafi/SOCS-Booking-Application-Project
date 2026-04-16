@@ -1,5 +1,7 @@
 import React from "react";
 
+// Miguel Angel Vargas Valenica
+
 function Footer(){
     const footerStyle = {
         display: 'flex',
