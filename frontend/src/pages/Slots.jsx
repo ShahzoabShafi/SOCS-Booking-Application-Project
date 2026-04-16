@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import '../Dashboard.css';
+import * as Tabs from "@radix-ui/react-tabs";
 
 //Marie Lefevre
 
@@ -99,6 +100,28 @@ function Slots() {
                 </div>
             </div>
             <h1> My slots </h1>
+            <Tabs.Root className="TabsRoot" defaultValue="drafts">
+                <Tabs.List className="TabsList" aria-label="Manage your Slots">
+                    <Tabs.Trigger className="TabsTrigger" value="inactive">
+                        Inactive Slots
+                    </Tabs.Trigger>
+                    <Tabs.Trigger className="TabsTrigger" value="group">
+                        Open Group Meetings
+                    </Tabs.Trigger>
+                    <Tabs.Trigger className="TabsTrigger" value="oh">
+                        Office Hours
+                    </Tabs.Trigger>
+		        </Tabs.List>
+                <Tabs.Content className="TabsContent" value="inactive">
+                
+                </Tabs.Content>
+                <Tabs.Content className="TabsContent" value="group">
+
+                </Tabs.Content>
+                <Tabs.Content className="TabsContent" value="oh">
+
+                </Tabs.Content>
+            </Tabs.Root>
             <div id="slotList">
                 {slots.map((slot, index) => (
                     <div className="card" key={index}>

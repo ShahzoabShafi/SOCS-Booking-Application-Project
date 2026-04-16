@@ -155,7 +155,10 @@ function Dashboard() {
             </div>
             <h1> Requested Appointments </h1>
             <div id="requestList">
-                {requests.map((req, index) => (
+            {!requests || requests.length === 0 ? (
+                <p> You have no pending meeting requests.</p>
+            ) : (
+                requests.map((req, index) => (
                 <div className="card" key={index}>
                     <div className="header-line">
                         <h3>{req.title}</h3>
@@ -183,13 +186,17 @@ function Dashboard() {
                     <p> Message: {req.message} </p>
                     <p>Attendee(s): {req.name} ({req.email})</p>
                 </div>
-                ))}
+                ))
+            )}
             </div>
         </>
         )}
         <h1> Upcoming Appointments </h1>
         <div id="bookingList">
-            {bookings.map((booking, index) => (
+        {!bookings || bookings === 0 ? (
+                <p> You have no upcoming meetings.</p>
+            ) : (
+            bookings.map((booking, index) => (
             <div className="card" key={index}>
                 <div className="header-line">
                     <h3>{booking.slot_title}</h3>
@@ -214,7 +221,8 @@ function Dashboard() {
                 </div>
                 <p>Attendee: {booking.meeting_partner_name}</p>
             </div>
-            ))}
+            ))
+            )}
         </div>
         </main>
     )
