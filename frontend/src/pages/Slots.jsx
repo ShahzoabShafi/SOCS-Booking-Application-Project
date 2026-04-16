@@ -6,21 +6,9 @@ import '../Dashboard.css';
 function Slots() {
     const navigate = useNavigate();
     const [slots, setSlots] = useState([]);
-    const [user, setUser] = useState(null);
+    const [groupSlots, setGroupSlots] = useState([]);
     const [activeTab, setActiveTab] = useState("tab1");
 
-    async function loadUser() {
-        try {
-            const userJson = localStorage.getItem('user');
-            if (userJson) {
-                setUser(JSON.parse(userJson));
-            } else {
-                // handleLogout(); // This was causing the redirect
-            }
-        } catch (err) {
-            console.error("Error loading user:", err);
-        }
-    }
     async function loadSlots() {
         try {
             const response = await fetch('http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/slots/all', {
@@ -40,6 +28,26 @@ function Slots() {
 
     useEffect(() => {
         loadSlots();
+    }, []);
+
+    async function loadGroupSlots() {
+        try {
+            const response = await fetch('http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/slots/group/id/votes', {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                }
+            });
+            const data = await response.json();
+            setGroupSlots(Array.isArray(data.my_group_slots) ? data.my_group_slots : []);
+        } catch (err) {
+            console.error("Error loading slots:", err);
+            window.alert(`Error loading group slots: ${err.message}`);
+        }
+    }
+
+    useEffect(() => {
+        loadGroupSlots();
     }, []);
 
     async function handleDelete(id) {
@@ -84,9 +92,19 @@ function Slots() {
         navigate('/')
         localStorage.removeItem('token');
         localStorage.removeItem('user');
-        setUser(null);
     }
 
+    function groupByTitle(slots) {
+        const map = {};
+        slots.forEach(slot => {
+          if (!map[slot.slot_title]) map[slot.slot_title] = [];
+          map[slot.slot_title].push(slot);
+        });
+        return Object.entries(map).map(([title, slots]) => ({ title, slots }));
+      }
+
+    
+    const groups = groupByTitle(groupSlots);
     return (
         <main>
             <div className="navBar" id="navBar">
@@ -99,17 +117,17 @@ function Slots() {
                 </div>
             </div>
             <h1> My slots </h1>
-            <div>
+            <div class="slots-menu">
                 <button onClick={() => setActiveTab("tab1")}>Inactive slots</button>
                 <button onClick={() => setActiveTab("tab2")}>Active Group Meetings</button>
                 <button onClick={() => setActiveTab("tab3")}>Office Hours</button>
-
+            </div>
                 <Activity mode={activeTab === "tab1" ? "visible" : "hidden"}>
                     <div>
                         Activate your inactive slots
                         <div id="slotList">
                         {slots
-                            .filter(slot => slot.status === "inactive ")
+                            .filter(slot => slot.status === "private")
                             .map((slot, index) => (
                                 <div className="card" key={index}>
                                     <div className="header-line">
@@ -144,10 +162,44 @@ function Slots() {
                 </Activity>
 
                 <Activity mode={activeTab === "tab2" ? "visible" : "hidden"}>
-                    <div>Count votes and finalize group meetings</div>
-                    <div id="slotList">
+                    <div> Count votes and finalize group meetings </div>
+                    <div>
+                        {groups.map(({ title, slots }) => {
+                            const sorted = [...slots].sort((a, b) => b.vote_count - a.vote_count);
+                            const totalVotes = slots.reduce((sum, s) => sum + s.vote_count, 0);
+
+                            return (
+                            <div key={title} className="meeting-slot-card">
+                                <div className="title-row">
+                                <span className="title">{title}</span>
+                                <span className="badge">Open for voting</span>
+                                </div>
+
+                                <div className="slots-header">
+                                <span>Time Slots</span>
+                                <span>{totalVotes} total votes</span>
+                                </div>
+
+                                {sorted.map(sv => (
+                                <div key={sv.slot_id} className="slot-row">
+                                    <div>
+                                    <div className="slot-date">{formatDate(sv.start_time)}</div>
+                                    <div className="slot-time">{formatTime(sv.start_time, sv.end_time)}</div>
+                                    </div>
+                                    <div className="vote-pill">{sv.vote_count} votes</div>
+                                </div>
+                                ))}
+
+                                <button onClick={() => onFinalize(title, sorted[0])}>
+                                Finalize Meeting
+                                </button>
+                            </div>
+                            );
+                        })}
+                        </div>
+                    {/*<div id="slotList">
                         {slots
-                            .filter(slot => slot.slot_type === "group_meeting")
+                            .filter(slot => slot.slot_type === "group_meeting" && slot.status === "active")
                             .map((slot, index) => (
                                 <div className="card" key={index}>
                                     <div className="header-line">
@@ -158,8 +210,8 @@ function Slots() {
                                         </button>
                                     </div>
                                 </div>
-                        ))}
-                        </div>
+                        ))} 
+                        </div> */}
                 </Activity>
                 <Activity mode={activeTab === "tab3" ? "visible" : "hidden"}>
                     <div>Office hours</div>
@@ -179,7 +231,6 @@ function Slots() {
                         ))}
                         </div>
                 </Activity>
-    </div>
             {/*
             <div id="slotList">
                 {slots.map((slot, index) => (
