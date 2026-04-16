@@ -15,7 +15,7 @@ function Dashboard() {
             if (userJson) {
                 setUser(JSON.parse(userJson));
             } else {
-                // handleLogout(); // This was causing the redirect
+                handleLogout(); 
             }
         } catch (err) {
             console.error("Error loading user:", err);
