@@ -31,6 +31,7 @@ const dashboardRoutes = require('./routes/dashboard');
 const bookings = require('./routes/bookingRequestRoutes');
 const slots = require('./routes/slotRoutes');
 const confirmedBookings = require('./routes/confirmedBookingsRoutes');
+const calendarRoutes = require('./routes/calendarRoutes');
 
 const app = express();
 
@@ -45,6 +46,7 @@ app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/bookings', bookings);
 app.use('/api/slots', slots);
 app.use('/api/confirmedBookings', confirmedBookings);
+app.use('/api/calendar', calendarRoutes);
 
 // Base route to test server is running
 app.get('/', (req, res) => {
