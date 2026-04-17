@@ -24,7 +24,7 @@ router.get("/private_booked", protect, private_booked);
 
 // group method apis
 router.post("/group", protect, propose_slots);
-router.post("/group/:id/invite", protect, invite);
+router.post("/group/invite", protect, invite);
 router.post("/group/:id/vote", protect, vote);
 router.get("/group/votes", protect, view_slot_votes);
 router.post("/group/:id/confirm", protect, confirm_slot);

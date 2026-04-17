@@ -9,7 +9,7 @@ const dbPromise = require('../config/db');
 // these apis will control type 2 (group meeting) related actions according to the following routes:
 
 //router.post("/group", propose_slots);
-//router.post("/group/:id/invite", invite);
+//router.post("/group/invite", invite);
 //router.post("/group/:id/vote", vote);
 //router.get("/group/votes", view_slot_votes);
 //router.post("/group/:id/confirm", confirm_slot);
@@ -66,12 +66,13 @@ const propose_slots = async (req, res) => {
 
 // this function allows an owner to generate a shareable URL invitation that allows users
 // to view the owner's proposed slots. Likely will be called thru a "create invite" button.
-// POST /api/slots/group/:id/invite
+// POST /api/slots/group/invite
 const invite = async (req, res) => {
 
     const db = await dbPromise; 
-
-    const owner_id = req.user_id;
+    
+    // collect id from JWT, not url parameter like previous version
+    const owner_id = req.user.id;
 
     // this url (blah/booking/:owner) will the be used by a user thru a GET request, once owner shares the link with them.
     // Separating this into 2 apis allows the intention to share slot info to be clear and separate.
