@@ -136,7 +136,7 @@ const delete_slot = async (req, res) => {
 
 
 // fourth function will get all active public slots associated to ONE owner, for users to browse
-// link for this is (get) /api/owner_active_slots?owner_id=...
+// link for this is (get) /api/slots/owner_active_slots?owner_id=...
 const owner_active_slots = async (req, res) => {
     
     // new version of db setup makes this necessary

@@ -11,7 +11,7 @@ const dbPromise = require('../config/db');
 //router.post("/group", propose_slots);
 //router.post("/group/:id/invite", invite);
 //router.post("/group/:id/vote", vote);
-//router.get("/group/:ownerId/votes", view_slot_votes);
+//router.get("/group/votes", view_slot_votes);
 //router.post("/group/:id/confirm", confirm_slot);
 
 
@@ -133,14 +133,21 @@ const vote = async (req, res) => {
 
 
 // This function allows owners to view the votes for their proposed slots
-// GET /api/slots/group/:ownerId/votes
+// GET /api/slots/group/votes
 const view_slot_votes = async (req, res) => {
 
     const db = await dbPromise; 
 
     // 1. get data
-    const owner_id = req.params.ownerId;
-    if (owner_id != req.user.id){
+    const owner_id = req.user.id;
+    
+    // 2. validate data
+    const owner = await db.get(
+        `SELECT * FROM users
+        WHERE user_id = ?`,
+        [owner_id]
+    );
+    if (!owner || owner.role != 'owner'){
         return res.status(403).json({ message: "Unauthorized user." });
     }
 
@@ -162,7 +169,6 @@ const view_slot_votes = async (req, res) => {
 
         return res.status(200).json({ message: "Votes retrieved successfully.",
                                       slot_votes: votes});
-
     }
     catch (err){
         return res.status(500).json({ message: "Failed to retrieve vote counts.", error: err.message});

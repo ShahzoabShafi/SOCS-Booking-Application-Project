@@ -24,7 +24,7 @@ router.get("/get_slot_owners", get_slot_owners);
 router.post("/group", protect, propose_slots);
 router.post("/group/:id/invite", protect, invite);
 router.post("/group/:id/vote", protect, vote);
-router.get("/group/:ownerId/votes", protect, view_slot_votes);
+router.get("/group/votes", protect, view_slot_votes);
 router.post("/group/:id/confirm", protect, confirm_slot);
 
 // export it so that server.js can use it.
