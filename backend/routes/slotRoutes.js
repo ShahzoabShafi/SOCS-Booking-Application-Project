@@ -1,8 +1,8 @@
 // import express and controller functions
 const express = require("express");
 const router = express.Router();
-const {create_slot, activate_slot, delete_slot, createRecurringSlots, all_my_slots, getAvailableSlots, reserveSlot, owner_active_slots, get_slot_owners } = require('../controllers/slotControllers'); // basic slot management apis
-const {propose_slots, invite, vote, view_slot_votes, confirm_slot, private_not_booked, private_booked} = require('../controllers/groupMeetingControllers'); // type 2 (group meeting) apis
+const {create_slot, activate_slot, delete_slot, createRecurringSlots, all_my_slots, getAvailableSlots, reserveSlot, owner_active_slots, get_slot_owners, private_booked, private_not_booked} = require('../controllers/slotControllers'); // basic slot management apis
+const {propose_slots, invite, vote, view_slot_votes, confirm_slot} = require('../controllers/groupMeetingControllers'); // type 2 (group meeting) apis
 const { protect } = require("../middleware/authMiddleware");
 
 
@@ -18,9 +18,9 @@ router.post('/recurring', protect, createRecurringSlots);
 router.get("/available", protect, getAvailableSlots);
 router.post("/:id/reserve", protect, reserveSlot);
 router.get("/owner_active_slots", owner_active_slots);
-router.get("/get_slot_owners", get_slot_owners);
-router.get("/private_not_booked", private_not_booked);
-router.get("/private_booked", private_booked);
+router.get("/get_slot_owners", protect, get_slot_owners);
+router.get("/private_not_booked", protect, private_not_booked);
+router.get("/private_booked", protect, private_booked);
 
 // group method apis
 router.post("/group", protect, propose_slots);
