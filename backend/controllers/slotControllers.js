@@ -328,7 +328,6 @@ const getAvailableSlots = async (req, res) => {
 
 
 
-
 // User reserves a specific slot
 const reserveSlot = async (req, res) => {
     try {
@@ -370,5 +369,93 @@ const reserveSlot = async (req, res) => {
 
 
 
+
+
+// we need to allow frontend to differentiate private-booked slots from private-notbooked slots (simply not activated yet)
+// This function will retrieve all private slots that are not booked
+// (get) /api/slots/private_not_booked
+const private_not_booked = async (req, res) => {
+
+
+    const db = await dbPromise;
+   
+    // 1. get data
+    const owner_id = req.user.id;
+
+    // 2. validate data
+    const owner = await db.get(
+        `SELECT * FROM users
+        WHERE user_id = ?`,
+        [owner_id]
+    );
+    if (!owner || owner.role != 'owner'){
+        return res.status(403).json({ message: "Unauthorized user." });
+    }
+
+    // 3. Retrieve slots 
+    try{
+        const slots = await db.all(
+            `SELECT * FROM slots s 
+            WHERE s.user_id = ?
+            AND s.status = 'private'
+            AND s.slot_id NOT IN (SELECT slot_id FROM bookings)`,
+            [owner_id]
+        );
+            
+        return res.status(200).json({ message: "Slots retrieved successfully.",
+                                      private_not_booked_slots: slots});
+    }
+    catch (err){
+        return res.status(500).json({ message: "Failed to retrieve slots.", error: err.message});
+    }
+} 
+
+
+
+
+
+
+// now do the same but for private & booked slots
+// This function will retrieve all private slots that ARE booked
+// (get) /api/slots/private_booked
+const private_booked = async (req, res) => {
+
+    const db = await dbPromise;
+   
+    // 1. get data
+    const owner_id = req.user.id;
+
+    // 2. validate data
+    const owner = await db.get(
+        `SELECT * FROM users
+        WHERE user_id = ?`,
+        [owner_id]
+    );
+    if (!owner || owner.role != 'owner'){
+        return res.status(403).json({ message: "Unauthorized user." });
+    }
+
+    // 3. Retrieve slots 
+    try{
+        const slots = await db.all(
+            `SELECT * FROM slots s 
+            WHERE s.user_id = ?
+            AND s.status = 'private'
+            AND s.slot_id IN (SELECT slot_id FROM bookings)`,
+            [owner_id]
+        );
+            
+        return res.status(200).json({ message: "Slots retrieved successfully.",
+                                      private_booked_slots: slots});
+    }
+    catch (err){
+        return res.status(500).json({ message: "Failed to retrieve slots.", error: err.message});
+    }
+} 
+
+
+
+
+
 // export them so functions can be used
-module.exports = { create_slot, activate_slot, delete_slot, createRecurringSlots, all_my_slots, getAvailableSlots, reserveSlot, owner_active_slots, get_slot_owners };
+module.exports = { create_slot, activate_slot, delete_slot, createRecurringSlots, all_my_slots, getAvailableSlots, reserveSlot, owner_active_slots, get_slot_owners, private_not_booked, private_booked };
