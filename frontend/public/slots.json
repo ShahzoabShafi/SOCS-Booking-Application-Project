@@ -1,0 +1,35 @@
+[
+  {
+    "id": 1,
+    "title": "Office Hours",
+    "date": "2024-05-15",
+    "startTime": "10:00",
+    "endTime": "10:30",
+    "status": "active"
+  },
+  {
+    "id": 2,
+    "title": "Project Sync",
+    "date": "2024-05-15",
+    "startTime": "14:00",
+    "endTime": "15:00",
+    "status": "booked",
+    "booker": "John Doe"
+  },
+  {
+    "id": 3,
+    "title": "Personal Time",
+    "date": "2024-05-16",
+    "startTime": "11:00",
+    "endTime": "11:30",
+    "status": "private"
+  },
+  {
+    "id": 4,
+    "title": "Mentoring Session",
+    "date": "2024-05-17",
+    "startTime": "09:00",
+    "endTime": "09:30",
+    "status": "active"
+  }
+]

@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Front end: Miguel Angel Vargas Valencia
-
+//This is the login page.
 function Login() {
+    // Hook for programmatic navigation
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-
+    // Function to navigate to the previous page in the browser history
   const goBack = () => {
     navigate(-1);
   };
@@ -18,7 +19,7 @@ function Login() {
     e.preventDefault();
     setError('');
     try{
-      const response = await fetch('http://localhost:5000/api/auth/login',{
+      const response = await fetch('http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/auth/login',{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -47,7 +48,7 @@ function Login() {
         <button onClick={goBack}>Go back</button>
       </nav>
       <form className="login-form" onSubmit={handleLogin}>
-        <h2>Sign in</h2>
+        <h2>Log in</h2>
         <input type="email"
         placeholder='Email'
          value ={email}
@@ -62,7 +63,7 @@ function Login() {
           onChange={(e) => setPassword(e.target.value)} 
           required 
         />
-        <button type="submit">Sign in</button>
+        <button type="submit">Log in</button>
         {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
 
         <p>
@@ -70,6 +71,7 @@ function Login() {
         </p>
       </form>
 
+       
       <style>{`
         main {
           display: flex;

@@ -22,7 +22,7 @@ h1 {
     text-align: center;
     margin: 2rem;
 }
-.navBar a {
+.navBar a, .navBar button {
     background-color: #81ACFC;
     padding: 10px 15px;
     color: white;
@@ -31,21 +31,47 @@ h1 {
     display: inline-block;
     margin: 2rem;
     font-size: 20px;
+    border: none;
 }
-.navBar a :hover {
+.navBar a :hover, .navBar button:hover {
     background-color: #1a3a6b;
     padding: 10px 15px;
     text-decoration: none;
     display: inline-block;
     margin: 2rem;
 }
-#bookingList {
+#bookingList, #requestList, #slotList {
     grid-template-columns: 1fr 1fr 1fr;
     display: grid;
     gap: 1.5vw;
     margin: 2rem;
     align-items: center;
 }
+
+.owner-buttons, .slots-menu {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 2rem;
+}
+
+.owner-buttons a {
+    background-color: #81ACFC;
+    padding: 10px 15px;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 20px;
+}
+
+.owner-buttons a:hover {
+    background-color: #1a3a6b;
+}
+
+#requestList h1 {
+    text-align: center;
+}
+
 .card {
     background-color:white;
     border: 1px solid black;
@@ -67,9 +93,6 @@ h1 {
     height: 30px;
     width: 30px;
     fill: #0A2342; 
-}
-#create, #url {
-    display: none;
 }
 @media (max-width: 1050px) {
     #bookingList {

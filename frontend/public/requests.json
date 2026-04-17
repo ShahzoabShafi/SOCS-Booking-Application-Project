@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "title": "Urgent Meeting Request",
+        "date": "2024-05-18",
+        "startTime": "13:00",
+        "endTime": "13:30",
+        "message": "I would like to discuss the new project proposal.",
+        "user": "Jane Smith"
+    },
+    {
+        "id": 2,
+        "title": "Follow-up on our conversation",
+        "date": "2024-05-19",
+        "startTime": "16:00",
+        "endTime": "16:30",
+        "message": "Can we continue our discussion from last week?",
+        "user": "Peter Jones"
+    }
+]

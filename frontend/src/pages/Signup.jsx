@@ -5,6 +5,7 @@ import '../App.css';
 
 
 function Signup() {
+  //States are variable for user input
   const navigate = useNavigate();
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
@@ -12,29 +13,29 @@ function Signup() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
 
-
+  //function to navigate back to the previous page
   const goBack = () => {
     navigate(-1);
   };
-
+  //Function to handle the signup process
   const handleSignup = async (e) => {
-    e.preventDefault();
-    setError('');
+    e.preventDefault(); //We prevent the default from submision behavour
+    setError(''); // we clear any previous errors
 
-    // Validate for a McGill Email on the frontend for better UX
+    // Validate for a McGill Email on the frontend 
     const emailRegex = /^[a-zA-Z0-9._%+-]+@(mcgill\.ca|mail\.mcgill\.ca)$/;
     if (!emailRegex.test(email)) {
       setError('A valid McGill email address (@mcgill.ca or @mail.mcgill.ca) is required.');
       return;
     }
-
+    // Check if the passwords match
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
     }
-
+    // We send a POST request to registration endpoint
     try {
-      const response = await fetch('http://localhost:5000/api/auth/register', {
+      const response = await fetch('http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -45,20 +46,25 @@ function Signup() {
       if (!response.ok) {
         throw new Error(data.message || 'Failed to register');
       }
+      // If successful, navigate to the login page
       navigate('/login');
     } catch (err) {
+      //set error message if registration fails
       setError(err.message);
     }
   };
 
   return (
     <main>
+      {/* Navigation bar */}
       <nav>
+              {/* Signup form */}
         <span>McBooking</span>
         <button onClick={goBack}>Go back</button>
       </nav>
       <form className="login-form" onSubmit={handleSignup}>
         <h2>Create an account</h2>
+              {/* Input for full name */}
         <input
           type="text"
           placeholder="Full Name"
@@ -66,6 +72,7 @@ function Signup() {
           onChange={(e) => setFullName(e.target.value)}
           required
         />
+        {/* Input for  email */}
         <input
           type="email"
           placeholder="Email"
@@ -73,6 +80,7 @@ function Signup() {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
+        {/* Input to enter password & cnofirm password */}
         <input
           type="password"
           placeholder="Password"
@@ -90,9 +98,10 @@ function Signup() {
         <button type="submit">Register</button>
         {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
         <p>
-          Already have an account? <a href="/login">Sign in</a>
+          Already have an account? <a href="/login">Log in</a>
         </p>
       </form>
+        {/* Style for the above page*/}
       <style>{`
         main {
             display: flex;
