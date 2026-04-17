@@ -5,7 +5,8 @@ const {export_calendar} = require('../controllers/calendarControllers');
 const { protect } = require("../middleware/authMiddleware");
 
 // forward request to the correct controller functions
-router.post("/export", protect, export_calendar);
+router.get("/export", protect, export_calendar);
+
 
 // export it so that server.js can use it.
 module.exports = router;
