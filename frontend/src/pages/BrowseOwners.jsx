@@ -19,7 +19,13 @@ function BrowseOwners() {
     // This useEffect hook fetches the list of slot owners from the API when the component mounts.
     useEffect(() => {
         async function fetchOwners() {
-            try {const response = await fetch('http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/slots/get_slot_owners');
+            try {
+                const response = await fetch('http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/slots/get_slot_owners', {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`
+                    }
+                });
                 const data = await response.json();
                 if (response.ok && data.slot_owners) {
                     setOwners(data.slot_owners);
