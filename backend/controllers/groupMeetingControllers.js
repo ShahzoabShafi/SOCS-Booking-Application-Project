@@ -26,7 +26,7 @@ const propose_slots = async (req, res) => {
 
     // 1. collect data
     const user_id = req.user.id; // thru JWT
-    const slots = req.body.slots;
+    const {title, slots} = req.body;
     // note that the user will not have to fill in each slots table field.
     // only start_time, end_time, and slot_title
     
@@ -48,9 +48,9 @@ const propose_slots = async (req, res) => {
 
             const insert_slot = await db.run(
                 `INSERT INTO slots
-                (user_id, slot_title, start_time, end_time, number_weeks_recurrence, status, slot_type, created_at)
-                VALUES (?, ?, ?, ?, ?, 'private', 'group_meeting', CURRENT_TIMESTAMP)`,
-                [user_id, slot.slot_title, slot.start_time, slot.end_time, slot.number_weeks_recurrence]);
+                (user_id, title, start_time, end_time, status, slot_type, created_at)
+                VALUES (?, ?, ?, ?, 'private', 'group_meeting', CURRENT_TIMESTAMP)`,
+                [user_id, title, slot.start_time, slot.end_time]);
        }
        // 4. Communicate success of insert or errors.
        return res.status(201).json({ message: "Slots created." });
