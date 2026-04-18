@@ -121,10 +121,9 @@ function Slots() {
         localStorage.removeItem('user');
     }
     async function onFinalize(slot) {
+        const id= slot.slot_id;
         try {
-            const id= slot.slot_id
-            const response = await fetch('http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/slots/group/${id}/confirm', {
-                method: 'POST',
+            const response = await fetch(`http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/slots/group/${id}/confirm`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`
                 }
@@ -322,9 +321,6 @@ function Slots() {
                                 </div>
                                 ))}
 
-                                <button onClick={() => onFinalize(sorted[0])}>
-                                Finalize Meeting
-                                </button>
                             </div> 
                             );
                         })}
