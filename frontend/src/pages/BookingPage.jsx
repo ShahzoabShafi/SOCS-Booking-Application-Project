@@ -88,6 +88,7 @@ function BookingPage() {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${localStorage.getItem("token")}`
                     },
+                    body: JSON.stringify({"slot_id": slot.slot_id}), 
                 });
                 const data = await response.json();
                 if (!response.ok) {
@@ -102,7 +103,6 @@ function BookingPage() {
             
         }
         const slotId=slot.slot_id;
-        alert(`You have booked slot ${slot.slot_id}. A confirmation email has been sent.`);
         // Updates the UI immediately to reflect the booking by changing the slot's state.
         setSlots(prevSlots => prevSlots.map(slot =>
             slot.slot_id === slotId ? { ...slot, isBooked: true } : slot
