@@ -80,7 +80,7 @@ function BookingPage() {
                 window.alert(`Error updating request: ${err.message}`);
     
             }
-        } else {
+        } if (slot.slot_type === "group_meeting") {
             try {
                 const response = await fetch(`http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/slots/group/${slot.slot_id}/vote`, {
                     method: "POST",
