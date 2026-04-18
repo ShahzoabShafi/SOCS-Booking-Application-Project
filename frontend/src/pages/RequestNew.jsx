@@ -29,14 +29,10 @@ function RequestNew() {
                     const data = await response.json();
                     if (response.ok && data.slot_owners) {
                         setOwners(data.slot_owners);
-                    } else {
-                        setError(data.message || "Failed to fetch owners.");
                     }
-                } catch (error) {
-                    // Catches network or other errors during the fetch and sets a connection error message.
-                    setError("Could not connect to the server.");
-                } finally {
-                    setLoading(false);
+                } catch (err) {
+                    console.error("Error finalizing", err);
+                    window.alert(`Error loading owners: ${err.message}`);
                 }
             }
             fetchAllOwners();
