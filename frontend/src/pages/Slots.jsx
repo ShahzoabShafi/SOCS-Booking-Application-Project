@@ -45,7 +45,7 @@ function Slots() {
                 }
             });
             const data = await response.json();
-            setGroupSlots(Array.isArray(data.my_group_slots) ? data.my_group_slots : []);
+            setGroupSlots(Array.isArray(data.slot_votes) ? data.slot_votes : []);
         } catch (err) {
             console.error("Error loading slots:", err);
             window.alert(`Error loading group slots: ${err.message}`);
@@ -65,7 +65,7 @@ function Slots() {
                 }
             });
             const data = await response.json();
-            setPrivateSlots(Array.isArray(data.my_private_slots) ? data.my_private_slots : []);
+            setPrivateSlots(Array.isArray(data.private_not_booked_slots) ? data.private_not_booked_slots : []);
         } catch (err) {
             console.error("Error loading slots:", err);
             window.alert(`Error loading private slots: ${err.message}`);
@@ -122,7 +122,7 @@ function Slots() {
     }
     async function onFinalize(slot) {
         try {
-            id= slot.slot_id
+            const id= slot.slot_id
             const response = await fetch('http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/slots/group/${id}/confirm', {
                 method: 'POST',
                 headers: {
