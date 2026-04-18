@@ -9,6 +9,7 @@ function Slots() {
     const navigate = useNavigate();
     const [slots, setSlots] = useState([]);
     const [groupSlots, setGroupSlots] = useState([]);
+    const [privateSlots, setPrivateSlots] = useState([]);
     const [activeTab, setActiveTab] = useState("tab1");
     const groups = groupByTitle(groupSlots);
     const officeHours= groupOfficeHours(slots)
@@ -37,7 +38,7 @@ function Slots() {
 
     async function loadGroupSlots() {
         try {
-            const response = await fetch('http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/slots/group/id/votes', {
+            const response = await fetch('http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/slots/group/votes', {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -53,6 +54,26 @@ function Slots() {
 
     useEffect(() => {
         loadGroupSlots();
+    }, []);
+
+    async function loadPrivateSlots() {
+        try {
+            const response = await fetch('http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/slots/private_not_booked', {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                }
+            });
+            const data = await response.json();
+            setPrivateSlots(Array.isArray(data.my_private_slots) ? data.my_private_slots : []);
+        } catch (err) {
+            console.error("Error loading slots:", err);
+            window.alert(`Error loading private slots: ${err.message}`);
+        }
+    }
+
+    useEffect(() => {
+        loadPrivateSlots();
     }, []);
 
     async function handleDelete(id) {
@@ -188,8 +209,7 @@ function Slots() {
                     <div>
                         Activate your inactive slots
                         <div id="slotList">
-                        {slots
-                            .filter(slot => slot.status === "private")
+                        {privateSlots
                             .map((slot, index) => (
                                 <div className="card" key={index}>
                                     <div className="header-line">
@@ -279,19 +299,14 @@ function Slots() {
                     <div>Office hours</div>
                     <div>
                         {officeHours.map(({ title, slots }) => {
-                            const sorted = [...slots].sort((a, b) => b.vote_count - a.vote_count);
-                            const totalVotes = slots.reduce((sum, s) => sum + s.vote_count, 0);
-
                             return (
                             <div key={title} className="meeting-slot-card">
                                 <div className="title-row">
                                 <span className="title">{title}</span>
-                                <span className="badge">Open for voting</span>
                                 </div>
 
                                 <div className="slots-header">
                                 <span>Time Slots</span>
-                                <span>{totalVotes} total votes</span>
                                 </div>
 
                                 {sorted.map(sv => (
@@ -300,7 +315,6 @@ function Slots() {
                                     <div className="slot-date">{formatDate(sv.start_time)}</div>
                                     <div className="slot-time">{formatTime(sv.start_time, sv.end_time)}</div>
                                     </div>
-                                    <div className="vote-pill">{sv.vote_count} votes</div>
                                 </div>
                                 ))}
 
