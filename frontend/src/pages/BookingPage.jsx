@@ -101,7 +101,7 @@ function BookingPage() {
             }
             
         }
-    
+        const slotId=slot.slot_id;
         alert(`You have booked slot ${slot.slot_id}. A confirmation email has been sent.`);
         // Updates the UI immediately to reflect the booking by changing the slot's state.
         setSlots(prevSlots => prevSlots.map(slot =>
