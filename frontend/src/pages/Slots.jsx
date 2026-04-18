@@ -299,6 +299,10 @@ function Slots() {
                     <div>Office hours</div>
                     <div>
                         {officeHours.map(({ title, slots }) => {
+                            const sorted = [...slots].sort(
+                                (a, b) => new Date(a.start_time) - new Date(b.start_time)
+                            );
+
                             return (
                             <div key={title} className="meeting-slot-card">
                                 <div className="title-row">
