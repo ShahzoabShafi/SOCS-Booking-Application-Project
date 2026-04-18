@@ -203,7 +203,7 @@ const confirm_slot = async (req, res) => {
     }
  
 
-    // 3. Create bookings  
+    // 3. Create bookings and modify slots to set them to private
     
     // Which users do we need to create it for?
     // ... those users who voted for the chosen slot...
@@ -236,6 +236,17 @@ const confirm_slot = async (req, res) => {
             );
         }
 
+
+        // set all the proposed slots to private
+        // only way to set them all is to query all slots with same title and owner and slot_type
+        const slot_status_update = db.run(
+            `UPDATE slots 
+            SET status = 'private'
+            WHERE title = ?, user_id = ?, slot_type = 'group_meeting'
+            `,
+            [slot.title, owner_id]
+        );
+        
         return res.status(200).json({ message: "Bookings all created successfully for slot owner and associated users." });
     }
     catch (err){
