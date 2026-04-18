@@ -50,7 +50,17 @@ const CreateGroup = () => {
     };
 
     return (
-        <div className="form-container">
+        <main>
+            <div className="navBar">
+                    <div>
+                        <img src="/mcbooking.png" alt=""></img>
+                    </div>
+                    <div className="menu">
+                        <a href="/dashboard" id="back"> Back </a>
+                        <a href="/" id="exit"> Log Out </a>
+                    </div>
+                </div>
+            <div className="form-container">
             <h2>Create New Group Meeting</h2> <br />
             <form onSubmit={handleSubmit}>
                 <label htmlFor="title">Title: </label>
@@ -72,6 +82,7 @@ const CreateGroup = () => {
                 <h3>Suggest meeting times for the group.</h3>
                 {timeSlots.map((slot, index) => (
                     <div key={index} className="time-pair">
+                        <h3>Option:</h3>
                         <input
                         type="datetime-local"
                         value={slot.start_time}
@@ -97,6 +108,7 @@ const CreateGroup = () => {
                 <button type="submit" className="submit-btn">Create Group</button>
             </form>
         </div>
+    </main>
     );
 };
 

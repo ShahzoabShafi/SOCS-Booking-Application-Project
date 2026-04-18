@@ -48,7 +48,7 @@ h1 {
     align-items: center;
 }
 
-.owner-buttons, .slots-menu {
+.owner-buttons {
     display: flex;
     justify-content: center;
     gap: 20px;
