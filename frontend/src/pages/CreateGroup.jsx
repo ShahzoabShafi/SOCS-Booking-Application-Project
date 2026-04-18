@@ -6,12 +6,9 @@ import '../Forms.css';
 
 const CreateGroup = () => {
     const [title, setTitle] = useState('');
-    const [start_time1, setStart1] = useState('');
-    const [end_time1, setEnd1] = useState('');
-    const [start_time2, setStart2] = useState('');
-    const [end_time2, setEnd2] = useState('');
-    const [start_time3, setStart3] = useState('');
-    const [end_time3, setEnd3] = useState('');
+    const [timeSlots, setTimeSlots] = useState([
+        { start_time: "", end_time: "" }
+      ]);
     const [number_weeks_recurrence, setNumberWeeksRecurrence] = useState('');
     const navigate = useNavigate();
 
@@ -25,11 +22,11 @@ const CreateGroup = () => {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
                 },
-                body: JSON.stringify({ "slots": [
-                    {"slot_title": title, "start_time": start_time1, "end_time": end_time1, "number_weeks_recurrence": number_weeks_recurrence}, 
-                    {"slot_title": title, "start_time": start_time2, "end_time": end_time2, "number_weeks_recurrence": number_weeks_recurrence}, 
-                    {"slot_title": title, "start_time": start_time3, "end_time": end_time3, "number_weeks_recurrence": number_weeks_recurrence}
-                ]})
+                body: JSON.stringify({
+                    "title": title,
+                    "recurrence": number_weeks_recurrence,
+                    "slots": timeSlots
+                  })
             });
             const data = await response.json();
             if (!response.ok) {
@@ -41,6 +38,15 @@ const CreateGroup = () => {
             console.error("Error creating group meeting:", err);
             window.alert(`Error creating group meeting: ${err.message}`);
         }
+    };
+    const addTimeSlot = () => {
+        setTimeSlots([...timeSlots, { start_time: "", end_time: "" }]);
+      };
+
+    const handleTimeChange = (index, field, value) => {
+        const updated = [...timeSlots];
+        updated[index][field] = value;
+        setTimeSlots(updated);
     };
 
     return (
@@ -63,46 +69,31 @@ const CreateGroup = () => {
                     onChange={(e) => setNumberWeeksRecurrence(e.target.value)}
                     required
                 />
-                <h3>Suggest 3 meeting times for the group.</h3>
-                <label htmlFor="Date">Start Date: </label>
-                <input type="datetime-local" name="start_time1" id="Date" 
-                        value={start_time1}
-                        onChange={(e) => setStart1(e.target.value)}
-                        required /> <br />
-        
-                <label htmlFor="date2">End Date: </label>
-                    <input type="datetime-local" name="end_time1" id="date2" 
-                        value={end_time1}
-                        onChange={(e) => setEnd1(e.target.value)}
-                        required /> <br />
-                        
-                <p> Second option:</p>
-                <label htmlFor="Date">Start Date: </label>
-                <input type="datetime-local" name="start_time2" id="Date" 
-                        value={start_time2}
-                        onChange={(e) => setStart2(e.target.value)}
-                        required /> <br />
-        
-                <label htmlFor="date2">End Date: </label>
-                    <input type="datetime-local" name="end_time2" id="date2" 
-                        value={end_time2}
-                        onChange={(e) => setEnd2(e.target.value)}
-                        required /> <br />
-                
-                <p> Third option:</p>
-                <label htmlFor="Date">Start Date: </label>
-                <input type="datetime-local" name="start_time3" id="Date" 
-                        value={start_time3}
-                        onChange={(e) => setStart3(e.target.value)}
-                        required /> <br />
-        
-                <label htmlFor="date2">End Date: </label>
-                    <input type="datetime-local" name="end_time3" id="date2" 
-                        value={end_time3}
-                        onChange={(e) => setEnd3(e.target.value)}
-                        required /> <br />
-                
-                <br />
+                <h3>Suggest meeting times for the group.</h3>
+                {timeSlots.map((slot, index) => (
+                    <div key={index} className="time-pair">
+                        <input
+                        type="datetime-local"
+                        value={slot.start_time}
+                        onChange={(e) =>
+                            handleTimeChange(index, "start_time", e.target.value)
+                        }
+                        required
+                        />
+                        <br />
+                        <input
+                        type="datetime-local"
+                        value={slot.end_time}
+                        onChange={(e) =>
+                            handleTimeChange(index, "end_time", e.target.value)
+                        }
+                        required
+                        /> <br />
+                    </div>
+                    ))}             
+                    <button type="button" onClick={addTimeSlot}>
+                    ➕ Add another time
+                    </button> <br />
                 <button type="submit" className="submit-btn">Create Group</button>
             </form>
         </div>

@@ -8,13 +8,39 @@ import '../Dashboard.css';
 
 function RequestNew() {
     const [owners, setOwners] = useState([]);
-    const [owner_email, setOwner] = useState('');
+    const [owner_email, setOwnerEmail] = useState('');
     const [title, setTitle] = useState('');
     const [start_time, setStart] = useState('');
     const [end_time, setEnd] = useState('');
     const [message, setMessage] = useState('');
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+            async function fetchAllOwners() {
+                try {
+                    //FILL IN THE API ONCE I GET IT 
+                    const response = await fetch('http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/slots/', {
+                        method: 'GET',
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem("token")}`
+                        }
+                    });
+                    const data = await response.json();
+                    if (response.ok && data.slot_owners) {
+                        setOwners(data.slot_owners);
+                    } else {
+                        setError(data.message || "Failed to fetch owners.");
+                    }
+                } catch (error) {
+                    // Catches network or other errors during the fetch and sets a connection error message.
+                    setError("Could not connect to the server.");
+                } finally {
+                    setLoading(false);
+                }
+            }
+            fetchAllOwners();
+        }, []);
 
     const handleRequest = async (e) => {
         e.preventDefault();
@@ -54,10 +80,20 @@ function RequestNew() {
             <div className="form-container">
                 <form name="Request" onSubmit={handleRequest}>
                     <h1> Request a Meeting </h1>
-                    <input type="email" name="owner" placeholder="With: enter their mcgill.ca email address" 
-                           value={owner_email}
-                           onChange={(e) => setOwner(e.target.value)}
-                           required /> <br />
+                    <select
+                        name="owner"
+                        value={owner_email}
+                        onChange={(e) => setOwnerEmail(e.target.value)}
+                        required
+                        >
+                        <option value="">Select an owner</option>
+
+                        {owners.map((owner, index) => (
+                            <option key={index} value={owner.email}>
+                            {owner.name ? `${owner.name} (${owner.email})` : owner.email}
+                            </option>
+                        ))}
+                        </select> <br />
 
                     <input type="text" name="title" placeholder="*Topic" 
                            value={title}
