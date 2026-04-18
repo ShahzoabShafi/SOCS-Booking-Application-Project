@@ -124,6 +124,7 @@ function Slots() {
         const id= slot.slot_id;
         try {
             const response = await fetch(`http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/slots/group/${id}/confirm`, {
+                method: "POST",
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`
                 }

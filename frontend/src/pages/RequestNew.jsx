@@ -2,14 +2,12 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import '../Forms.css';
 import '../Dashboard.css';
-import { fetchOwners } from "./BrowseOwners";
 
 //Marie Lefevre
 
 
 function RequestNew() {
     const [owners, setOwners] = useState([]);
-    const [error, setError] = useState(null);
     const [owner_email, setOwner] = useState('');
     const [title, setTitle] = useState('');
     const [start_time, setStart] = useState('');
@@ -17,21 +15,6 @@ function RequestNew() {
     const [message, setMessage] = useState('');
 
     const navigate = useNavigate();
-
-    useEffect(() => {
-        async function load() {
-            try {
-                const owners = await fetchOwners();
-                setOwners(owners);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        }
-    
-        load();
-    }, []);
 
     const handleRequest = async (e) => {
         e.preventDefault();

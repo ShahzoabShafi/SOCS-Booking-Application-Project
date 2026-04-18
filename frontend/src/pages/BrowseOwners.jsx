@@ -6,25 +6,7 @@ import '../Dashboard.css';
 // Miguel Angel Vargas Valenica
 // display a list of active slot owners and allows the user to navigate to a booking page for a selected owner.
 
-export async function fetchOwners() {
-    const response = await fetch(
-        'http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/slots/get_slot_owners',
-        {
-            method: 'GET',
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
-        }
-    );
 
-    const data = await response.json();
-
-    if (!response.ok) {
-        throw new Error(data.message || "Failed to fetch owners.");
-    }
-
-    return data.slot_owners || [];
-}
 
 function BrowseOwners() {
     const navigate = useNavigate();
@@ -37,18 +19,28 @@ function BrowseOwners() {
 
     // This useEffect hook fetches the list of slot owners from the API when the component mounts.
     useEffect(() => {
-        async function load() {
+        async function fetchOwners() {
             try {
-                const owners = await fetchOwners();
-                setOwners(owners);
-            } catch (err) {
-                setError(err.message);
+                const response = await fetch('http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/slots/get_slot_owners', {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`
+                    }
+                });
+                const data = await response.json();
+                if (response.ok && data.slot_owners) {
+                    setOwners(data.slot_owners);
+                } else {
+                    setError(data.message || "Failed to fetch owners.");
+                }
+            } catch (error) {
+                // Catches network or other errors during the fetch and sets a connection error message.
+                setError("Could not connect to the server.");
             } finally {
                 setLoading(false);
             }
         }
-    
-        load();
+        fetchOwners();
     }, []);
 
     const handleOwnerClick = (owner) => {
