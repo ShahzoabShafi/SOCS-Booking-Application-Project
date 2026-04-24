@@ -27,8 +27,8 @@ function RequestNew() {
                         }
                     });
                     const data = await response.json();
-                    if (response.ok && data.slot_owners) {
-                        setOwners(data.slot_owners);
+                    if (response.ok && data.owners) {
+                        setOwners(data.owners);
                     }
                 } catch (err) {
                     console.error("Error finalizing", err);
