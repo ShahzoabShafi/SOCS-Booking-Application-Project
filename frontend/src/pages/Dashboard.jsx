@@ -123,7 +123,25 @@ function Dashboard() {
     }
 
     function handleGenerate() {
+        try {
+            const response = fetch(`http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/slots/group/invite`, {
+                method: 'POST',
+                headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+                }
+            });
+            const data = response.json();
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to generate link');
+            }
+            window.alert(`Link generated: ${data.link}`);
 
+        } catch(err) {
+            console.error("Error link", err);
+            window.alert(`Error generating link: ${err.message}`);
+
+        }
     }
    
 
