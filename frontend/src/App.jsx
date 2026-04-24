@@ -7,7 +7,6 @@ import Dashboard from './pages/Dashboard';
 import Slots from './pages/Slots';
 import RequestNew from './pages/RequestNew';
 import ErrorPage from './pages/ErrorPage';
-import Footer from './component/Footer';
 import BrowseOwners from './pages/BrowseOwners';
 import BookingPage from './pages/BookingPage';
 import CreateOfficeHours from './pages/CreateOfficeHours';
@@ -18,8 +17,7 @@ import CreateGroup from './pages/CreateGroup';
 function App() {
   return (
     <Router>
-     {/* Flex container to ensure the footer stays at the bottom of the page */}
-      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+     
      {/* Main content area that expands to fill available space */}
         <main style={{ flex: 1 }}>
           <Routes>
@@ -36,9 +34,7 @@ function App() {
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </main>
-                {/* The Footer component, which is displayed on all pages */}
-        <Footer />
-      </div>
+                
     </Router>
   );
 }
