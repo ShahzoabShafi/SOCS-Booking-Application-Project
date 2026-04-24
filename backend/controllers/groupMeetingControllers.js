@@ -48,7 +48,7 @@ const propose_slots = async (req, res) => {
 
             const insert_slot = await db.run(
                 `INSERT INTO slots
-                (user_id, title, start_time, end_time, status, slot_type, created_at)
+                (user_id, slot_title, start_time, end_time, status, slot_type, created_at)
                 VALUES (?, ?, ?, ?, 'private', 'group_meeting', CURRENT_TIMESTAMP)`,
                 [user_id, title, slot.start_time, slot.end_time]);
        }
