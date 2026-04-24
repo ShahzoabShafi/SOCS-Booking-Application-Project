@@ -242,7 +242,7 @@ const confirm_slot = async (req, res) => {
         const slot_status_update = db.run(
             `UPDATE slots 
             SET status = 'private'
-            WHERE title = ?, user_id = ?, slot_type = 'group_meeting'
+            WHERE title = ? AND user_id = ? AND slot_type = 'group_meeting'
             `,
             [slot.title, owner_id]
         );
