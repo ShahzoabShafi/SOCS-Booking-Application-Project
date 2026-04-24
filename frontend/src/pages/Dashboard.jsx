@@ -176,12 +176,14 @@ function Dashboard() {
             </div>
             <h1> Requested Appointments </h1>
             <div id="requestList">
+                
             {!requests || requests.length === 0 ? (
                 <div id= "emptyState">
                 <h2> No pending meeting requests.</h2>  
                 <p> You will see requests when someone invites you to a meeting. </p>
             </div>
             ) : (
+                
                 requests.map((req, index) => (
                 <div className="card" key={index}>
                     <div className="header-line">
