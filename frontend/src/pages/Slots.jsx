@@ -255,6 +255,7 @@ function Slots() {
                             .filter(group =>
                                 group.slots.some(slot => new Date(slot.start_time) > new Date())
                               )
+                            .filter(group => group.slots.some(slot => slot.status === "active"))
                             .map(({ title, slots }) => {
                             const sorted = [...slots].sort((a, b) => b.vote_count - a.vote_count);
                             const totalVotes = slots.reduce((sum, s) => sum + s.vote_count, 0);

@@ -181,7 +181,7 @@ function Dashboard() {
                 <div id= "emptyState">
                 <h2> No pending meeting requests.</h2>  
                 <p> You will see requests when someone invites you to a meeting. </p>
-            </div>
+                </div>
             ) : (
                 
                 requests.map((req, index) => (
