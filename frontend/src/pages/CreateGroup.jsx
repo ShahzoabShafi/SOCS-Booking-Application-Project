@@ -24,7 +24,6 @@ const CreateGroup = () => {
                 },
                 body: JSON.stringify({
                     "title": title,
-                    "recurrence": number_weeks_recurrence,
                     "slots": timeSlots
                   })
             });
@@ -72,14 +71,14 @@ const CreateGroup = () => {
                     onChange={(e) => setTitle(e.target.value)}
                     required
                 /> <br />
-                <label htmlFor="number_weeks_recurrence">How many weeks should the meeting recur?</label>
+               {/* <label htmlFor="number_weeks_recurrence">How many weeks should the meeting recur?</label>
                 <input
                     type="number"
                     id="number_weeks_recurrence"
                     value={number_weeks_recurrence}
                     onChange={(e) => setNumberWeeksRecurrence(e.target.value)}
                     required
-                />
+                /> */}
                 <h3>Suggest meeting times for the group.</h3>
                 {timeSlots.map((slot, index) => (
                     <div key={index} className="time-pair">

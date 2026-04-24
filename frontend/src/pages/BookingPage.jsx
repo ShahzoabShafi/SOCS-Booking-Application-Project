@@ -130,7 +130,9 @@ function BookingPage() {
                 {!loading && !error && slots.length === 0 && (
                     <p style={{ textAlign: 'center', marginTop: '2rem' }}>No active slots currently available.</p>
                 )}
-                {slots.map((slot) => (
+                {slots
+                    .filter(s => new Date(s.start_time) > new Date())
+                    .map((slot) => (
                     <div className="card" key={slot.slot_id}>
                         <div className="header-line">
                             <h3>{slot.slot_title}</h3>

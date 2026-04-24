@@ -129,21 +129,12 @@ function Dashboard() {
 
     return (
         <main>
-            <div className="navBar" id="navBar">
-                <div>
-                    <img src="/mcbooking.png" alt="mcbooking logo"></img>
-                </div>
-                <div className="menu">
-                    <a href="/browse-owners" id="booking" > Book New </a>
-                    <a href="/request" id="request" > Request a meeting </a>
-                    {/*check if user is owner; display owner features if yes. */}
-                    {user?.role === "owner" && (
-                    <>
-                    
-                    <button id="url" onClick={() => handleGenerate()}> Generate URL </button>
-                </>
-                )}
-                    <button id="exit" onClick={() => handleLogout()}> Log Out </button>
+            <div className="slots-menu">
+                <h1> My Slots </h1>
+                <div className="owner-buttons">
+                    <a href="/createOH"> Create office hours </a>
+                    <a href="/createGroup"> Create Group Meeting </a>
+                    <a href="/slots"> View my slots </a>
                 </div>
             </div>
             {user?.role === "owner" && (
@@ -160,9 +151,9 @@ function Dashboard() {
             <div id="requestList">
             {!requests || requests.length === 0 ? (
                 <div id= "emptyState">
-                    <h2> No pending meeting requests.</h2>  
-                    <p> You will see requests when someone invites you to a meeting. </p>
-                </div>
+                <h2> No upcoming appointments.</h2>  
+                <p> Click "Book New" to schedule an appointment. </p>
+            </div>
             ) : (
                 requests.map((req, index) => (
                 <div className="card" key={index}>
