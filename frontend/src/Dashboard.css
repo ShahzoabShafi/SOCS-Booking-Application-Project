@@ -83,14 +83,6 @@ h1 {
     justify-content: space-between;
     align-items: center;
 }
-#emptyState {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-
-}
 .line {
     display: flex;
     gap: 2vw;
@@ -110,4 +102,54 @@ h1 {
     #bookingList {
         grid-template-columns: 1fr;
     }
+}
+#emptyState {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    min-height: 60vh;
+    padding: 2rem;
+    margin: 2rem auto;
+
+    background: #f9fafb;
+    border: 1px dashed #d1d5db;
+    border-radius: 16px;
+    max-width: 500px;
+}
+
+/* Icon */
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+/* Title */
+#emptyState h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #111827;
+}
+
+/* Description */
+#emptyState p {
+    color: #6b7280;
+    margin-bottom: 1.5rem;
+}
+
+/* Call-to-action button */
+.empty-action {
+    padding: 0.6rem 1.2rem;
+    background: #2563eb;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.2s ease;
+}
+
+.empty-action:hover {
+    background: #1e40af;
 }

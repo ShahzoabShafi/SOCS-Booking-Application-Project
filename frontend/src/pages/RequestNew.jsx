@@ -20,7 +20,7 @@ function RequestNew() {
             async function fetchAllOwners() {
                 try {
                     //FILL IN THE API ONCE I GET IT 
-                    const response = await fetch('http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/slots/', {
+                    const response = await fetch('http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/bookings/requests/owners', {
                         method: 'GET',
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem("token")}`

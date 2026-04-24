@@ -220,10 +220,12 @@ function Dashboard() {
         <h1> Upcoming Appointments </h1>
         <div id="bookingList">
         {upcomingBookings.length === 0 ? (
-                <div id= "emptyState">
-                    <h2> No upcoming appointments.</h2>  
-                    <p> Click "Book New" to schedule an appointment. </p>
-                </div>
+            <div id="emptyState">
+                <div className="empty-icon">📅</div>
+                <h2>No upcoming appointments</h2>
+                <p>Click "Book New" to schedule an appointment.</p>
+                <a className="empty-action" href="/browse-owners">Book New</a>
+            </div>
             ) : (
             upcomingBookings.map((booking, index) => (
                 <div className="card" key={index}>
