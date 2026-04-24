@@ -205,9 +205,15 @@ function Slots() {
             </div>
             <h1> My slots </h1>
             <div className="slots-menu">
-                <button onClick={() => setActiveTab("tab1")}>Inactive slots</button>
-                <button onClick={() => setActiveTab("tab2")}>Active Group Meetings</button>
-                <button onClick={() => setActiveTab("tab3")}>Office Hours</button>
+                <button 
+                    className={activeTab === "tab1" ? "tab active" : "tab"}
+                    onClick={() => setActiveTab("tab1")}>Inactive slots</button>
+                <button 
+                    className={activeTab === "tab2" ? "tab active" : "tab"}
+                    onClick={() => setActiveTab("tab2")}>Active Group Meetings</button>
+                <button 
+                    className={activeTab === "tab3" ? "tab active" : "tab"}
+                    onClick={() => setActiveTab("tab3")}>Office Hours</button>
             </div>
                 <Activity mode={activeTab === "tab1" ? "visible" : "hidden"}>
                     <div>
