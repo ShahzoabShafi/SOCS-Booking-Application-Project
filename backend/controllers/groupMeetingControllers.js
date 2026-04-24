@@ -239,12 +239,12 @@ const confirm_slot = async (req, res) => {
 
         // set all the proposed slots to private
         // only way to set them all is to query all slots with same title and owner and slot_type
-        const slot_status_update = db.run(
+        const slot_status_update = await db.run(
             `UPDATE slots 
             SET status = 'private'
             WHERE slot_title = ? AND user_id = ? AND slot_type = 'group_meeting'
             `,
-            [slot.title, owner_id]
+            [slot.slot_title, owner_id]
         );
         
         return res.status(200).json({ message: "Bookings all created successfully for slot owner and associated users." });
