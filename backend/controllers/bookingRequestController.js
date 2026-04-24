@@ -94,4 +94,24 @@ const cancelBooking = async (req, res) => {
     }
 };
 
-module.exports = { request_booking, cancelBooking };
+
+
+
+
+
+// get all owners. this will be used for a dropdown in the form where people request a meeting
+// GET /api/bookings/request/owners
+const all_owners = async (req, res) => {
+    try{
+        const db = await dbPromise;
+        const the_owners = await db.all('SELECT name, email FROM users WHERE role = "owner"');
+        return res.status(200).json({ message: 'Owners retrieved successfully.',
+                                      owners: the_owners });
+    }
+    catch (error){
+        console.error(error);
+        res.status(500).json({ message: 'Server error: ', error });
+    }
+}
+
+module.exports = { request_booking, cancelBooking, all_owners };
