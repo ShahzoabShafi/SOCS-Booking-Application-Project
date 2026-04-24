@@ -1,15 +1,24 @@
 .slots-menu {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  gap: 0.5rem;
+  background: #f3f4f6;
+  padding: 0.4rem;
+  border-radius: 10px;
+  width: fit-content;
 }
-.slots-menu button:active {
-  background-color: #81ACFC;
-    padding: 10px 15px;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 20px;
+
+.tab {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  color: #6b7280;
+}
+
+.tab.active {
+  background: white;
+  color: #111827;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 .meeting-slot-card {
     background: #ffffff;

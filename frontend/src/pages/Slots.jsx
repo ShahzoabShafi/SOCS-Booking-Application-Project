@@ -204,7 +204,7 @@ function Slots() {
                 </div>
             </div>
             <h1> My slots </h1>
-            <div class="slots-menu">
+            <div className="slots-menu">
                 <button onClick={() => setActiveTab("tab1")}>Inactive slots</button>
                 <button onClick={() => setActiveTab("tab2")}>Active Group Meetings</button>
                 <button onClick={() => setActiveTab("tab3")}>Office Hours</button>

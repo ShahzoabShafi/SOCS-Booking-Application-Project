@@ -166,13 +166,11 @@ function Dashboard() {
             </div>
             {user?.role === "owner" && (
             <>
-            <div className="slots-menu">
                 <h1> My Slots </h1>
                 <div className="owner-buttons">
                     <a href="/createOH"> Create office hours </a>
                     <a href="/createGroup"> Create Group Meeting </a>
                     <a href="/slots"> View my slots </a>
-                </div>
             </div>
             <h1> Requested Appointments </h1>
             <div id="requestList">
