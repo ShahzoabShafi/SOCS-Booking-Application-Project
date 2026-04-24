@@ -1,9 +1,22 @@
+.slots-menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.slots-menu button:active {
+  background-color: #81ACFC;
+    padding: 10px 15px;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 20px;
+}
 .meeting-slot-card {
     background: #ffffff;
     border: 1px solid #e5e5e5;
     border-radius: 12px;
     padding: 20px;
-    margin-bottom: 16px;
+    margin: 16px;
   }
   
   .title-row {
