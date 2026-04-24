@@ -122,16 +122,16 @@ function Dashboard() {
         await Promise.all([loadBookings()]);
     }
 
-    function handleGenerate() {
+    async function handleGenerate() {
         try {
-            const response = fetch(`http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/slots/group/invite`, {
+            const response = await fetch(`http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/slots/group/invite`, {
                 method: 'POST',
                 headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${localStorage.getItem("token")}`
                 }
             });
-            const data = response.json();
+            const data = await response.json();
             if (!response.ok) {
                 throw new Error(data.message || 'Failed to generate link');
             }
