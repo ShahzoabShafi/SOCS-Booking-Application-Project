@@ -194,12 +194,12 @@ const confirm_slot = async (req, res) => {
     // 2. Validate data
     const slot = await db.get(
     `SELECT * FROM slots 
-    WHERE slot_id = ? AND user_id = ? AND slot_type = 'group_meeting'`,
+    WHERE slot_id = ? AND user_id = ? AND slot_type = 'group_meeting' AND status='active'`,
     [slot_id, owner_id]
     );
 
     if (!slot) {
-        return res.status(403).json({ message: "Provided slot is invalid: make sure it is a group meeting type slot that you own." });
+        return res.status(403).json({ message: "Provided slot is invalid: make sure it is an active group meeting type slot that you own." });
     }
  
 
