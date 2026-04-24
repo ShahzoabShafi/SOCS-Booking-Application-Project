@@ -252,7 +252,9 @@ function Slots() {
                     <div> Count votes and finalize group meetings </div>
                     <div>
                         {groups
-                            .filter(b => new Date(b.start_time) > new Date())
+                            .filter(group =>
+                                group.slots.some(slot => new Date(slot.start_time) > new Date())
+                              )
                             .map(({ title, slots }) => {
                             const sorted = [...slots].sort((a, b) => b.vote_count - a.vote_count);
                             const totalVotes = slots.reduce((sum, s) => sum + s.vote_count, 0);
