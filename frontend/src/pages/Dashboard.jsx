@@ -135,7 +135,7 @@ function Dashboard() {
             if (!response.ok) {
                 throw new Error(data.message || 'Failed to generate link');
             }
-            window.alert(`Link generated: ${data.link}`);
+            window.alert(`Link generated: ${data.url}`);
 
         } catch(err) {
             console.error("Error link", err);
