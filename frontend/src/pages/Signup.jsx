@@ -55,13 +55,13 @@ function Signup() {
   };
 
   return (
-    <main>
+    <>
       {/* Navigation bar */}
       <nav>
-              {/* Signup form */}
-        <span>McBooking</span>
+        <img src="/mcbooking.png" alt="McBooking Logo" style={{ height: "100px", cursor: "pointer" }} onClick={() => navigate('/')} />
         <button onClick={goBack}>Go back</button>
       </nav>
+      <main>
       <form className="login-form" onSubmit={handleSignup}>
         <h2>Create an account</h2>
               {/* Input for full name */}
@@ -108,16 +108,18 @@ function Signup() {
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
-            min-height: 100vh;
+            min-height: 80vh;
             padding-top: 2rem;
             gap: 2rem;
+            width: 100%;
         }
-        nav{
+        nav {
           display: flex;
           justify-content: space-between;
           align-items: center;
           width: 100%;
-          max-width: 400px;
+          box-sizing: border-box;
+          padding: 0 32px;
         }
         nav button {
             padding: 9px 22px;
@@ -169,7 +171,8 @@ function Signup() {
             margin: 0;
         }
       `}</style>
-    </main>
+      </main>
+    </>
   );
 }
 export default Signup;
