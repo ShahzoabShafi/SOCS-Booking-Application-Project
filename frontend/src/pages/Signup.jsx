@@ -40,7 +40,7 @@ function Signup() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name: fullName, email, password }), 
+        body: JSON.stringify({ name: fullName, email, password }),
       });
       const data = await response.json();
       if (!response.ok) {
@@ -62,47 +62,47 @@ function Signup() {
         <button onClick={goBack}>Go back</button>
       </nav>
       <main>
-      <form className="login-form" onSubmit={handleSignup}>
-        <h2>Create an account</h2>
-              {/* Input for full name */}
-        <input
-          type="text"
-          placeholder="Full Name"
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
-          required
-        />
-        {/* Input for  email */}
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        {/* Input to enter password & cnofirm password */}
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Confirm Password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Register</button>
-        {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
-        <p>
-          Already have an account? <a href="/login">Log in</a>
-        </p>
-      </form>
+        <form className="login-form" onSubmit={handleSignup}>
+          <h2>Create an account</h2>
+          {/* Input for full name */}
+          <input
+            type="text"
+            placeholder="Full Name"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            required
+          />
+          {/* Input for  email */}
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          {/* Input to enter password & cnofirm password */}
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+          />
+          <button type="submit">Register</button>
+          {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
+          <p>
+            Already have an account? <a href="/login">Log in</a>
+          </p>
+        </form>
         {/* Style for the above page*/}
-      <style>{`
+        <style>{`
         main {
             display: flex;
             flex-direction: column;

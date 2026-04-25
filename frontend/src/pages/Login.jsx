@@ -50,32 +50,32 @@ function Login() {
         <button onClick={goBack}>Go back</button>
       </nav>
       <main>
-      <form className="login-form" onSubmit={handleLogin}>
-        <h2>Log in</h2>
-        <input type="email"
-          placeholder='Email'
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+        <form className="login-form" onSubmit={handleLogin}>
+          <h2>Log in</h2>
+          <input type="email"
+            placeholder='Email'
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Log in</button>
-        {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button type="submit">Log in</button>
+          {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
 
-        <p>
-          Don't have an account? <a href="/signup">Sign up</a>
-        </p>
-      </form>
+          <p>
+            Don't have an account? <a href="/signup">Sign up</a>
+          </p>
+        </form>
 
 
-      <style>{`
+        <style>{`
         main {
           display: flex;
           flex-direction: column;
