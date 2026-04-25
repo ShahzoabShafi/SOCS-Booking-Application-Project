@@ -37,15 +37,28 @@ h1 {
     margin: 2rem;
     font-size: 20px;
     border: none;
+    cursor: pointer;
 }
 
-.navBar a :hover,
+.navBar a:hover,
 .navBar button:hover {
     background-color: #1a3a6b;
     padding: 10px 15px;
     text-decoration: none;
     display: inline-block;
     margin: 2rem;
+}
+
+.navBar #exit {
+    background-color: transparent;
+    padding: 9px 22px;
+    color: #333;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+}
+
+.navBar #exit:hover {
+    background-color: #f3f4f6;
 }
 
 #bookingList,
