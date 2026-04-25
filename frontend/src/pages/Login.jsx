@@ -4,13 +4,15 @@ import { useNavigate } from 'react-router-dom';
 // Front end: Miguel Angel Vargas Valencia
 //This is the login page.
 function Login() {
-    // Hook for programmatic navigation
+  // Hook for programmatic navigation
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-    // Function to navigate to the previous page in the browser history
+  // Function to navigate to the previous page in the browser history
+  // new comment
+  // new comment
   const goBack = () => {
     navigate(-1);
   };
@@ -18,24 +20,24 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
-    try{
-      const response = await fetch('http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/auth/login',{
+    try {
+      const response = await fetch('http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({email, password}),
+        body: JSON.stringify({ email, password }),
       });
       const data = await response.json();
-      if(!response.ok){
-        throw new Error(data.message || 'Failure of login');
+      if (!response.ok) {
+        throw new Error(data.message || 'Failure of login!');
       }
       //localstorage
       localStorage.setItem('token', data.token)
       localStorage.setItem('user', JSON.stringify(data.user));
 
       navigate('/dashboard');
-    }catch(err){
+    } catch (err) {
       setError(err.message);
     }
   }
@@ -50,18 +52,18 @@ function Login() {
       <form className="login-form" onSubmit={handleLogin}>
         <h2>Log in</h2>
         <input type="email"
-        placeholder='Email'
-         value ={email}
-         onChange={(e) => setEmail(e.target.value)}
-         required
-         />
+          placeholder='Email'
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
 
-          <input 
-          type="password" 
-          placeholder="Password" 
-          value={password} 
-          onChange={(e) => setPassword(e.target.value)} 
-          required 
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
         />
         <button type="submit">Log in</button>
         {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
@@ -71,7 +73,7 @@ function Login() {
         </p>
       </form>
 
-       
+
       <style>{`
         main {
           display: flex;
