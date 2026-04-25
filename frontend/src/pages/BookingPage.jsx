@@ -114,7 +114,7 @@ function BookingPage() {
             {/* Navigation bar with a logo, dashboard link, and log out button. */}
             <div className="navBar" id="navBar">
                 <div>
-                    <img src="/mcbooking.png" alt="mcbooking logo" />
+                    <img src="/mcbooking.png" alt="mcbooking logo" style={{ cursor: "pointer" }} onClick={() => navigate('/dashboard')} />
                 </div>
                 <div className="menu">
                     <a href="/dashboard" id="dashboard">Dashboard</a>
