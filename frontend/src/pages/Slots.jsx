@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import '../Dashboard.css';
 import '../Slots.css';
 
-//Marie Lefevre
+//Marie Lefevre .
 
 function Slots() {
     const navigate = useNavigate();
