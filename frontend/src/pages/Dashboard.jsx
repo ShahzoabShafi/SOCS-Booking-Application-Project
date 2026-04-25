@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import '../Dashboard.css';
 import { useNavigate } from 'react-router-dom';
 
-//author: Marie Lefevre
+//author: Marie Lefevre .
 
 function Dashboard() {
     const navigate = useNavigate();
