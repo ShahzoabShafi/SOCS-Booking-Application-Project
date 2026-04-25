@@ -10,11 +10,11 @@ import '../Dashboard.css';
 
 function BrowseOwners() {
     const navigate = useNavigate();
-        // State to store the list of owners.
+    // State to store the list of owners.
     const [owners, setOwners] = useState([]);
-        // State to manage the loading status.
+    // State to manage the loading status.
     const [loading, setLoading] = useState(true);
-        // State to store any potential errors.
+    // State to store any potential errors.
     const [error, setError] = useState(null);
 
     // This useEffect hook fetches the list of slot owners from the API when the component mounts.
@@ -61,18 +61,18 @@ function BrowseOwners() {
 
             <h1>Browse Owners</h1>
             <div id="bookingList">
-                 {/* we display a loading message while data is being fetched. */}
+                {/* we display a loading message while data is being fetched. */}
 
                 {loading && <p style={{ textAlign: 'center', marginTop: '2rem' }}>Loading owners...</p>}
-                 {/* Display an error message if an error occurred. */}
+                {/* Display an error message if an error occurred. */}
                 {error && <p style={{ textAlign: 'center', marginTop: '2rem', color: 'red' }}>{error}</p>}
                 {/* Display a message if no owners are found. */}
 
                 {!loading && !error && owners.length === 0 && (
-                    
+
                     <p style={{ textAlign: 'center', marginTop: '2rem' }}>No owners found.</p>
                 )}
-                 {/* Map over the owners array and render a card for each owner. */}
+                {/* Map over the owners array and render a card for each owner. */}
                 {owners.map((owner) => (
                     <div className="card" key={owner.user_id} onClick={() => handleOwnerClick(owner)} style={{ cursor: 'pointer' }}>
                         <div className="header-line">

@@ -21,6 +21,9 @@ body {
 h1 {
     margin: 2rem;
 }
+/* ========================================= */
+/* DEFAULT NAVBAR BUTTONS (Book New, Request a meeting) */
+/* ========================================= */
 .navBar a, .navBar button {
     background-color: #81ACFC;
     padding: 10px 15px;
@@ -38,6 +41,21 @@ h1 {
     text-decoration: none;
     display: inline-block;
     margin: 2rem;
+}
+
+/* ========================================= */
+/* LOGOUT BUTTON (Overrides default navbar button style) */
+/* ========================================= */
+.navBar button#exit {
+    background-color: transparent;
+    border: 1px solid #d1d5db;
+    color: #333;
+    padding: 9px 22px;
+    border-radius: 10px;
+}
+.navBar button#exit:hover {
+    background-color: #f3f4f6;
+    color: #333;
 }
 #bookingList, #requestList, #slotList {
     grid-template-columns: 1fr 1fr 1fr;
