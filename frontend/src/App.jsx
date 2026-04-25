@@ -11,6 +11,7 @@ import BrowseOwners from './pages/BrowseOwners';
 import BookingPage from './pages/BookingPage';
 import CreateOfficeHours from './pages/CreateOfficeHours';
 import CreateGroup from './pages/CreateGroup';
+import About from './pages/About';
 
 //Miguel Angel Vargas Valencia
 // The main App component that sets up the application's routing
@@ -31,6 +32,7 @@ function App() {
             <Route path="/request" element={<RequestNew />} />
             <Route path="/browse-owners" element={<BrowseOwners />} />
             <Route path="/booking/:ownerId" element={<BookingPage />} />
+            <Route path="/about" element={<About />} />
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </main>
