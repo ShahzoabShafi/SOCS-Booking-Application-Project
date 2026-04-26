@@ -127,10 +127,6 @@ const cancelBooking = async (req, res) => {
 };
 
 
-
-
-
-
 // get all owners. this will be used for a dropdown in the form where people request a meeting
 // GET /api/bookings/request/owners
 const all_owners = async (req, res) => {

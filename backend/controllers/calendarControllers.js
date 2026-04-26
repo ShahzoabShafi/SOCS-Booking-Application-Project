@@ -57,7 +57,6 @@ const export_calendar = async (req, res) =>{
         // 4. Build a different VEVENT block (an ics component) for each booking
         const events = bookings.map((booking) => {
 
-            // this segment is ai-generated
             return [
                 'BEGIN:VEVENT',
                 `UID:booking-${booking.booking_id}@socs`,
@@ -68,7 +67,6 @@ const export_calendar = async (req, res) =>{
                 `ATTENDEE:mailto:${booking.meeting_partner_email}`,
                 'END:VEVENT',
             ].join('\r\n');
-            // end of ai-generated code segment 
         });
 
 

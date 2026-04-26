@@ -58,15 +58,15 @@ const update_request = async (req, res) => {
     const owner = await db.get(
         "SELECT user_id, role FROM users WHERE user_id = ?",
         [owner_id]);
+    const request = await db.get(
+        "SELECT * FROM meeting_requests WHERE request_id = ? AND owner_id = ?",
+        [request_id, owner_id]);
     const user_email = await db.get(
         `SELECT email FROM users WHERE user_id == ?`,
         [request.user_id]
     );
 
     // 2. validation
-    const request = await db.get(
-        "SELECT * FROM meeting_requests WHERE request_id = ? AND owner_id = ?",
-        [request_id, owner_id]);
 
     // the following shouldnt be possible if we get input from owner clicking on requests that exist. Assuming thats the frontend approach.
     if (!request) {
