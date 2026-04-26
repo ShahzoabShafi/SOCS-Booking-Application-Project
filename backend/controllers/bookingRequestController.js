@@ -80,7 +80,6 @@ const cancelBooking = async (req, res) => {
 
         await db.run('DELETE FROM bookings WHERE booking_id = ?', [booking_id]);
 
-        // setup msg for email 
         const student = await db.get('SELECT email FROM users WHERE user_id = ?', [booking.user_id]);
 
         //if owner set status in slot table to private
@@ -90,16 +89,33 @@ const cancelBooking = async (req, res) => {
             // User cancelled - make slot available again
             await db.run('UPDATE slots SET status = "active" WHERE slot_id = ?', [booking.slot_id]);
         }
+        await db.run('DELETE FROM bookings WHERE slot_id = ?', [booking.slot_id]);
 
         // send an email to the user and the profesor that the booking has been cancelled
         const slot = await db.get('SELECT * FROM slots WHERE slot_id = ?', [booking.slot_id]);
         const proffesor = await db.get('SELECT email FROM users WHERE user_id = ?', [slot.user_id]);
-        
+
+        // time of deleted meeting
+        const sqlDateFromDB = new Date(slot.start_time);
+
+        // Define how you want the output to look
+        const options = {
+            weekday: 'long',   // "Monday", "Tuesday", etc. (use 'short' for "Mon")
+            year: 'numeric',   // "2026"
+            month: 'short',    // "Apr" (use 'long' for "April")
+            day: 'numeric',    // "26"
+            hour: 'numeric',   // "2 PM" (use '2-digit' for "02")
+            minute: '2-digit', // "30"
+            hour12: true       // true for AM/PM, false for 24-hour clock
+        };
+
+        const formattedDate = sqlDateFromDB.toLocaleString('en-US', options);
+
         const subject = 'Booking Cancelled';
-        const text = 'Your booking at'+ slot.start_time +'has been cancelled.';
+        const text = 'Your booking at' + formattedDate + 'has been cancelled.';
         await sendEmail(proffesor.email, subject, text); // send email to owner
         await sendEmail(student.email, subject, text); // send email to student
-        
+
 
         res.status(200).json({ message: 'Booking cancelled successfully' });
 
@@ -117,15 +133,17 @@ const cancelBooking = async (req, res) => {
 // get all owners. this will be used for a dropdown in the form where people request a meeting
 // GET /api/bookings/request/owners
 const all_owners = async (req, res) => {
-    try{
+    try {
         const db = await dbPromise;
         const the_owners = await db.all('SELECT name, email FROM users WHERE role = "owner"');
-        return res.status(200).json({ message: 'Owners retrieved successfully.',
-                                      owners: the_owners });
+        return res.status(200).json({
+            message: 'Owners retrieved successfully.',
+            owners: the_owners
+        });
     }
-    catch (error){
+    catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Server error: ', error });
+        res.status(500).json({ message: 'Server error: ', error });
     }
 }
 
