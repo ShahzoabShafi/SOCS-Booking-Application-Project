@@ -50,8 +50,12 @@ const request_booking = async (req, res) => {
         VALUES (?, ?, ?, ?, ?, ?, 'pending', CURRENT_TIMESTAMP)`,
         [user_id, owner.user_id, start_time, end_time, title, message]);
 
+    // send an email to the profesor that the booking is requested
+    const subject = 'Meeting Requested from ' + req.user.name;
+    const text = 'You have received a meeting request from ' + req.user.name + '. Please login for details.';
+    await sendEmail(owner.email, subject, text);
 
-    // 5. communicate success of insert
+    // 6. communicate success of insert
     // I don't think we need to catch error here. we validated input so insert should work. 
     return res.status(201).json({ message: "Booking request created successfully." });
 }
@@ -76,15 +80,26 @@ const cancelBooking = async (req, res) => {
 
         await db.run('DELETE FROM bookings WHERE booking_id = ?', [booking_id]);
 
-        //find slot id from booking id from the database
-        const slot_id = await db.get('SELECT slot_id FROM bookings WHERE booking_id = ?', [booking_id]);
+        // setup msg for email 
+        const student = await db.get('SELECT email FROM users WHERE user_id = ?', [booking.user_id]);
+
         //if owner set status in slot table to private
-        if (user_role == "owner" && slot_id) {
-            await db.run('UPDATE slots SET status = "private" WHERE slot_id = ?', [slot_id]);
+        if (user_role == "owner" && booking.slot_id) {
+            await db.run('UPDATE slots SET status = "private" WHERE slot_id = ?', [booking.slot_id]);
         } else {
             // User cancelled - make slot available again
-            await db.run('UPDATE slots SET status = "active" WHERE slot_id = ?', [slot_id]);
+            await db.run('UPDATE slots SET status = "active" WHERE slot_id = ?', [booking.slot_id]);
         }
+
+        // send an email to the user and the profesor that the booking has been cancelled
+        const slot = await db.get('SELECT * FROM slots WHERE slot_id = ?', [booking.slot_id]);
+        const proffesor = await db.get('SELECT email FROM users WHERE user_id = ?', [slot.user_id]);
+        
+        const subject = 'Booking Cancelled';
+        const text = 'Your booking at'+ slot.start_time +'has been cancelled.';
+        await sendEmail(proffesor.email, subject, text); // send email to owner
+        await sendEmail(student.email, subject, text); // send email to student
+        
 
         res.status(200).json({ message: 'Booking cancelled successfully' });
 
