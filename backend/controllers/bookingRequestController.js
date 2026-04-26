@@ -1,4 +1,5 @@
 const dbPromise = require('../config/db');
+const { sendEmail } = require('../utils/emailService');
 
 // server.js will parse the request body, which could be either JSON or URL-encoded.
 const request_booking = async (req, res) => {
