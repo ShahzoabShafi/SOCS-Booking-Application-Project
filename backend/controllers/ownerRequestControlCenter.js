@@ -1,6 +1,6 @@
 // connect to db and recieve request
 const dbPromise = require('../config/db');
-
+const { sendEmail } = require('../utils/emailService');
 
 // link for this function will be (get) /api/bookings/requests
 // first function allows owner-type-users to view all booking requests aimed at them.
