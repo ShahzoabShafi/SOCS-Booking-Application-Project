@@ -153,7 +153,7 @@ function Dashboard() {
                 }
             });
             if (!response.ok) {
-                throw new Error(data.message || 'Failed to export to calendar');
+                throw new Error('Failed to export to calendar');
             }
             const blob = await response.blob();
 
