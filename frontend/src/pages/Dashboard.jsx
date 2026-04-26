@@ -185,6 +185,7 @@ function Dashboard() {
                 <div className="menu">
                     <a href="/browse-owners" id="booking" > Book New </a>
                     <a href="/request" id="request" > Request a meeting </a>
+                    <button id="url" onClick={() => handleExport()}> Export to calendar </button>
                     {/*check if user is owner; display owner features if yes. */}
                     {user?.role === "owner" && (
                         <>
