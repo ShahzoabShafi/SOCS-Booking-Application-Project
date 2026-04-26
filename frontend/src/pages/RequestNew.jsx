@@ -80,7 +80,7 @@ function RequestNew() {
             <main>
                 <div className="form-container">
                     <form name="Request" onSubmit={handleRequest}>
-                        <h1> Request a Meeting </h1>
+                        <h2> Request a Meeting </h2>
                         <select
                             name="owner"
                             value={owner_email}

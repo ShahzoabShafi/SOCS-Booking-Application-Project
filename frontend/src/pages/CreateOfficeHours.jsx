@@ -62,10 +62,11 @@ const CreateOfficeHours = () => {
                 </div>
             </div>
             <main>
-                <h2 style={{ textAlign: "center", marginTop: "2rem" }}>Create Office Hours</h2>
-                <br />
+                
                 <div className="form-container">
                     <form onSubmit={handleSubmit}>
+                    <h2 style={{ textAlign: "center", marginTop: "2rem" }}>Create Office Hours</h2>
+                    <br />
                         <label htmlFor="title">Title: </label>
                         <input
                             type="text"

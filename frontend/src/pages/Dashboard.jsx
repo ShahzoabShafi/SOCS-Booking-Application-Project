@@ -143,6 +143,37 @@ function Dashboard() {
 
         }
     }
+    async function handleExport() {
+        try {
+            const response = await fetch(`http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/calendar/export`, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                }
+            });
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to export to calendar');
+            }
+            const blob = await response.blob();
+
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "bookings.ics"; // filename
+            document.body.appendChild(a);
+            a.click();
+
+            a.remove();
+            window.URL.revokeObjectURL(url);
+            window.alert(`Calendar export successfully created. Ready for download.`);
+
+        } catch (err) {
+            console.error("Error calendar export", err);
+            window.alert(`Error exporting calendar: ${err.message}`);
+
+        }
+    }
 
 
     return (

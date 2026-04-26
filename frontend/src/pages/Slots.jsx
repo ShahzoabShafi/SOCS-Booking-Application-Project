@@ -219,7 +219,14 @@ function Slots() {
                 <div>
                     <h3> Activate your inactive slots </h3>
                     <div id="slotList">
-                        {privateSlots
+                    {privateSlots.length === 0 ? (
+                        <div id="emptyState">
+                            <div className="empty-icon">📅</div>
+                            <h2>No inactive slots.</h2>
+                            <p>Group meeting slots will appear here when created.</p>
+                        </div>
+                    ) : (
+                        privateSlots
                             .filter(b => new Date(b.start_time) > new Date())
                             .map((slot, index) => (
                                 <div className="card" key={index}>
@@ -230,8 +237,7 @@ function Slots() {
                                         </svg>
                                         </button>
 
-                                        {/* CHANGE THIS TO A BADGE SHOWING ACTIVATION STATUS */}
-                                        <button onClick={() => handleActivate(slot.slot_id)}>
+                                        <button className="activate-btn" onClick={() => handleActivate(slot.slot_id)}>
                                             Activate
                                         </button>
                                     </div>
@@ -249,7 +255,7 @@ function Slots() {
                                     </div>
                                     <p>Number of weeks the slot recurs: {slot.number_weeks_recurrence}</p>
                                 </div>
-                            ))}
+                            )))}
                     </div>
                 </div>
             </Activity>
@@ -257,25 +263,89 @@ function Slots() {
             <Activity mode={activeTab === "tab2" ? "visible" : "hidden"}>
                 <div> <h3>Count votes and finalize group meetings</h3> </div>
                 <div>
-                    {groups
-                        .filter(group =>
-                            group.slots.some(slot => new Date(slot.start_time) > new Date())
-                        )
-                        .filter(group => group.slots.some(slot => slot.status === "active"))
-                        .map(({ title, slots }) => {
-                            const sorted = [...slots].sort((a, b) => b.vote_count - a.vote_count);
-                            const totalVotes = slots.reduce((sum, s) => sum + s.vote_count, 0);
+                {groups.length === 0 ? (
+                        <div id="emptyState">
+                            <div className="empty-icon">🗓️</div>
+                            <h2>No active group meetings.</h2>
+                            <p>Create a group meeting or activate your inactive slots.</p>
+                            <a className="empty-action" href="/createGroup">Create Group</a>
+                        </div>
+                    ) : (
+                        groups
+                            .filter(group =>
+                                group.slots.some(slot => new Date(slot.start_time) > new Date())
+                            )
+                            .filter(group => group.slots.some(slot => slot.status === "active"))
+                            .map(({ title, slots }) => {
+                                const sorted = [...slots].sort((a, b) => b.vote_count - a.vote_count);
+                                const totalVotes = slots.reduce((sum, s) => sum + s.vote_count, 0);
+
+                                return (
+                                    <div key={title} className="meeting-slot-card">
+                                        <div className="title-row">
+                                            <span className="title">{title}</span>
+                                            <span className="badge">Open for voting</span>
+                                        </div>
+
+                                        <div className="slots-header">
+                                            <span>Time Slots</span>
+                                            <span>{totalVotes} total votes</span>
+                                        </div>
+
+                                        {sorted.map(sv => (
+                                            <div key={sv.slot_id} className="slot-row">
+                                                <div>
+                                                    <div className="slot-date">{formatDate(sv.start_time)}</div>
+                                                    <div className="slot-time">{formatTime(sv.start_time, sv.end_time)}</div>
+                                                </div>
+                                                <div className="vote-pill">{sv.vote_count} votes</div>
+                                            </div>
+                                        ))}
+
+                                        <button onClick={async () => {
+                                            const success = await onFinalize(sorted[0]);
+
+                                            if (success) {
+                                                setFinalized(prev => ({
+                                                    ...prev,
+                                                    [sorted[0].slot_id]: true
+                                                }));
+                                            }
+                                        }}
+                                            disabled={finalized[sorted[0].slot_id]}
+                                        >
+                                            {finalized[sorted[0].slot_id] ? "Finalized ✓" : "Finalize Meeting"}
+                                        </button>
+                                    </div>
+                                );
+                        }))}
+                </div>
+
+            </Activity>
+            <Activity mode={activeTab === "tab3" ? "visible" : "hidden"}>
+                <div><h3> Office hours</h3></div>
+                <div>
+                    {officeHours.length === 0 ? (
+                            <div id="emptyState">
+                                <div className="empty-icon">📅</div>
+                                <h2>No scheduled office hours.</h2>
+                                <p>Click "Create OH" to schedule your office hours for the semester.</p>
+                                <a className="empty-action" href="/createOH">Create OH</a>
+                            </div>
+                    ) : (
+                        officeHours.map(({ title, slots }) => {
+                            const sorted = [...slots].sort(
+                                (a, b) => new Date(a.start_time) - new Date(b.start_time)
+                            );
 
                             return (
                                 <div key={title} className="meeting-slot-card">
                                     <div className="title-row">
                                         <span className="title">{title}</span>
-                                        <span className="badge">Open for voting</span>
                                     </div>
 
                                     <div className="slots-header">
                                         <span>Time Slots</span>
-                                        <span>{totalVotes} total votes</span>
                                     </div>
 
                                     {sorted.map(sv => (
@@ -284,60 +354,12 @@ function Slots() {
                                                 <div className="slot-date">{formatDate(sv.start_time)}</div>
                                                 <div className="slot-time">{formatTime(sv.start_time, sv.end_time)}</div>
                                             </div>
-                                            <div className="vote-pill">{sv.vote_count} votes</div>
                                         </div>
                                     ))}
 
-                                    <button onClick={async () => {
-                                        const success = await onFinalize(sorted[0]);
-
-                                        if (success) {
-                                            setFinalized(prev => ({
-                                                ...prev,
-                                                [sorted[0].slot_id]: true
-                                            }));
-                                        }
-                                    }}
-                                        disabled={finalized[sorted[0].slot_id]}
-                                    >
-                                        {finalized[sorted[0].slot_id] ? "Finalized ✓" : "Finalize Meeting"}
-                                    </button>
                                 </div>
                             );
-                        })}
-                </div>
-
-            </Activity>
-            <Activity mode={activeTab === "tab3" ? "visible" : "hidden"}>
-                <div><h3> Office hours</h3></div>
-                <div>
-                    {officeHours.map(({ title, slots }) => {
-                        const sorted = [...slots].sort(
-                            (a, b) => new Date(a.start_time) - new Date(b.start_time)
-                        );
-
-                        return (
-                            <div key={title} className="meeting-slot-card">
-                                <div className="title-row">
-                                    <span className="title">{title}</span>
-                                </div>
-
-                                <div className="slots-header">
-                                    <span>Time Slots</span>
-                                </div>
-
-                                {sorted.map(sv => (
-                                    <div key={sv.slot_id} className="slot-row">
-                                        <div>
-                                            <div className="slot-date">{formatDate(sv.start_time)}</div>
-                                            <div className="slot-time">{formatTime(sv.start_time, sv.end_time)}</div>
-                                        </div>
-                                    </div>
-                                ))}
-
-                            </div>
-                        );
-                    })}
+                        }))}
                 </div>
             </Activity>
 
