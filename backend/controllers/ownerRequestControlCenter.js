@@ -56,7 +56,7 @@ const update_request = async (req, res) => {
     const status = req.body.status;
     const owner_id = req.user.id;
     const owner = await db.get(
-        "SELECT user_id, role FROM users WHERE user_id = ?",
+        "SELECT * FROM users WHERE user_id = ?",
         [owner_id]);
     const request = await db.get(
         "SELECT * FROM meeting_requests WHERE request_id = ? AND owner_id = ?",
@@ -119,7 +119,7 @@ const update_request = async (req, res) => {
         // send an email to the student that request is declined
         const subject = 'Meeting Request Declined';
         const text = 'Your meeting request has been declined by professor ' + owner.name;
-        await sendEmail(user_email, subject, text);
+        await sendEmail(owner.email, subject, text);
     }
 
 
