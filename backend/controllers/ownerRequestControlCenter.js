@@ -119,7 +119,7 @@ const update_request = async (req, res) => {
         // send an email to the student that request is declined
         const subject = 'Meeting Request Declined';
         const text = 'Your meeting request has been declined by professor ' + owner.name;
-        await sendEmail(owner.email, subject, text);
+        await sendEmail(user_email.email, subject, text);
     }
 
 

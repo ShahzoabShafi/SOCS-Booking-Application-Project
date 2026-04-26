@@ -81,7 +81,11 @@ const cancelBooking = async (req, res) => {
 
         await db.run('DELETE FROM bookings WHERE booking_id = ?', [booking_id]);
 
-        const student = await db.get('SELECT email FROM users WHERE user_id = ?', [booking.user_id]);
+        const student = await db.get(
+            `SELECT email FROM users WHERE user_id == ?`,
+            [booking.user_id]
+        );
+
 
         //if owner set status in slot table to private
         if (user_role == "owner" && booking.slot_id) {
@@ -94,7 +98,7 @@ const cancelBooking = async (req, res) => {
 
         // send an email to the user and the profesor that the booking has been cancelled
         const slot = await db.get('SELECT * FROM slots WHERE slot_id = ?', [booking.slot_id]);
-        const proffesor = await db.get('SELECT email FROM users WHERE user_id = ?', [slot.user_id]);
+        const owner = await db.get('SELECT email FROM users WHERE user_id = ?', [slot.user_id]);
 
         // time of deleted meeting
         const sqlDateFromDB = new Date(slot.start_time);
@@ -114,7 +118,8 @@ const cancelBooking = async (req, res) => {
 
         const subject = 'Booking Cancelled';
         const text = 'Your booking at' + formattedDate + 'has been cancelled.';
-        await sendEmail(proffesor.email, subject, text); // send email to owner
+        console.log(owner.email, student.email)
+        await sendEmail(owner.email, subject, text); // send email to owner
         await sendEmail(student.email, subject, text); // send email to student
 
 
