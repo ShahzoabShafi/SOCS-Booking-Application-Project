@@ -98,9 +98,8 @@ function BookingPage() {
             catch(err) {
                 console.error("Error updating request", err);
                 window.alert(`Error updating request: ${err.message}`);
-    
             }
-            
+            alert("Slot booked successfully.")
         }
         const slotId=slot.slot_id;
         // Updates the UI immediately to reflect the booking by changing the slot's state.
