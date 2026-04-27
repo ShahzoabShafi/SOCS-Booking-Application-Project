@@ -92,13 +92,13 @@ h3 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 600;
   margin-bottom: 10px;
 }
 
 .slots-total {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 400;
   color: #888;
 }
@@ -114,12 +114,12 @@ h3 {
 }
 
 .slot-date {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
 }
 
 .slot-time {
-  font-size: 13px;
+  font-size: 15px;
   color: #777;
   margin-top: 2px;
 }
@@ -132,7 +132,7 @@ h3 {
   color: #ffffff;
   border-radius: 999px;
   padding: 5px 13px;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 500;
   white-space: nowrap;
 }

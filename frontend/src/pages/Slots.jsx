@@ -14,7 +14,12 @@ function Slots() {
     const groups = groupByTitle(groupSlots);
     const officeHours = groupOfficeHours(slots)
     const [finalized, setFinalized] = useState({});
-
+    
+    const filteredGroups= groups
+               .filter(group =>
+               group.slots.some(slot => new Date(slot.start_time) > new Date())
+               )
+               .filter(group => group.slots.some(slot => slot.status === "active"));
 
     async function loadSlots() {
         try {
@@ -192,6 +197,8 @@ function Slots() {
         return `${fmt(startIso)} - ${fmt(endIso)}`;
     }
 
+    
+
     return (
         <main>
             <div className="navBar" id="navBar">
@@ -263,7 +270,7 @@ function Slots() {
             <Activity mode={activeTab === "tab2" ? "visible" : "hidden"}>
                 <div> <h3>Count votes and finalize group meetings</h3> </div>
                 <div>
-                {groups.length === 0 ? (
+                {filteredGroups.length === 0 ? (
                         <div id="emptyState">
                             <div className="empty-icon">🗓️</div>
                             <h2>No active group meetings.</h2>
@@ -271,11 +278,7 @@ function Slots() {
                             <a className="empty-action" href="/createGroup">Create Group</a>
                         </div>
                     ) : (
-                        groups
-                            .filter(group =>
-                                group.slots.some(slot => new Date(slot.start_time) > new Date())
-                            )
-                            .filter(group => group.slots.some(slot => slot.status === "active"))
+                        filteredGroups
                             .map(({ title, slots }) => {
                                 const sorted = [...slots].sort((a, b) => b.vote_count - a.vote_count);
                                 const totalVotes = slots.reduce((sum, s) => sum + s.vote_count, 0);
