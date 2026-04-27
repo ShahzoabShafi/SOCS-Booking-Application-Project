@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
+const path=require("path")
 
 
 
@@ -49,11 +50,17 @@ app.use('/api/confirmedBookings', confirmedBookings);
 app.use('/api/calendar', calendarRoutes);
 
 // Base route to test server is running
-app.get('/', (req, res) => {
-  res.sendFile("build/index.html");
-});
+
+
 
 const PORT = process.env.PORT || 5000;
+
+app.get('/', (req, res) => {
+  console.log(path.join(__dirname, 'build', 'index.html'));
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on http://0.0.0.0:${PORT}`); // 0.0.0.0 is any host not just localhost. changed to this to pls pls deploy
 });
+
