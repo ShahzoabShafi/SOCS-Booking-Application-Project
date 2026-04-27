@@ -80,7 +80,7 @@ function RequestNew() {
             <main>
                 <div className="form-container">
                     <form name="Request" onSubmit={handleRequest}>
-                        <h2> Request a Meeting </h2>
+                        <h2 style={{ textAlign: "center", marginTop: "1.5rem" }}> Request a Meeting </h2>
                         <select
                             name="owner"
                             value={owner_email}

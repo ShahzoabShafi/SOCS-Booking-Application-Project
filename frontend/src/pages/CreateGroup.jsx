@@ -67,7 +67,7 @@ const CreateGroup = () => {
                 <div className="form-container">
 
                     <form onSubmit={handleSubmit}>
-                        <h2>Create New Group Meeting</h2> <br />
+                        <h2 style={{ textAlign: "center", marginTop: "1.5rem" }}>Create Group Meeting</h2> <br />
                         <label htmlFor="title">Title: </label>
                         <input
                             type="text"

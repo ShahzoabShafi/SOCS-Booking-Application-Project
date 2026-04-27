@@ -35,7 +35,7 @@ function Dashboard() {
 
     useEffect(() => {
         loadUser();
-    }, []);
+    });
 
     async function loadBookings() {
         try {
