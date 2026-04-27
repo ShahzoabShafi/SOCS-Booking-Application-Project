@@ -146,7 +146,7 @@ function Dashboard() {
     async function handleExport() {
         try {
             const response = await fetch(`http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/calendar/export`, {
-                method: 'POST',
+                method: 'GET',
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${localStorage.getItem("token")}`
