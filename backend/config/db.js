@@ -20,7 +20,6 @@ module.exports = connectDB();
     
 
 
-
 // this is old version before addition of require('sqlite') //////////////////////
 // create connection to .env (db.js will use values from there)
 //const path_to_db = process.env.DB_PATH;

@@ -3,7 +3,7 @@ const cors = require('cors');
 require('dotenv').config();
 const path=require("path")
 
-
+console.log(process.env.DB_PATH)
 
 // should no longer be needed due to change in config/db.js
 //// connect to db
@@ -54,9 +54,11 @@ app.use('/api/calendar', calendarRoutes);
 
 
 const PORT = process.env.PORT || 5000;
+// Serve React build
+app.use(express.static(path.join(__dirname, 'build')));
 
-app.get('/', (req, res) => {
-  console.log(path.join(__dirname, 'build', 'index.html'));
+// Catch-all (MUST be last)
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
