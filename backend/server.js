@@ -50,7 +50,7 @@ app.use('/api/calendar', calendarRoutes);
 
 // Base route to test server is running
 app.get('/', (req, res) => {
-  res.send('Backend is running!');
+  res.sendFile("build/index.html");
 });
 
 const PORT = process.env.PORT || 5000;
