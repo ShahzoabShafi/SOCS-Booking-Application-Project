@@ -298,7 +298,15 @@ function Slots() {
                                                     <div className="slot-date">{formatDate(sv.start_time)}</div>
                                                     <div className="slot-time">{formatTime(sv.start_time, sv.end_time)}</div>
                                                 </div>
-                                                <div className="vote-pill">{sv.vote_count} votes</div>
+                                                <div className="slot-actions">
+                                                    <div className="vote-pill">{sv.vote_count} votes</div>
+                                                    <button 
+                                                        className="delete-btn"
+                                                        onClick={() => handleDelete(sv.slot_id)}
+                                                    >
+                                                        ✕
+                                                    </button>
+                                                </div>
                                             </div>
                                         ))}
 
@@ -354,6 +362,14 @@ function Slots() {
                                                 <div className="slot-date">{formatDate(sv.start_time)}</div>
                                                 <div className="slot-time">{formatTime(sv.start_time, sv.end_time)}</div>
                                             </div>
+                                            <div className="slot-actions">
+                                                    <button 
+                                                        className="delete-btn"
+                                                        onClick={() => handleDelete(sv.slot_id)}
+                                                    >
+                                                        ✕
+                                                    </button>
+                                                </div>
                                         </div>
                                     ))}
 
