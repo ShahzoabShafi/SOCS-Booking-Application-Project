@@ -336,6 +336,7 @@ const reserveSlot = async (req, res) => {
         const user_id = req.user.id;
 
         const slot = await db.get('SELECT * FROM slots WHERE slot_id = ?', [slot_id]);
+        const owner = await db.get('SELECT * FROM users WHERE user_id = ?', [slot.user_id]);
 
         if (!slot) {
             return res.status(404).json({ message: 'Slot not found' });
@@ -359,6 +360,10 @@ const reserveSlot = async (req, res) => {
         }
          
         await db.run('INSERT INTO bookings (slot_id, user_id) VALUES (?, ?)', [slot_id, user_id]);
+        await db.run('INSERT INTO bookings (slot_id, user_id) VALUES (?, ?)', [slot_id, owner.user_id]);
+        //make slot status private
+        await db.run('UPDATE slots SET status = "private" WHERE slot_id = ?', [slot_id]);
+
 
         res.status(201).json({ message: 'Slot reserved successfully' });
     } catch (error) {
