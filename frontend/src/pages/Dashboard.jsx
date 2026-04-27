@@ -35,7 +35,7 @@ function Dashboard() {
 
     useEffect(() => {
         loadUser();
-    });
+    }, []);
 
     async function loadBookings() {
         try {
@@ -73,10 +73,10 @@ function Dashboard() {
     }
 
     useEffect(() => {
-        if (user?.role === "owner") {
+        if (user && user.role === "owner") {
             loadRequests();
         }
-    }, [user]);
+    }, [user?.role]);
 
     async function handleUpdate(id, status) {
         try {
