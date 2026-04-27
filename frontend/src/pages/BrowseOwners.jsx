@@ -73,7 +73,9 @@ function BrowseOwners() {
                     <p style={{ textAlign: 'center', marginTop: '2rem' }}>No owners found.</p>
                 )}
                 {/* Map over the owners array and render a card for each owner. */}
-                {owners.map((owner) => (
+                {owners
+                
+                .map((owner) => (
                     <div className="card" key={owner.user_id} onClick={() => handleOwnerClick(owner)} style={{ cursor: 'pointer' }}>
                         <div className="header-line">
                             <h3>{owner.name}</h3>
