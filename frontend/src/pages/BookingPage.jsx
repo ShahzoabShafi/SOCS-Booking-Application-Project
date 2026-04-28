@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import '../Dashboard.css';
 
-//  Miguel Angel Vargas Valenica
+//  Miguel Angel Vargas Valencia
 // This component handles the booking of a meeting slot by a client or user.
 
 function BookingPage() {

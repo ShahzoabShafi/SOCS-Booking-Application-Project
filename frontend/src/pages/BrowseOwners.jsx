@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import '../Dashboard.css';
 
-// Miguel Angel Vargas Valenica
+// Miguel Angel Vargas Valencia
 // display a list of active slot owners and allows the user to navigate to a booking page for a selected owner.
 //latest version
 

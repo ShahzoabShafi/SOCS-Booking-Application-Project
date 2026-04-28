@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import '../Dashboard.css';
 import '../Slots.css';
 
-//Marie Lefevre .
+// author: Marie Lefevre
 
 function Slots() {
     const navigate = useNavigate();
@@ -197,7 +197,8 @@ function Slots() {
         return `${fmt(startIso)} - ${fmt(endIso)}`;
     }
 
-    
+        {/* END OF CLAUDE AI GENERATED CODE */}
+
 
     return (
         <main>
@@ -331,7 +332,7 @@ function Slots() {
                                 );
                         }))}
                 </div>
-
+            {/* END OF CLAUDE AI GENERATED CODE */}
             </Activity>
             <Activity mode={activeTab === "tab3" ? "visible" : "hidden"}>
                 <div><h3> Office hours</h3></div>

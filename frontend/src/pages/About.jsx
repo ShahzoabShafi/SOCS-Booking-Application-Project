@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
+// authors: Miguel Angel Vargas Valencia, Marie Lefevre
+
 function About() {
   const navigate = useNavigate();
 

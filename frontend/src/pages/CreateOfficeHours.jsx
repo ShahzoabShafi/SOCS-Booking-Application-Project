@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../Forms.css';
 import '../Dashboard.css';
 
-//Marie Lefevre 
+// author: Marie Lefevre
 
 const CreateOfficeHours = () => {
     const [title, setTitle] = useState('');

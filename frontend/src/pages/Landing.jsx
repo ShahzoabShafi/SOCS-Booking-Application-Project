@@ -1,7 +1,7 @@
 
 import { useNavigate } from 'react-router-dom';
 
-// Front end: Miguel Angel Vargas Valencia
+// Miguel Angel Vargas Valencia
 
 //Here we have the main landing page for the application
 // It includes the styles compoent
