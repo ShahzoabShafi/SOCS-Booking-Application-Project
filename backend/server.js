@@ -1,29 +1,11 @@
+// Shahzoab Shafi
+// Ryan Hull
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
+const path=require("path")
 
-
-
-// should no longer be needed due to change in config/db.js
-//// connect to db
-//const path = require('path');
-//const sqlite3 = require('sqlite3').verbose();
-//const dbPath = path.resolve(__dirname, '..', 'database', 'socs_booking.db');
-//// test connection AAAAAAAAAAAAH
-//const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, (err) =>{
-//        if (err) {
-//                console.error('Failed to connectto db');
-//                console.error('Error details: ', err.message);
-//        } else {
-//                console.log('Connected successfully!');
-//        }
-//});
-
-
-// connect to db
-// const {connectdb} = require('./config/db');
-// await connectDB();
-// app.locals.db = db;
+console.log(process.env.DB_PATH)
 
 // routes
 const authRoutes = require('./routes/authRoutes');
@@ -31,6 +13,7 @@ const dashboardRoutes = require('./routes/dashboard');
 const bookings = require('./routes/bookingRequestRoutes');
 const slots = require('./routes/slotRoutes');
 const confirmedBookings = require('./routes/confirmedBookingsRoutes');
+const calendarRoutes = require('./routes/calendarRoutes');
 
 const app = express();
 
@@ -45,13 +28,21 @@ app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/bookings', bookings);
 app.use('/api/slots', slots);
 app.use('/api/confirmedBookings', confirmedBookings);
+app.use('/api/calendar', calendarRoutes);
 
 // Base route to test server is running
-app.get('/', (req, res) => {
-  res.send('Backend is running!');
-});
+
+
 
 const PORT = process.env.PORT || 5000;
+// Serve React build
+app.use(express.static(path.join(__dirname, 'build')));
+
+// Catch-all (MUST be last)
+app.use((req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on http://0.0.0.0:${PORT}`); // 0.0.0.0 is any host not just localhost. changed to this to pls pls deploy
 const PORT = process.env.PORT || 5000;

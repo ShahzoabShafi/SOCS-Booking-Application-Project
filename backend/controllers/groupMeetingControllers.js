@@ -1,3 +1,5 @@
+// Ryan Hull
+
 // requirements
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -9,9 +11,9 @@ const dbPromise = require('../config/db');
 // these apis will control type 2 (group meeting) related actions according to the following routes:
 
 //router.post("/group", propose_slots);
-//router.post("/group/:id/invite", invite);
+//router.post("/group/invite", invite);
 //router.post("/group/:id/vote", vote);
-//router.get("/group/:ownerId/votes", view_slot_votes);
+//router.get("/group/votes", view_slot_votes);
 //router.post("/group/:id/confirm", confirm_slot);
 
 
@@ -26,7 +28,7 @@ const propose_slots = async (req, res) => {
 
     // 1. collect data
     const user_id = req.user.id; // thru JWT
-    const slots = req.body.slots;
+    const {title, slots} = req.body;
     // note that the user will not have to fill in each slots table field.
     // only start_time, end_time, and slot_title
     
@@ -48,9 +50,9 @@ const propose_slots = async (req, res) => {
 
             const insert_slot = await db.run(
                 `INSERT INTO slots
-                (user_id, slot_title, start_time, end_time, number_weeks_recurrence, status, slot_type, created_at)
-                VALUES (?, ?, ?, ?, ?, 'private', 'group_meeting', CURRENT_TIMESTAMP)`,
-                [user_id, slot.slot_title, slot.start_time, slot.end_time, slot.number_weeks_recurrence]);
+                (user_id, slot_title, start_time, end_time, status, slot_type, created_at)
+                VALUES (?, ?, ?, ?, 'private', 'group_meeting', CURRENT_TIMESTAMP)`,
+                [user_id, title, slot.start_time, slot.end_time]);
        }
        // 4. Communicate success of insert or errors.
        return res.status(201).json({ message: "Slots created." });
@@ -66,12 +68,13 @@ const propose_slots = async (req, res) => {
 
 // this function allows an owner to generate a shareable URL invitation that allows users
 // to view the owner's proposed slots. Likely will be called thru a "create invite" button.
-// POST /api/slots/group/:id/invite
+// POST /api/slots/group/invite
 const invite = async (req, res) => {
 
     const db = await dbPromise; 
-
-    const owner_id = req.user_id;
+    
+    // collect id from JWT, not url parameter like previous version
+    const owner_id = req.user.id;
 
     // this url (blah/booking/:owner) will the be used by a user thru a GET request, once owner shares the link with them.
     // Separating this into 2 apis allows the intention to share slot info to be clear and separate.
@@ -133,14 +136,21 @@ const vote = async (req, res) => {
 
 
 // This function allows owners to view the votes for their proposed slots
-// GET /api/slots/group/:ownerId/votes
+// GET /api/slots/group/votes
 const view_slot_votes = async (req, res) => {
 
     const db = await dbPromise; 
 
     // 1. get data
-    const owner_id = req.params.ownerId;
-    if (owner_id != req.user.id){
+    const owner_id = req.user.id;
+    
+    // 2. validate data
+    const owner = await db.get(
+        `SELECT * FROM users
+        WHERE user_id = ?`,
+        [owner_id]
+    );
+    if (!owner || owner.role != 'owner'){
         return res.status(403).json({ message: "Unauthorized user." });
     }
 
@@ -162,7 +172,6 @@ const view_slot_votes = async (req, res) => {
 
         return res.status(200).json({ message: "Votes retrieved successfully.",
                                       slot_votes: votes});
-
     }
     catch (err){
         return res.status(500).json({ message: "Failed to retrieve vote counts.", error: err.message});
@@ -187,16 +196,16 @@ const confirm_slot = async (req, res) => {
     // 2. Validate data
     const slot = await db.get(
     `SELECT * FROM slots 
-    WHERE slot_id = ? AND user_id = ? AND slot_type = 'group_meeting'`,
+    WHERE slot_id = ? AND user_id = ? AND slot_type = 'group_meeting' AND status='active'`,
     [slot_id, owner_id]
     );
 
     if (!slot) {
-        return res.status(403).json({ message: "Provided slot is invalid: make sure it is a group meeting type slot that you own." });
+        return res.status(403).json({ message: "Provided slot is invalid: make sure it is an active group meeting type slot that you own." });
     }
  
 
-    // 3. Create bookings  
+    // 3. Create bookings and modify slots to set them to private
     
     // Which users do we need to create it for?
     // ... those users who voted for the chosen slot...
@@ -229,6 +238,17 @@ const confirm_slot = async (req, res) => {
             );
         }
 
+
+        // set all the proposed slots to private
+        // only way to set them all is to query all slots with same title and owner and slot_type
+        const slot_status_update = await db.run(
+            `UPDATE slots 
+            SET status = 'private'
+            WHERE slot_title = ? AND user_id = ? AND slot_type = 'group_meeting'
+            `,
+            [slot.slot_title, owner_id]
+        );
+        
         return res.status(200).json({ message: "Bookings all created successfully for slot owner and associated users." });
     }
     catch (err){

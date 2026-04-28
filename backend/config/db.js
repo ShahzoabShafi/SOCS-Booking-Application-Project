@@ -1,3 +1,5 @@
+// Ryan Hull
+
 const sqlite3 = require('sqlite3'); // load sql
 const {open} = require('sqlite'); // attempt to fix bug where supposedly sqlite3 doesnt have .get() or .all(), causing undefined things to be returned.
                                   // this is a promise-based wrapper type thing.
@@ -18,7 +20,6 @@ async function connectDB() {
 
 module.exports = connectDB();
     
-
 
 
 // this is old version before addition of require('sqlite') //////////////////////
