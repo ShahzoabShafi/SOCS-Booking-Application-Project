@@ -4,13 +4,15 @@ import { useNavigate } from 'react-router-dom';
 // Front end: Miguel Angel Vargas Valencia
 //This is the login page.
 function Login() {
-    // Hook for programmatic navigation
+  // Hook for programmatic navigation
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-    // Function to navigate to the previous page in the browser history
+  // Function to navigate to the previous page in the browser history
+  // new comment
+  // new comment
   const goBack = () => {
     navigate(-1);
   };
@@ -18,76 +20,79 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
-    try{
-      const response = await fetch('http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/auth/login',{
+    try {
+      const response = await fetch('http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({email, password}),
+        body: JSON.stringify({ email, password }),
       });
       const data = await response.json();
-      if(!response.ok){
-        throw new Error(data.message || 'Failure of login');
+      if (!response.ok) {
+        throw new Error(data.message || 'Failure of login!');
       }
       //localstorage
       localStorage.setItem('token', data.token)
       localStorage.setItem('user', JSON.stringify(data.user));
 
       navigate('/dashboard');
-    }catch(err){
+    } catch (err) {
       setError(err.message);
     }
   }
 
   return (
 
-    <main>
+    <>
       <nav>
-        <span>McBooking</span>
+        <img src="/mcbooking.png" alt="McBooking Logo" style={{ height: "100px", cursor: "pointer" }} onClick={() => navigate('/')} />
         <button onClick={goBack}>Go back</button>
       </nav>
-      <form className="login-form" onSubmit={handleLogin}>
-        <h2>Log in</h2>
-        <input type="email"
-        placeholder='Email'
-         value ={email}
-         onChange={(e) => setEmail(e.target.value)}
-         required
-         />
+      <main>
+        <form className="login-form" onSubmit={handleLogin}>
+          <h2>Log in</h2>
+          <input type="email"
+            placeholder='Email'
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
 
-          <input 
-          type="password" 
-          placeholder="Password" 
-          value={password} 
-          onChange={(e) => setPassword(e.target.value)} 
-          required 
-        />
-        <button type="submit">Log in</button>
-        {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button type="submit">Log in</button>
+          {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
 
-        <p>
-          Don't have an account? <a href="/signup">Sign up</a>
-        </p>
-      </form>
+          <p>
+            Don't have an account? <a href="/signup">Sign up</a>
+          </p>
+        </form>
 
-       
-      <style>{`
+
+        <style>{`
         main {
           display: flex;
           flex-direction: column;
           justify-content: flex-start;
           align-items: center;
-          min-height: 100vh;
+          min-height: 80vh;
           padding-top: 2rem;
           gap: 2rem;
+          width: 100%;
         }
-        nav{
+        nav {
           display: flex;
           justify-content: space-between;
           align-items: center;
           width: 100%;
-          max-width: 400px;
+          box-sizing: border-box;
+          padding: 0 32px;
         }
         nav button {
             padding: 9px 22px;
@@ -139,7 +144,8 @@ function Login() {
             margin: 0;
         }
       `}</style>
-    </main>
+      </main>
+    </>
   );
 }
 

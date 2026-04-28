@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import '../Dashboard.css';
 
-//  Miguel Angel Vargas Valenica
+//  Miguel Angel Vargas Valencia
 // This component handles the booking of a meeting slot by a client or user.
 
 function BookingPage() {
@@ -60,9 +60,48 @@ function BookingPage() {
     };
 
     // Handles the action of booking a slot.
-    const handleBookSlot = (slotId) => {
+    async function handleBookSlot(slot) {
         // Simulates a booking confirmation. In a real app, this would involve an API call.
-        alert(`You have booked slot ${slotId}. A confirmation email has been sent.`);
+        if (slot.slot_type === "office_hours") {
+            try {
+                const response = await fetch(`http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/slots/${slot.slot_id}/reserve`, {
+                    method: "POST",
+                    headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                    },
+                });
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(data.message || 'Failed to update request');
+                }
+            } catch(err) {
+                console.error("Error updating request", err);
+                window.alert(`Error updating request: ${err.message}`);
+    
+            }
+        } if (slot.slot_type === "group_meeting") {
+            try {
+                const response = await fetch(`http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/slots/group/${slot.slot_id}/vote`, {
+                    method: "POST",
+                    headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                    },
+                    body: JSON.stringify({"slot_id": slot.slot_id}), 
+                });
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(data.message || 'Failed to update request');
+                }
+            }
+            catch(err) {
+                console.error("Error updating request", err);
+                window.alert(`Error updating request: ${err.message}`);
+            }
+            alert("Slot booked successfully.")
+        }
+        const slotId=slot.slot_id;
         // Updates the UI immediately to reflect the booking by changing the slot's state.
         setSlots(prevSlots => prevSlots.map(slot =>
             slot.slot_id === slotId ? { ...slot, isBooked: true } : slot
@@ -74,7 +113,7 @@ function BookingPage() {
             {/* Navigation bar with a logo, dashboard link, and log out button. */}
             <div className="navBar" id="navBar">
                 <div>
-                    <img src="/mcbooking.png" alt="mcbooking logo" />
+                    <img src="/mcbooking.png" alt="mcbooking logo" style={{ cursor: "pointer" }} onClick={() => navigate('/dashboard')} />
                 </div>
                 <div className="menu">
                     <a href="/dashboard" id="dashboard">Dashboard</a>
@@ -90,7 +129,9 @@ function BookingPage() {
                 {!loading && !error && slots.length === 0 && (
                     <p style={{ textAlign: 'center', marginTop: '2rem' }}>No active slots currently available.</p>
                 )}
-                {slots.map((slot) => (
+                {slots
+                    .filter(s => new Date(s.start_time) > new Date())
+                    .map((slot) => (
                     <div className="card" key={slot.slot_id}>
                         <div className="header-line">
                             <h3>{slot.slot_title}</h3>
@@ -101,7 +142,7 @@ function BookingPage() {
                         {slot.isBooked ? (
                             <button disabled>Booked</button>
                         ) : (
-                            <button onClick={() => handleBookSlot(slot.slot_id)}>Book Now</button>
+                            <button onClick={() => handleBookSlot(slot)}>Book Now</button>
                         )}
                     </div>
                 ))}

@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../Forms.css';
+import '../Dashboard.css';
 
-//Marie Lefevre
+// author: Marie Lefevre
 
 const CreateGroup = () => {
     const [title, setTitle] = useState('');
-    const [start_time1, setStart1] = useState('');
-    const [end_time1, setEnd1] = useState('');
-    const [start_time2, setStart2] = useState('');
-    const [end_time2, setEnd2] = useState('');
-    const [start_time3, setStart3] = useState('');
-    const [end_time3, setEnd3] = useState('');
-    const [number_weeks_recurrence, setNumberWeeksRecurrence] = useState('');
+    const [timeSlots, setTimeSlots] = useState([
+        { start_time: "", end_time: "" }
+    ]);
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -25,11 +22,10 @@ const CreateGroup = () => {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
                 },
-                body: JSON.stringify({ "slots": [
-                    {"slot_title": title, "start_time": start_time1, "end_time": end_time1, "number_weeks_recurrence": number_weeks_recurrence}, 
-                    {"slot_title": title, "start_time": start_time2, "end_time": end_time2, "number_weeks_recurrence": number_weeks_recurrence}, 
-                    {"slot_title": title, "start_time": start_time3, "end_time": end_time3, "number_weeks_recurrence": number_weeks_recurrence}
-                ]})
+                body: JSON.stringify({
+                    "title": title,
+                    "slots": timeSlots
+                })
             });
             const data = await response.json();
             if (!response.ok) {
@@ -42,70 +38,94 @@ const CreateGroup = () => {
             window.alert(`Error creating group meeting: ${err.message}`);
         }
     };
+    const addTimeSlot = () => {
+        setTimeSlots([...timeSlots, { start_time: "", end_time: "" }]);
+    };
+
+    const handleTimeChange = (index, field, value) => {
+        const updated = [...timeSlots];
+        updated[index][field] = value;
+        setTimeSlots(updated);
+    };
 
     return (
-        <div className="form-container">
-            <h2>Create New Group Meeting</h2> <br />
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="title">Title: </label>
-                <input
-                    type="text"
-                    id="title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    required
-                /> <br />
-                <label htmlFor="number_weeks_recurrence">How many weeks should the meeting recur?</label>
-                <input
-                    type="number"
-                    id="number_weeks_recurrence"
-                    value={number_weeks_recurrence}
-                    onChange={(e) => setNumberWeeksRecurrence(e.target.value)}
-                    required
-                />
-                <h3>Suggest 3 meeting times for the group.</h3>
-                <label htmlFor="Date">Start Date: </label>
-                <input type="datetime-local" name="start_time1" id="Date" 
-                        value={start_time1}
-                        onChange={(e) => setStart1(e.target.value)}
-                        required /> <br />
-        
-                <label htmlFor="date2">End Date: </label>
-                    <input type="datetime-local" name="end_time1" id="date2" 
-                        value={end_time1}
-                        onChange={(e) => setEnd1(e.target.value)}
-                        required /> <br />
-                        
-                <p> Second option:</p>
-                <label htmlFor="Date">Start Date: </label>
-                <input type="datetime-local" name="start_time2" id="Date" 
-                        value={start_time2}
-                        onChange={(e) => setStart2(e.target.value)}
-                        required /> <br />
-        
-                <label htmlFor="date2">End Date: </label>
-                    <input type="datetime-local" name="end_time2" id="date2" 
-                        value={end_time2}
-                        onChange={(e) => setEnd2(e.target.value)}
-                        required /> <br />
-                
-                <p> Third option:</p>
-                <label htmlFor="Date">Start Date: </label>
-                <input type="datetime-local" name="start_time3" id="Date" 
-                        value={start_time3}
-                        onChange={(e) => setStart3(e.target.value)}
-                        required /> <br />
-        
-                <label htmlFor="date2">End Date: </label>
-                    <input type="datetime-local" name="end_time3" id="date2" 
-                        value={end_time3}
-                        onChange={(e) => setEnd3(e.target.value)}
-                        required /> <br />
-                
-                <br />
-                <button type="submit" className="submit-btn">Create Group</button>
-            </form>
-        </div>
+        <>
+            <div className="navBar" id="navBar">
+                <div>
+                    <img src="/mcbooking.png" alt="mcbooking logo" style={{ cursor: "pointer" }} onClick={() => navigate('/dashboard')} />
+                </div>
+                <div className="menu">
+                    <button onClick={() => navigate(-1)}> Back </button>
+                    <button id="exit" onClick={() => {
+                        navigate('/');
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('user');
+                    }}> Log Out </button>
+                </div>
+            </div>
+            <main>
+                <div className="form-container">
+
+                    <form onSubmit={handleSubmit}>
+                        <h2 style={{ textAlign: "center", marginTop: "1.5rem" }}>Create Group Meeting</h2> <br />
+                        <label htmlFor="title">Title: </label>
+                        <input
+                            type="text"
+                            id="title"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            required
+                        /> <br />
+
+                        <h3>Suggest meeting times for the group.</h3>
+                        {timeSlots.map((slot, index) => (
+                            <div key={index} className="time-pair">
+                                <h3>Option:</h3>
+                                <input
+                                    type="datetime-local"
+                                    value={slot.start_time}
+                                    onChange={(e) =>
+                                        handleTimeChange(index, "start_time", e.target.value)
+                                    }
+                                    required
+                                />
+                                <br />
+                                <input
+                                    type="datetime-local"
+                                    value={slot.end_time}
+                                    onChange={(e) =>
+                                        handleTimeChange(index, "end_time", e.target.value)
+                                    }
+                                    required
+                                /> <br />
+                            </div>
+                        ))}
+                        <button type="button" onClick={addTimeSlot}>
+                            ➕ Add another time
+                        </button> <br />
+                        <button type="submit" className="submit-btn">Create Group</button>
+                    </form>
+                </div>
+
+                <style>{`
+            form { display: flex; flex-direction: column; gap: 0.5rem; }
+            form br { display: none; }
+            form h2, form h3 { margin: 0.2rem 0; }
+            form label { font-weight: 500; font-size: 0.95rem; }
+            form input { width: 100%; box-sizing: border-box; }
+            form input:focus { outline: none; border-color: #81acfc; box-shadow: 0 0 4px #81acfc; }
+            form button.submit-btn { margin-top: 1rem; }
+            form button[type="button"] { 
+                background: transparent; color: #81acfc; 
+                border: 1px dashed #81acfc; margin-top: 0.5rem; 
+            }
+            form button[type="button"]:hover { background: #e4eaf5; }
+            .time-pair { background: #f9fafb; padding: 1rem; border-radius: 8px; border: 1px solid #e5e7eb; }
+            .time-pair input { margin-bottom: 0.5rem; }
+            .time-pair h3 { margin-top: 0; }
+        `}</style>
+            </main>
+        </>
     );
 };
 

@@ -1,7 +1,7 @@
 
 import { useNavigate } from 'react-router-dom';
 
-// Front end: Miguel Angel Vargas Valencia
+// Miguel Angel Vargas Valencia
 
 //Here we have the main landing page for the application
 // It includes the styles compoent
@@ -11,7 +11,7 @@ function Landing() {
 
   return (
     <>
-          {/* Landing-specific styles */}
+      {/* Landing-specific styles */}
       <style>
         {`
           nav {
@@ -34,6 +34,7 @@ function Landing() {
             border-radius: 10px;
             border: none;
             color: white;
+            font-size: 16px; /* Increased */
           }
 
           nav button:hover {
@@ -64,22 +65,27 @@ function Landing() {
             font-size: 64px;
           }
 
+          .hero .sub {
+            font-size: 20px; 
+          }
+
           .pill {
             display: inline-block;
             background-color: #d0ddf7;
-            padding: 6px 18px;
+            padding: 7px 20px;
             border-radius: 999px;
-            font-size: 14px;
+            font-size: 20px; 
             color: #1a3a6b;
           }
 
           button.cta {
-            padding: 9px 22px;
+            padding: 10px 24px;
             cursor: pointer;
             background-color: #81acfc;
             border-radius: 10px;
             border: none;
             color: white;
+            font-size: 20px; 
           }
 
           button.cta:hover {
@@ -87,22 +93,24 @@ function Landing() {
           }
         `}
       </style>
-            {/* Navigation bar */}
+      {/* Navigation bar */}
       <nav>
-        <img src="/mcbooking.png" alt="McBooking Logo" style={{height: "100px"}} />
+        <img src="/mcbooking.png" alt="McBooking Logo" style={{ height: "100px" }} />
         <div>
+          {/* About us button */}
+          <button className="nav-signin-btn" style={{marginRight: '1rem'}} onClick={() => navigate('/about')}>About Us</button>
           {/* Sign-in button */}
           <button className="nav-signin-btn" onClick={() => navigate('/login')}>Log in</button>
         </div>
       </nav>
-        {/* Main content area */}
+      {/* Main content area */}
       <main>
-                {/* Hero section with the main heading and call to action */}
+        {/* Hero section with the main heading and call to action */}
         <section className="hero">
           <p className="pill">McGill University Booking System</p>
           <h1>Booking meetings effortlessly</h1>
           <p className="sub">A simple way for McGill professors and students to manage their scheduling</p>
-                  {/* Call-to-action button to navigate to the signup page */}
+          {/* Call-to-action button to navigate to the signup page */}
           <button className="cta" onClick={() => navigate('/signup')}>Get Started</button>
         </section>
       </main>

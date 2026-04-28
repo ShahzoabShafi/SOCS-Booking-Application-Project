@@ -2,20 +2,24 @@ import React, { useState, useEffect } from "react";
 import '../Dashboard.css';
 import { useNavigate } from 'react-router-dom';
 
-//author: Marie Lefevre
+//author: Marie Lefevre .
 
 function Dashboard() {
+    const navigate = useNavigate();
     const [bookings, setBookings] = useState([]);
     const [requests, setRequests] = useState([]);
     const [user, setUser] = useState(null);
+    const upcomingBookings = bookings.filter(b => new Date(b.start_time) > new Date())
+        .sort((a, b) => new Date(a.start_time) - new Date(b.start_time)) || [];
+
 
     async function loadUser() {
         try {
-            const userJson= localStorage.getItem('user');
+            const userJson = localStorage.getItem('user');
             if (userJson) {
                 setUser(JSON.parse(userJson));
             } else {
-                handleLogout(); 
+                handleLogout();
             }
         } catch (err) {
             console.error("Error loading user:", err);
@@ -35,12 +39,12 @@ function Dashboard() {
 
     async function loadBookings() {
         try {
-        const response = await fetch('http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/confirmedBookings', {
-            method: 'GET',
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
-        });
+            const response = await fetch('http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/confirmedBookings', {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                }
+            });
             const data = await response.json();
             setBookings(Array.isArray(data.all_confirmed_bookings) ? data.all_confirmed_bookings : []);
         } catch (err) {
@@ -56,12 +60,12 @@ function Dashboard() {
         try {
             const response = await fetch('http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/bookings/requests', {
                 method: 'GET',
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-        }
-    });
-        const requestData = await response.json();
-        setRequests(Array.isArray(requestData.pending_requests) ? requestData.pending_requests : []);
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                }
+            });
+            const requestData = await response.json();
+            setRequests(Array.isArray(requestData.pending_requests) ? requestData.pending_requests : []);
 
         } catch (err) {
             console.error("Error loading requested meetings:", err);
@@ -69,31 +73,31 @@ function Dashboard() {
     }
 
     useEffect(() => {
-        if (user?.role === "owner") {
+        if (user && user.role === "owner") {
             loadRequests();
         }
-        }, [user]);
+    }, [user?.role]);
 
     async function handleUpdate(id, status) {
         try {
             const response = await fetch(`http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/bookings/requests/${id}`, {
                 method: "PUT",
                 headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("token")}`
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
                 },
-                body: JSON.stringify({"request_id": id, "status": status}),
+                body: JSON.stringify({ "request_id": id, "status": status }),
             });
             const data = await response.json();
             if (!response.ok) {
                 throw new Error(data.message || 'Failed to update request');
             }
-        } catch(err) {
+        } catch (err) {
             console.error("Error updating request", err);
             window.alert(`Error updating request: ${err.message}`);
 
         }
-        
+
         await Promise.all([loadRequests(), loadBookings()]);
     }
 
@@ -102,15 +106,15 @@ function Dashboard() {
             const response = await fetch(`http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/bookings/${id}`, {
                 method: 'DELETE',
                 headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("token")}`
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
                 }
             });
             const data = await response.json();
             if (!response.ok) {
                 throw new Error(data.message || 'Failed to delete booking');
             }
-        } catch(err) {
+        } catch (err) {
             console.error("Error deleting booking", err);
             window.alert(`Error deleting booking: ${err.message}`);
 
@@ -118,11 +122,59 @@ function Dashboard() {
         await Promise.all([loadBookings()]);
     }
 
-    function handleGenerate() {
+    async function handleGenerate() {
+        try {
+            const response = await fetch(`http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/slots/group/invite`, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                }
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to generate link');
+            }
+            window.alert(`Link generated: ${data.url}`);
 
+        } catch (err) {
+            console.error("Error link", err);
+            window.alert(`Error generating link: ${err.message}`);
+
+        }
     }
-    
-    const navigate = useNavigate();
+    async function handleExport() {
+        try {
+            const response = await fetch(`http://winter2026-comp307-group15.cs.mcgill.ca:5000/api/calendar/export`, {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                }
+            });
+            if (!response.ok) {
+                throw new Error('Failed to export to calendar');
+            }
+            const blob = await response.blob();
+            console.log("blob:", blob)
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "bookings.ics"; // filename
+            document.body.appendChild(a);
+            a.click();
+
+            a.remove();
+            window.URL.revokeObjectURL(url);
+            window.alert(`Calendar export successfully created. Ready for download.`);
+
+        } catch (err) {
+            console.error("Error calendar export", err);
+            window.alert(`Error exporting calendar: ${err.message}`);
+
+        }
+    }
+
 
     return (
         <main>
@@ -133,98 +185,107 @@ function Dashboard() {
                 <div className="menu">
                     <a href="/browse-owners" id="booking" > Book New </a>
                     <a href="/request" id="request" > Request a meeting </a>
+                    <button id="url" onClick={() => handleExport()}> Export to calendar </button>
                     {/*check if user is owner; display owner features if yes. */}
                     {user?.role === "owner" && (
-                    <>
-                    
-                    <button id="url" onClick={() => handleGenerate()}> Generate URL </button>
-                </>
-                )}
+                        <>
+
+                            <button id="url" onClick={() => handleGenerate()}> Generate URL </button>
+                        </>
+                    )}
                     <button id="exit" onClick={() => handleLogout()}> Log Out </button>
                 </div>
             </div>
             {user?.role === "owner" && (
-            <>
-            <div className="slots-menu">
-                <h1> My Slots </h1>
-                <div className="owner-buttons">
-                    <a href="/createOH"> Create office hours </a>
-                    <a href="/createGroup"> Create Group Meeting </a>
-                    <a href="/slots"> View my slots </a>
-                </div>
-            </div>
-            <h1> Requested Appointments </h1>
-            <div id="requestList">
-            {!requests || requests.length === 0 ? (
-                <p> You have no pending meeting requests.</p>
-            ) : (
-                requests.map((req, index) => (
-                <div className="card" key={index}>
-                    <div className="header-line">
-                        <h3>{req.title}</h3>
-                        <button onClick={() => handleUpdate(req.request_id, "declined")}><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
-                        <path fill= "red" d="M262.2 48C248.9 48 236.9 56.3 232.2 68.8L216 112L120 112C106.7 112 96 122.7 96 136C96 149.3 106.7 160 120 160L520 160C533.3 160 544 149.3 544 136C544 122.7 533.3 112 520 112L424 112L407.8 68.8C403.1 56.3 391.2 48 377.8 48L262.2 48zM128 208L128 512C128 547.3 156.7 576 192 576L448 576C483.3 576 512 547.3 512 512L512 208L464 208L464 512C464 520.8 456.8 528 448 528L192 528C183.2 528 176 520.8 176 512L176 208L128 208zM288 280C288 266.7 277.3 256 264 256C250.7 256 240 266.7 240 280L240 456C240 469.3 250.7 480 264 480C277.3 480 288 469.3 288 456L288 280zM400 280C400 266.7 389.3 256 376 256C362.7 256 352 266.7 352 280L352 456C352 469.3 362.7 480 376 480C389.3 480 400 469.3 400 456L400 280z" />
-                    </svg>
-                        </button>
-                        <button onClick={() => handleUpdate(req.request_id, "accepted")}><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
-                        <path fill= "green" d="M530.8 134.1C545.1 144.5 548.3 164.5 537.9 178.8L281.9 530.8C276.4 538.4 267.9 543.1 258.5 543.9C249.1 544.7 240 541.2 233.4 534.6L105.4 406.6C92.9 394.1 92.9 373.8 105.4 361.3C117.9 348.8 138.2 348.8 150.7 361.3L252.2 462.8L486.2 141.1C496.6 126.8 516.6 123.6 530.9 134z"/>
-                    </svg>
-                        </button>
+                <>
+                    <h1> My Slots </h1>
+                    <div className="owner-buttons">
+                        <a href="/createOH"> Create office hours </a>
+                        <a href="/createGroup"> Create Group Meeting </a>
+                        <a href="/slots"> View my slots </a>
                     </div>
-                    <div className="line">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" >
-                            <path d="M224 64C241.7 64 256 78.3 256 96L256 128L384 128L384 96C384 78.3 398.3 64 416 64C433.7 64 448 78.3 448 96L448 128L480 128C515.3 128 544 156.7 544 192L544 480C544 515.3 515.3 544 480 544L160 544C124.7 544 96 515.3 96 480L96 192C96 156.7 124.7 128 160 128L192 128L192 96C192 78.3 206.3 64 224 64zM224 320C206.3 320 192 334.3 192 352L192 416C192 433.7 206.3 448 224 448L288 448C305.7 448 320 433.7 320 416L320 352C320 334.3 305.7 320 288 320L224 320z" />
-                        </svg>
-                        <p>Date: {String(req.start_time).split('T')[0]}</p>
+                    <h1> Requested Appointments </h1>
+                    <div id="requestList">
+
+                        {!requests || requests.length === 0 ? (
+                            <div id="emptyState">
+                                <h2> No pending meeting requests.</h2>
+                                <p> You will see requests when someone invites you to a meeting. </p>
+                            </div>
+                        ) : (
+
+                            requests.map((req, index) => (
+                                <div className="card" key={index}>
+                                    <div className="header-line">
+                                        <h3>{req.title}</h3>
+                                        <button onClick={() => handleUpdate(req.request_id, "declined")}><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                                            <path fill="red" d="M262.2 48C248.9 48 236.9 56.3 232.2 68.8L216 112L120 112C106.7 112 96 122.7 96 136C96 149.3 106.7 160 120 160L520 160C533.3 160 544 149.3 544 136C544 122.7 533.3 112 520 112L424 112L407.8 68.8C403.1 56.3 391.2 48 377.8 48L262.2 48zM128 208L128 512C128 547.3 156.7 576 192 576L448 576C483.3 576 512 547.3 512 512L512 208L464 208L464 512C464 520.8 456.8 528 448 528L192 528C183.2 528 176 520.8 176 512L176 208L128 208zM288 280C288 266.7 277.3 256 264 256C250.7 256 240 266.7 240 280L240 456C240 469.3 250.7 480 264 480C277.3 480 288 469.3 288 456L288 280zM400 280C400 266.7 389.3 256 376 256C362.7 256 352 266.7 352 280L352 456C352 469.3 362.7 480 376 480C389.3 480 400 469.3 400 456L400 280z" />
+                                        </svg>
+                                        </button>
+                                        <button onClick={() => handleUpdate(req.request_id, "accepted")}><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                                            <path fill="green" d="M530.8 134.1C545.1 144.5 548.3 164.5 537.9 178.8L281.9 530.8C276.4 538.4 267.9 543.1 258.5 543.9C249.1 544.7 240 541.2 233.4 534.6L105.4 406.6C92.9 394.1 92.9 373.8 105.4 361.3C117.9 348.8 138.2 348.8 150.7 361.3L252.2 462.8L486.2 141.1C496.6 126.8 516.6 123.6 530.9 134z" />
+                                        </svg>
+                                        </button>
+                                    </div>
+                                    <div className="line">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" >
+                                            <path d="M224 64C241.7 64 256 78.3 256 96L256 128L384 128L384 96C384 78.3 398.3 64 416 64C433.7 64 448 78.3 448 96L448 128L480 128C515.3 128 544 156.7 544 192L544 480C544 515.3 515.3 544 480 544L160 544C124.7 544 96 515.3 96 480L96 192C96 156.7 124.7 128 160 128L192 128L192 96C192 78.3 206.3 64 224 64zM224 320C206.3 320 192 334.3 192 352L192 416C192 433.7 206.3 448 224 448L288 448C305.7 448 320 433.7 320 416L320 352C320 334.3 305.7 320 288 320L224 320z" />
+                                        </svg>
+                                        <p>Date: {String(req.start_time).split('T')[0]}</p>
+                                    </div>
+                                    <div className="line">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                                            <path d="M160 64C142.3 64 128 78.3 128 96C128 113.7 142.3 128 160 128L160 139C160 181.4 176.9 222.1 206.9 252.1L274.8 320L206.9 387.9C176.9 417.9 160 458.6 160 501L160 512C142.3 512 128 526.3 128 544C128 561.7 142.3 576 160 576L480 576C497.7 576 512 561.7 512 544C512 526.3 497.7 512 480 512L480 501C480 458.6 463.1 417.9 433.1 387.9L365.2 320L433.1 252.1C463.1 222.1 480 181.4 480 139L480 128C497.7 128 512 113.7 512 96C512 78.3 497.7 64 480 64L160 64zM416 501L416 512L224 512L224 501C224 475.5 234.1 451.1 252.1 433.1L320 365.2L387.9 433.1C405.9 451.1 416 475.5 416 501z" />
+                                        </svg>
+                                        <p>Time: {String(req.start_time).split('T')[1]} - {String(req.end_time).split('T')[1]} </p>
+                                    </div>
+                                    <p> Message: {req.message} </p>
+                                    <p>Attendee(s): {req.name} ({req.email})</p>
+                                </div>
+                            ))
+                        )}
                     </div>
-                    <div className="line">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
-                            <path d="M160 64C142.3 64 128 78.3 128 96C128 113.7 142.3 128 160 128L160 139C160 181.4 176.9 222.1 206.9 252.1L274.8 320L206.9 387.9C176.9 417.9 160 458.6 160 501L160 512C142.3 512 128 526.3 128 544C128 561.7 142.3 576 160 576L480 576C497.7 576 512 561.7 512 544C512 526.3 497.7 512 480 512L480 501C480 458.6 463.1 417.9 433.1 387.9L365.2 320L433.1 252.1C463.1 222.1 480 181.4 480 139L480 128C497.7 128 512 113.7 512 96C512 78.3 497.7 64 480 64L160 64zM416 501L416 512L224 512L224 501C224 475.5 234.1 451.1 252.1 433.1L320 365.2L387.9 433.1C405.9 451.1 416 475.5 416 501z" />
-                        </svg>
-                        <p>Time: {String(req.start_time).split('T')[1]} - {String(req.end_time).split('T')[1]} </p>
-                    </div>
-                    <p> Message: {req.message} </p>
-                    <p>Attendee(s): {req.name} ({req.email})</p>
-                </div>
-                ))
+                </>
             )}
+            <h1> Upcoming Appointments </h1>
+            <div id="bookingList">
+                {upcomingBookings.length === 0 ? (
+                    <div id="emptyState">
+                        <div className="empty-icon">📅</div>
+                        <h2>No upcoming appointments</h2>
+                        <p>Click "Book New" to schedule an appointment.</p>
+                        <a className="empty-action" href="/browse-owners">Book New</a>
+                    </div>
+                ) : (
+                    upcomingBookings.map((booking, index) => (
+                        <div className="card" key={index}>
+                            <div className="header-line">
+                                <h3>{booking.slot_title}</h3>
+                                <button onClick={() => handleDelete(booking.booking_id)}><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                                    <path fill="red" d="M262.2 48C248.9 48 236.9 56.3 232.2 68.8L216 112L120 112C106.7 112 96 122.7 96 136C96 149.3 106.7 160 120 160L520 160C533.3 160 544 149.3 544 136C544 122.7 533.3 112 520 112L424 112L407.8 68.8C403.1 56.3 391.2 48 377.8 48L262.2 48zM128 208L128 512C128 547.3 156.7 576 192 576L448 576C483.3 576 512 547.3 512 512L512 208L464 208L464 512C464 520.8 456.8 528 448 528L192 528C183.2 528 176 520.8 176 512L176 208L128 208zM288 280C288 266.7 277.3 256 264 256C250.7 256 240 266.7 240 280L240 456C240 469.3 250.7 480 264 480C277.3 480 288 469.3 288 456L288 280zM400 280C400 266.7 389.3 256 376 256C362.7 256 352 266.7 352 280L352 456C352 469.3 362.7 480 376 480C389.3 480 400 469.3 400 456L400 280z" />
+                                </svg>
+                                </button>
+                                <a href={`mailto:${booking.meeting_partner_email}?subject=Booking: ${booking.slot_title}&body=Hi ${booking.meeting_partner_name},`}
+                                > Email  </a>
+                            </div>
+                            <div className="line">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                                    <path d="M224 64C241.7 64 256 78.3 256 96L256 128L384 128L384 96C384 78.3 398.3 64 416 64C433.7 64 448 78.3 448 96L448 128L480 128C515.3 128 544 156.7 544 192L544 480C544 515.3 515.3 544 480 544L160 544C124.7 544 96 515.3 96 480L96 192C96 156.7 124.7 128 160 128L192 128L192 96C192 78.3 206.3 64 224 64zM224 320C206.3 320 192 334.3 192 352L192 416C192 433.7 206.3 448 224 448L288 448C305.7 448 320 433.7 320 416L320 352C320 334.3 305.7 320 288 320L224 320z" />
+                                </svg>
+                                <p>Date: {String(booking.start_time).split('T')[0]}</p>
+                            </div>
+                            <div className="line">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                                    <path d="M160 64C142.3 64 128 78.3 128 96C128 113.7 142.3 128 160 128L160 139C160 181.4 176.9 222.1 206.9 252.1L274.8 320L206.9 387.9C176.9 417.9 160 458.6 160 501L160 512C142.3 512 128 526.3 128 544C128 561.7 142.3 576 160 576L480 576C497.7 576 512 561.7 512 544C512 526.3 497.7 512 480 512L480 501C480 458.6 463.1 417.9 433.1 387.9L365.2 320L433.1 252.1C463.1 222.1 480 181.4 480 139L480 128C497.7 128 512 113.7 512 96C512 78.3 497.7 64 480 64L160 64zM416 501L416 512L224 512L224 501C224 475.5 234.1 451.1 252.1 433.1L320 365.2L387.9 433.1C405.9 451.1 416 475.5 416 501z" />
+                                </svg>
+                                <p>Time: {String(booking.start_time).split('T')[1]} - {String(booking.end_time).split('T')[1]} </p>
+                            </div>
+                            <p>Attendee: {booking.meeting_partner_name}</p>
+                        </div>
+                    ))
+                )}
             </div>
-        </>
-        )}
-        <h1> Upcoming Appointments </h1>
-        <div id="bookingList">
-        {!bookings || bookings === 0 ? (
-                <p> You have no upcoming meetings.</p>
-            ) : (
-            bookings.map((booking, index) => (
-            <div className="card" key={index}>
-                <div className="header-line">
-                    <h3>{booking.slot_title}</h3>
-                    <button onClick={() => handleDelete(booking.booking_id)}><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
-                    <path fill= "red" d="M262.2 48C248.9 48 236.9 56.3 232.2 68.8L216 112L120 112C106.7 112 96 122.7 96 136C96 149.3 106.7 160 120 160L520 160C533.3 160 544 149.3 544 136C544 122.7 533.3 112 520 112L424 112L407.8 68.8C403.1 56.3 391.2 48 377.8 48L262.2 48zM128 208L128 512C128 547.3 156.7 576 192 576L448 576C483.3 576 512 547.3 512 512L512 208L464 208L464 512C464 520.8 456.8 528 448 528L192 528C183.2 528 176 520.8 176 512L176 208L128 208zM288 280C288 266.7 277.3 256 264 256C250.7 256 240 266.7 240 280L240 456C240 469.3 250.7 480 264 480C277.3 480 288 469.3 288 456L288 280zM400 280C400 266.7 389.3 256 376 256C362.7 256 352 266.7 352 280L352 456C352 469.3 362.7 480 376 480C389.3 480 400 469.3 400 456L400 280z" />
-                </svg>
-                    </button>
-                    <a href={`mailto:${booking.meeting_partner_email}?subject=Booking: ${booking.slot_title}&body=Hi ${booking.meeting_partner_name},`}
-                    > Email  </a> 
-                </div>
-                <div className="line">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
-                        <path d="M224 64C241.7 64 256 78.3 256 96L256 128L384 128L384 96C384 78.3 398.3 64 416 64C433.7 64 448 78.3 448 96L448 128L480 128C515.3 128 544 156.7 544 192L544 480C544 515.3 515.3 544 480 544L160 544C124.7 544 96 515.3 96 480L96 192C96 156.7 124.7 128 160 128L192 128L192 96C192 78.3 206.3 64 224 64zM224 320C206.3 320 192 334.3 192 352L192 416C192 433.7 206.3 448 224 448L288 448C305.7 448 320 433.7 320 416L320 352C320 334.3 305.7 320 288 320L224 320z" />
-                    </svg>
-                    <p>Date: {String(booking.start_time).split('T')[0]}</p>
-                </div>
-                <div className="line">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
-                        <path d="M160 64C142.3 64 128 78.3 128 96C128 113.7 142.3 128 160 128L160 139C160 181.4 176.9 222.1 206.9 252.1L274.8 320L206.9 387.9C176.9 417.9 160 458.6 160 501L160 512C142.3 512 128 526.3 128 544C128 561.7 142.3 576 160 576L480 576C497.7 576 512 561.7 512 544C512 526.3 497.7 512 480 512L480 501C480 458.6 463.1 417.9 433.1 387.9L365.2 320L433.1 252.1C463.1 222.1 480 181.4 480 139L480 128C497.7 128 512 113.7 512 96C512 78.3 497.7 64 480 64L160 64zM416 501L416 512L224 512L224 501C224 475.5 234.1 451.1 252.1 433.1L320 365.2L387.9 433.1C405.9 451.1 416 475.5 416 501z" />
-                    </svg>
-                    <p>Time: {String(booking.start_time).split('T')[1]} - {String(booking.end_time).split('T')[1]} </p>
-                </div>
-                <p>Attendee: {booking.meeting_partner_name}</p>
-            </div>
-            ))
-            )}
-        </div>
         </main>
     )
-    }
-    export default Dashboard;
+}
+export default Dashboard;
