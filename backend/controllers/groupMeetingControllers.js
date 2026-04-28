@@ -1,3 +1,5 @@
+// Ryan Hull
+
 // requirements
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');

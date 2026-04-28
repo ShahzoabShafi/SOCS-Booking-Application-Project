@@ -1,4 +1,6 @@
 // Shahzoab Shafi
+// Ryan Hull
+
 // Connect to db and recieve request, which is recieved and parsed (JSON or urlencoded) by server.js
 const dbPromise = require('../config/db');
 

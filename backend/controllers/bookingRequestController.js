@@ -1,4 +1,6 @@
 // Shahzoab Shafi
+// Ryan Hull
+
 const dbPromise = require('../config/db');
 const { sendEmail } = require('../utils/emailService');
 

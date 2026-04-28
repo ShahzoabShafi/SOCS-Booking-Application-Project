@@ -1,3 +1,4 @@
+// Ryan Hull
 // connect to db and recieve request
 const dbPromise = require('../config/db');
 const { sendEmail } = require('../utils/emailService');
