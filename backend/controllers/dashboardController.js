@@ -1,9 +1,6 @@
+// Shahzoab Shafi
 const dbPromise = require('../config/db');
 
-
-// @desc    Get dashboard data
-// @route   GET /api/dashboard
-// @access  Private
 const getDashboardData = async (req, res) => {
   const db = await dbPromise;
 
